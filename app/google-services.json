@@ -1,0 +1,44 @@
+  {
+  "project_info": {
+    "project_number": "42533648213",
+    "firebase_url": "https://native-chicken-and-duck-68e80.firebaseio.com",
+    "project_id": "native-chicken-and-duck-68e80",
+    "storage_bucket": "native-chicken-and-duck-68e80.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:42533648213:android:eb6fc99bcccdeead",
+        "android_client_info": {
+          "package_name": "com.example.cholomanglicmot.nativechickenandduck"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "42533648213-bo7tartpeqehnpjjeaal54c3i7aq96g0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.cholomanglicmot.nativechickenandduck",
+            "certificate_hash": "959aae6e2dfbeda66aa9e8fbcaae7b9b6cf20491"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBbcyWFskGSzo5XtBqn7_yj-awDpMvUxNc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "42533648213-uggj9l9epj9l2a9b5aofei8eel7jcrno.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

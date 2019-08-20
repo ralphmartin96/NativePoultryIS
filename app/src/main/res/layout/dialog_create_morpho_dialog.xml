@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+                android:layout_height="wrap_content"
+                android:text="Morphometric Record"
+                android:textColor="#000"
+                android:textSize="20sp"
+                />
+            <TextView
+                android:id="@+id/replacement_tag"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="WVSUfc1551309390"
+                android:textSize="20sp"
+                android:layout_marginBottom="20dp"/>
+
+
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_below="@+id/brooder_growth_other_day"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="20dp"
+                android:gravity="left"
+                android:text="Height (cm)" />
+
+            <EditText
+                android:id="@+id/morpho_height"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textView5"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="20dp"
+                android:layout_centerHorizontal="true"
+                android:inputType="number"
+                android:textSize="14sp" />
+            <TextView
+                android:id="@+id/textView"
+                android:layout_below="@+id/brooder_growth_other_day"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:gravity="left"
+                android:text="Weight (g)" />
+
+            <EditText
+                android:id="@+id/morpho_weight"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textView5"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="20dp"
+                android:layout_centerHorizontal="true"
+                android:inputType="number"
+                android:textSize="14sp" />
+            <TextView
+                android:layout_below="@+id/brooder_growth_other_day"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:gravity="left"
+                android:text="Body Length (cm)" />
+
+            <EditText
+                android:id="@+id/morpho_body_length"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textView5"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="20dp"
+                android:layout_centerHorizontal="true"
+                android:inputType="number"
+                android:textSize="14sp" />
+            <TextView
+
+                android:layout_below="@+id/brooder_growth_other_day"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:gravity="left"
+                android:text="Chest Circumference (cm)" />
+
+            <EditText
+                android:id="@+id/morpho_chest_circumference"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textView5"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="20dp"
+                android:layout_centerHorizontal="true"
+                android:inputType="number"
+                android:textSize="14sp" />
+            <TextView
+
+                android:layout_below="@+id/brooder_growth_other_day"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:gravity="left"
+                android:text="Wing Span (cm)" />
+
+            <EditText
+                android:id="@+id/morpho_wing_span"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textView5"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="20dp"
+                android:layout_centerHorizontal="true"
+                android:inputType="number"
+                android:textSize="14sp" />
+            <TextView
+
+                android:layout_below="@+id/brooder_growth_other_day"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:gravity="left"
+                android:text="Shank Length (cm)" />
+
+            <EditText
+                android:id="@+id/morpho_shank_length"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textView5"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="20dp"
+                android:layout_centerHorizontal="true"
+                android:inputType="number"
+                android:textSize="14sp" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+
+                <Button
+                    android:id="@+id/action_ok"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="15dp"
+                    android:background="@drawable/buttonstylepaprika"
+                    android:text="Submit"
+                    android:textColor="@color/white"
+                    android:layout_gravity="end"/>
+
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+
+
+
+
+</ScrollView>

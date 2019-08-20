@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="wrap_content"
+    android:layout_height="50dp"
+
+    android:layout_marginTop="10dp">
+
+        <TableLayout
+            android:id="@+id/breeder_gen_table"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:stretchColumns="*"
+            >
+
+
+                <TableRow
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    >
+
+                <TextView
+                    android:id="@+id/date"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:gravity="center"
+                    android:textSize="12sp"
+                    android:text="Date"
+                    android:textStyle="bold"
+                    />
+                    <TextView
+                        android:id="@+id/category"
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:gravity="center"
+                        android:textStyle="bold"
+                        android:textSize="12sp"
+                        android:text="Category" />
+
+                <TextView
+                    android:id="@+id/type"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:textSize="12sp"
+                    android:text="Type" />
+
+
+
+
+
+                    <ImageButton
+                        android:id="@+id/view_more"
+                        android:layout_width="50dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/ic_remove_red_eye_black_24dp"
+                        android:background="@null"
+                        />
+
+
+
+        </TableRow>
+</TableLayout>
+
+
+
+    </LinearLayout>

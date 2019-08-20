@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    >
+    <TableLayout
+        android:id="@+id/breeder_gen_table"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:stretchColumns="*"
+        >
+
+
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            >
+
+
+            <TextView
+                android:id="@+id/replacement_inventory_code"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:gravity="center"
+                android:textSize="12sp"
+                android:text="Inventory Code"
+                android:textStyle="bold"
+                />
+
+
+            <TextView
+                android:id="@+id/replacement_inventory_number_male"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:textSize="12sp"
+                android:text="Male" />
+            <TextView
+                android:id="@+id/replacement_inventory_number_female"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:textSize="12sp"
+                android:text="Female" />
+
+
+            <ImageButton
+                android:id="@+id/replacement_inventory_view"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:src="@drawable/ic_remove_red_eye_black_24dp" />
+
+
+            <ImageButton
+                android:id="@+id/replacement_inventory_add"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:src="@drawable/ic_add_box_black_24dp" />
+
+        </TableRow>
+    </TableLayout>
+
+
+</LinearLayout>

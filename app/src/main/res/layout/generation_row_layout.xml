@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="50dp"
+
+    android:layout_marginTop="10dp">
+
+
+    <TextView
+        android:id="@+id/generation_number"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="5dp"
+        android:gravity="center"
+        android:text="generation_number"
+        />
+
+    <TextView
+        android:id="@+id/generation_status"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_margin="5dp"
+        android:gravity="center"
+        android:text="-"
+        />
+
+    <ImageButton
+        android:id="@+id/generation_details"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:src="@drawable/ic_details_black_24dp"
+        android:background="@null"
+        />
+    <ImageButton
+        android:id="@+id/generation_cull"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:src="@drawable/ic_do_not_disturb_on_black_24dp"
+        android:background="@null"
+        />
+
+
+
+
+
+</LinearLayout>

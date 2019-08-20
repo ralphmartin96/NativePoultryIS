@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".BreedersDirectory.EggQualityRecords"
+    android:id="@+id/drawer_layout"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include
+            layout="@layout/navigation_action"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:id="@+id/pen_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+
+            <TextView
+                android:id="@+id/replacement_pheno_inv_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="Egg Quality Records | WVSUfc1551309390"
+                android:textColor="#000"
+                android:textSize="20dp"
+                android:textStyle="bold" />
+
+
+        </LinearLayout>
+
+
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="15dp"
+                android:background="@color/white">
+                <android.support.design.widget.CoordinatorLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                <TableLayout
+                    android:id="@+id/breeder_gen_table"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:stretchColumns="*">
+
+
+                    <TableRow
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent">
+
+
+                        <TextView
+                            android:id="@+id/brooder_inventory_code"
+                            android:layout_width="50dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:gravity="center"
+                            android:text="Date"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/brooder_inventory_family"
+                            android:layout_width="50dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:gravity="center"
+                            android:text="Week"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+
+
+
+                        <TextView
+
+                            android:layout_width="50dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:gravity="center"
+                            android:text="View More"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+
+                            android:layout_width="50dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:gravity="center"
+                            android:text="Delete"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+
+                    </TableRow>
+
+
+                </TableLayout>
+
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recyclerViewEggQualityRecords"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="40dp">
+
+                </android.support.v7.widget.RecyclerView>
+
+
+
+
+
+
+
+
+                    <android.support.design.widget.FloatingActionButton
+                        android:layout_gravity="end|bottom"
+                        android:id="@+id/open_dialog"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_marginBottom="28dp"
+                        android:layout_marginEnd="16dp"
+                        android:background="@drawable/floatingbutton"
+                        android:src="@drawable/ic_add_black_24dp"
+                        android:backgroundTint="@color/turmeric" />
+
+
+
+</android.support.design.widget.CoordinatorLayout>
+
+            </android.support.v7.widget.CardView>
+
+
+
+    </LinearLayout>
+
+    <android.support.design.widget.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        android:layout_gravity="start"
+        app:headerLayout="@layout/nav_header"
+        >
+        <ExpandableListView
+            android:layout_marginTop="190dp"
+            android:id="@+id/exp_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:indicatorLeft="?android:attr/expandableListPreferredChildIndicatorLeft"
+            android:groupIndicator="@null"
+            />
+    </android.support.design.widget.NavigationView>
+
+
+
+</LinearLayout>

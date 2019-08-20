@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#006363</color>
+    <color name="colorPrimaryDark">#003a3a</color>
+    <color name="colorAccent">#990000</color>
+    <color name="gold">#FFD700</color>
+    <color name="turmeric">#c96903</color>
+    <color name="navy">#010048</color>
+    <color name="white">#FFF</color>
+    <color name="teal">#009999</color>
+</resources>

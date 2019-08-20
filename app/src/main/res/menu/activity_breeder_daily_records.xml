@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/egg_production"
+        android:icon="@drawable/egg"
+        android:title="@string/egg_production" />
+    <item
+        android:id="@+id/feeding_records"
+        android:icon="@drawable/ic_folder_open_black2_24dp"
+        android:title="@string/feeding_records" />
+
+</menu>

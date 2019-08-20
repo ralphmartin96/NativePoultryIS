@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group
+        android:id="@+id/menu_bottom"
+        android:checkableBehavior="none">
+
+        <item
+            android:id="@+id/nav_farmsettings"
+            android:title="Farm Settings" >
+        </item>
+        <item
+            android:id="@+id/nav_help"
+            android:title="Help Center" >
+        </item>
+        <item
+            android:id="@+id/nav_logout"
+            android:title="Log Out" >
+        </item>
+    </group>
+
+</menu>

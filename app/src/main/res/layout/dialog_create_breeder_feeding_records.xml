@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".FarmSettingsDirectory.MainActivity">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:text="B01 Feeding Records"
+        android:textColor="#000"
+        android:textSize="20sp" />
+    <TextView
+        android:id="@+id/add_brooder_to_pen_text"
+        android:layout_below="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:gravity="left"
+        android:text="Date Collected"
+        android:textColor="#000"
+        android:textSize="15sp" />
+    <EditText
+        android:id="@+id/brooder_feeding_date_collected"
+        android:layout_below="@+id/add_brooder_to_pen_text"
+        android:clickable="false"
+        android:cursorVisible="false"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        android:inputType="text"
+        android:textSize="14sp" />
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_below="@+id/brooder_feeding_date_collected"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="20dp"
+        android:gravity="left"
+        android:text="Feed Offered"
+        android:textColor="#000"
+        android:textSize="15sp" />
+    <EditText
+        android:id="@+id/brooder_feeding_offered"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView3"
+        android:layout_margin="10dp"
+        android:hint="Amount of feed offered in (g)"
+        android:inputType="number"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_below="@+id/brooder_feeding_offered"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="20dp"
+        android:gravity="left"
+        android:text="Feed Refused"
+        android:textColor="#000"
+        android:textSize="15sp" />
+    <EditText
+        android:id="@+id/brooder_feeding_record_refused"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView5"
+        android:layout_margin="10dp"
+        android:hint="Amount of feed refused in (g)"
+        android:inputType="number"
+        android:textSize="15sp" />
+    <TextView
+        android:id="@+id/linear_total"
+        android:layout_below="@+id/brooder_feeding_record_refused"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="20dp"
+        android:gravity="left"
+        android:text="Remarks"
+        android:textColor="#000"
+        android:textSize="15sp" />
+    <EditText
+        android:id="@+id/brooder_feeding_record_remarks"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/linear_total"
+        android:layout_margin="10dp"
+        android:hint="Remarks"
+        android:inputType="text"
+        android:textSize="15sp" />
+
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/brooder_feeding_record_remarks"
+    android:gravity="right">
+    <Button
+        android:id="@+id/action_ok"
+        android:layout_below="@+id/brooder_feeding_record_remarks"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:background="@drawable/buttonstylepaprika"
+        android:text="Submit"
+        android:textColor="@color/white" />
+</LinearLayout>
+
+
+
+
+</RelativeLayout>

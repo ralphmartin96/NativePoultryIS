@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_account"
+        android:icon="@drawable/ic_account_box_black_24dp"
+        android:title="@string/account" />
+<!--    <item
+        android:id="@+id/nav_address"
+        android:icon="@drawable/ic_location_on_black_24dp"
+        android:title="@string/address" />
+    <item
+        android:id="@+id/nav_contacts"
+        android:icon="@drawable/ic_phone_black_24dp"
+        android:title="@string/contacts" />-->
+</menu>

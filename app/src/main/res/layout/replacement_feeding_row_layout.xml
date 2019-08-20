@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="wrap_content"
+    android:layout_height="50dp"
+
+    android:layout_marginTop="10dp">
+
+        <TableLayout
+            android:id="@+id/breeder_gen_table"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:stretchColumns="*"
+            >
+
+
+                <TableRow
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    >
+
+                <TextView
+                    android:id="@+id/replacement_feeding_date"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:gravity="center"
+                    android:textSize="12sp"
+                    android:text="Date"
+                    android:textStyle="bold"
+                    />
+
+                <TextView
+                    android:id="@+id/replacement_feeding_tag"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:textSize="12sp"
+                    android:text="Tag" />
+
+            <!--    <TextView
+                    android:id="@+id/replacement_feeding_offered"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:textSize="12sp"
+                    android:text="Offered(g)" />
+
+                <TextView
+                    android:id="@+id/replacement_feeding_refused"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:textSize="12sp"
+                    android:text="Refused(g)" />
+
+                <TextView
+                    android:id="@+id/replacement_feeding_remarks"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:textSize="12sp"
+                    android:text="Remarks" />
+-->
+                        <ImageButton
+                            android:id="@+id/replacement_feeding_view"
+                            android:layout_width="50dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center_vertical"
+                            android:src="@drawable/ic_remove_red_eye_black_24dp"
+                            android:background="@null"
+                            />
+                <ImageButton
+                    android:id="@+id/replacement_feeding_delete"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_delete_black_24dp"
+                    android:background="@null"
+                    />
+
+        </TableRow>
+</TableLayout>
+
+
+
+    </LinearLayout>

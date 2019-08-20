@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_mort"
+        android:title="Mortality" />
+    <item
+        android:id="@+id/nav_sales"
+        android:title="Sales" />
+    <item
+        android:id="@+id/nav_egg_sales"
+        android:title="Egg Sales" />
+</menu>

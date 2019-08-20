@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:layout_margin="15dp">
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:stretchColumns="*"
+            android:gravity="center"
+            >
+
+            <TextView
+                android:layout_width="45dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:textSize="10dp"
+                android:gravity="center"
+                android:text="Date Fed"
+                android:textStyle="bold"
+                />
+
+            <TextView
+                android:layout_width="45dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:textSize="10dp"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:text="Type Offered" />
+
+            <TextView
+                android:layout_width="45dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:textSize="10dp"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:text="Type Refused" />
+
+            <TextView
+                android:layout_width="45dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:textSize="10dp"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:text="Amount Offered" />
+
+            <TextView
+                android:layout_width="45dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:textSize="10dp"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:text="Amount Refused" />
+
+            <TextView
+                android:layout_width="45dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:textSize="10dp"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:text="Edit" />
+
+        </TableRow>
+
+    </TableLayout>
+    </android.support.v7.widget.CardView>
+</FrameLayout>

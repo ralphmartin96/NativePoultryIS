@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ReplacementsDirectory.ReplacementPhenoMorphoViewActivity"
+    android:id="@+id/drawer_layout"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include
+            layout="@layout/navigation_action"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:id="@+id/pen_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+
+            <TextView
+                android:id="@+id/replacement_pheno_inv_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="Phenotypic and Morphometric | WVSUfc1551309390"
+                android:textColor="#000"
+                android:textSize="20dp"
+                android:textStyle="bold" />
+
+
+
+        </LinearLayout>
+
+        <HorizontalScrollView
+            android:id="@+id/brooder_inventory_frame"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:layout_margin="15dp"
+                >
+
+                <TableLayout
+                    android:id="@+id/breeder_gen_table"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:stretchColumns="*"
+                    >
+
+
+                    <TableRow
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        >
+
+                        <TextView
+                            android:id="@+id/brooder_inventory_batch_date"
+                            android:layout_width="50dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:gravity="center"
+                            android:textStyle="bold"
+                            android:textSize="12sp"
+                            android:text="Date Collected" />
+
+                        <TextView
+                            android:id="@+id/brooder_inventory_code"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:gravity="center"
+                            android:textSize="12sp"
+                            android:text="Registry Tag/ID"
+                            android:textStyle="bold"
+                            />
+
+                       <!-- <TextView
+
+                            android:layout_width="50dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:gravity="center"
+                            android:textStyle="bold"
+                            android:textSize="12sp"
+                            android:text="Gender" />
+
+                        <TextView
+
+                            android:layout_width="300dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:gravity="center"
+                            android:textStyle="bold"
+                            android:textSize="12sp"
+                            android:text="Pheno" />
+
+                        <TextView
+
+                            android:layout_width="150dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:gravity="center"
+                            android:textStyle="bold"
+                            android:textSize="12sp"
+                            android:text="Morpho" />-->
+                        <TextView
+
+                            android:layout_width="50dp"
+                            android:textStyle="bold"
+                            android:gravity="center"
+                            android:layout_margin="10dp"
+                            android:layout_height="wrap_content"
+                            android:text="More"
+                            />
+
+                        <TextView
+                            android:id="@+id/brooder_feeding_delete"
+                            android:layout_width="50dp"
+                            android:textStyle="bold"
+                            android:gravity="center"
+                            android:layout_margin="10dp"
+                            android:layout_height="wrap_content"
+                            android:text="Delete"
+                            />
+                    </TableRow>
+
+
+
+
+                </TableLayout>
+
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recyclerViewReplacementViewPhenoMorphoRecords"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="40dp"
+                    >
+
+                </android.support.v7.widget.RecyclerView>
+
+
+
+
+
+            </android.support.v7.widget.CardView>
+        </HorizontalScrollView>
+
+
+
+
+
+
+
+
+    </LinearLayout>
+
+    <android.support.design.widget.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        android:layout_gravity="start"
+        app:headerLayout="@layout/nav_header"
+        >
+        <ExpandableListView
+            android:layout_marginTop="190dp"
+            android:id="@+id/exp_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:indicatorLeft="?android:attr/expandableListPreferredChildIndicatorLeft"
+            android:groupIndicator="@null"
+            />
+    </android.support.design.widget.NavigationView>
+
+
+
+</LinearLayout>

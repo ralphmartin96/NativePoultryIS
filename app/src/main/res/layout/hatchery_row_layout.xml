@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="wrap_content"
+    android:layout_height="50dp"
+
+    android:layout_marginTop="10dp">
+
+        <TableLayout
+            android:id="@+id/breeder_gen_table"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:stretchColumns="*"
+            >
+
+
+                <TableRow
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    >
+
+
+                        <TextView
+                            android:id="@+id/date_set"
+                            android:layout_width="50dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:gravity="center"
+
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+
+                        <!--  <TextView
+                         android:id="@+id/quantity"
+                    android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:layout_margin="10dp"
+                         android:gravity="center"
+                         android:textStyle="bold"
+                         android:textSize="12sp"
+                         android:text="Quantity" />
+
+                     <TextView
+                         android:id="@+id/age"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:layout_margin="10dp"
+                         android:gravity="center"
+                         android:textStyle="bold"
+                         android:textSize="12sp"
+                         android:text="Age in Weeks" />
+
+                     <TextView
+                         android:id="@+id/fertile"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:layout_margin="10dp"
+                         android:gravity="center"
+                         android:textStyle="bold"
+                         android:textSize="12sp"
+                         android:text="No. Fertile	" />-->
+
+                        <TextView
+                            android:id="@+id/hatched"
+                            android:layout_width="50dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:gravity="center"
+                            android:textStyle="bold"
+                            android:textSize="12sp"
+                           />
+
+
+                      <!--  <TextView
+                            android:id="@+id/number_hatched"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:gravity="center"
+                            android:textStyle="bold"
+                            android:textSize="12sp"
+                            android:text="number hatched" />-->
+                        <ImageButton
+                            android:id="@+id/view_record"
+                            android:layout_width="50dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center_vertical"
+                            android:src="@drawable/ic_remove_red_eye_black_24dp"
+                            android:background="@null"
+                            />
+
+                        <ImageButton
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:id="@+id/delete"
+                            android:layout_width="50dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center_vertical"
+                            android:src="@drawable/ic_delete_black_24dp"
+                            android:background="@null"
+                            />
+                </TableRow>
+
+
+
+
+        </TableLayout>
+
+
+
+    </LinearLayout>

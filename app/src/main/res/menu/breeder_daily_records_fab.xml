@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/egg_production_btn"
+        android:icon="@drawable/egg"
+        android:title="Egg Production">
+
+    </item>
+    <item
+        android:id="@+id/feeding_records_btn"
+        android:icon="@drawable/ic_folder_open_black2_24dp"
+        android:title="Feeding Records">
+
+    </item>
+
+</menu>

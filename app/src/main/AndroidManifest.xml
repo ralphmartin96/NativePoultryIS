@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.cholomanglicmot.nativechickenandduck">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+
+    <application
+
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="Native Chicken and Duck"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".DashboardDirectory.DashBoardActivity"></activity>
+        <activity android:name=".DashboardDirectory.LoginActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".FarmSettingsDirectory.MainActivity"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".PensDirectory.CreatePen"
+            android:windowSoftInputMode="stateHidden" />
+        <activity android:name=".GenerationsAndLinesDirectory.CreateGenerationsAndLines" />
+        <activity android:name=".FamilyDirectory.CreateFamilies" />
+        <activity android:name=".BreedersDirectory.CreateBreeders" />
+        <activity android:name=".BroodersDirectory.CreateBrooders" />
+        <activity android:name=".BroodersDirectory.BrooderInventoryActivity" />
+        <activity android:name=".BroodersDirectory.BrooderFeedingRecordsActivity" />
+        <activity android:name=".BroodersDirectory.BrooderGrowthRecordsActivity" />
+        <activity android:name=".BroodersDirectory.MortalityAndSalesRecordsBrooder" />
+        <activity android:name=".ReplacementsDirectory.CreateReplacements" />
+        <activity android:name=".ReplacementsDirectory.ReplacementInventoryActivity" />
+        <activity android:name=".ReplacementsDirectory.ReplacementFeedingRecordsActivity" />
+        <activity android:name=".ReplacementsDirectory.ReplacementGrowthRecordsActivity" />
+        <activity android:name=".ReplacementsDirectory.ReplacementPhenoMorphoRecordsActivity" />
+        <activity android:name=".ReplacementsDirectory.ReplacementPhenoMorphoViewActivity" />
+        <activity android:name=".ReplacementsDirectory.MortalityAndSalesRecordsReplacement" />
+        <activity android:name=".BreedersDirectory.BreederFeedingRecordsActivity" />
+        <activity android:name=".BreedersDirectory.EggProductionRecords" />
+        <activity android:name=".BreedersDirectory.HatcheryRecords" />
+        <activity android:name=".BreedersDirectory.EggQualityRecords" />
+        <activity android:name=".BreedersDirectory.MortalityAndSalesRecords" />
+        <activity android:name=".BreedersDirectory.BreederPhenoMorphoRecordsActivity" />
+        <activity android:name=".BreedersDirectory.BreederPhenoMorphoViewActivity" />
+
+
+    </application>
+
+</manifest>

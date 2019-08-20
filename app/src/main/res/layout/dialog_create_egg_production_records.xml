@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="wrap_content"
+    android:layout_width="wrap_content">
+
+<RelativeLayout
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:text="Add Egg Production"
+            android:textColor="#000"
+            android:textSize="20sp" />
+        <TextView
+            android:id="@+id/add_brooder_to_pen_text"
+            android:layout_below="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:gravity="left"
+            android:text="Date Collected"
+ />
+        <EditText
+            android:id="@+id/date_collected"
+            android:layout_below="@+id/add_brooder_to_pen_text"
+            android:clickable="false"
+            android:cursorVisible="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="10dp"
+            android:inputType="text"
+ />
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_below="@+id/brooder_feeding_date_collected"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:gravity="left"
+            android:text="Total Eggs Intact"
+
+ />
+        <EditText
+            android:id="@+id/intact"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textView3"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+
+            android:textSize="15sp"
+            android:inputType="number"/>
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_below="@+id/brooder_feeding_offered"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:gravity="left"
+            android:text="Total Egg Weight"
+/>
+        <EditText
+            android:id="@+id/weight"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textView5"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+
+            android:inputType="number"
+            android:textSize="15sp" />
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_below="@+id/brooder_feeding_offered"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:gravity="left"
+            android:text="Total Eggs Broken"
+            />
+        <EditText
+            android:id="@+id/broken"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textView5"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+
+            android:inputType="number"
+            android:textSize="15sp" />
+        <TextView
+            android:layout_below="@+id/brooder_feeding_offered"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:gravity="left"
+            android:text="Total Eggs Rejected"
+            />
+        <EditText
+            android:id="@+id/rejected"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textView5"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+
+            android:inputType="number"
+            android:textSize="15sp" />
+        <TextView
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:gravity="left"
+            android:text="Female Inventory"
+            />
+        <EditText
+            android:id="@+id/female_inventory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:inputType="number"
+            android:textSize="15sp" />
+        <TextView
+            android:layout_below="@+id/brooder_feeding_offered"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:gravity="left"
+            android:text="Remarks"
+            />
+        <EditText
+            android:id="@+id/remarks"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textView5"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:hint="Add remarks"
+            android:inputType="text"
+            android:textSize="15sp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/brooder_feeding_record_remarks"
+            android:gravity="right">
+            <Button
+                android:id="@+id/action_ok"
+                android:layout_below="@+id/brooder_feeding_record_remarks"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:background="@drawable/buttonstylepaprika"
+                android:text="Submit"
+                android:textColor="@color/white" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+
+
+
+
+
+</RelativeLayout>
+</ScrollView>

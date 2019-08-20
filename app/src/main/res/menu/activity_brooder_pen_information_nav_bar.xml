@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/brooder_pen_inventories"
+        android:icon="@drawable/ic_info_black_24dp1"
+        android:title="Inventories"
+        />
+    <item
+        android:id="@+id/brooder_pen_add"
+        android:icon="@drawable/ic_add_box_black_24dp"
+        android:title="Add Brooder" />
+    <item
+        android:id="@+id/brooder_pen_feeding_records"
+        android:icon="@drawable/ic_cake_black_24dp"
+        android:title="Feeding Records"
+        />
+    <item
+        android:id="@+id/brooder_pen_growth_records"
+        android:icon="@drawable/ic_phone_black_24dp"
+        android:title="Growth Records" />
+</menu>
