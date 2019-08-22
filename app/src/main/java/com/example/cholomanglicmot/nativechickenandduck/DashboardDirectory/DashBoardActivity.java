@@ -216,34 +216,33 @@ public class DashBoardActivity extends AppCompatActivity {
         female_count_breeder = findViewById(R.id.female_count_breeder);
         male_count_breeder.setText(myDb.getAllMaleFromBreeders(farm_id_local).toString());
         female_count_breeder.setText(myDb.getAllFemaleFromBreeders(farm_id_local).toString());
-      /*  male_count_breeder_mort = findViewById(R.id.male_count_breeder_mort);
-        female_count_breeder_mort = findViewById(R.id.female_count_breeder_mort);*/
-      /*  male_count_breeder_mort.setText("♂: "+myDb.getAllBreederMaleFromMort(farm_id_local).toString());
-        female_count_breeder_mort.setText("♀: "+myDb.getAllBreedeFemaleFromMort(farm_id_local).toString());*/
-     /*   male_sales_breeder = findViewById(R.id.male_sales_breeder);
-        female_sales_breeder = findViewById(R.id.female_sales_breeder);
-        egg_sales_breeder = findViewById(R.id.egg_sales_breeder);*/
-   /*     male_sales_breeder.setText("♂: "+myDb.getAllBreederMaleFromSales(farm_id_local).toString());
-        female_sales_breeder.setText("♀: "+myDb.getAllBreedeFemaleFromSales(farm_id_local));
-        egg_sales_breeder.setText(myDb.getAllEggSales(farm_id_local).toString());*/
+
+//        male_count_breeder_mort = findViewById(R.id.male_count_breeder_mort);
+//        female_count_breeder_mort = findViewById(R.id.female_count_breeder_mort);
+//        male_count_breeder_mort.setText("♂: "+myDb.getAllBreederMaleFromMort(farm_id_local).toString());
+//        female_count_breeder_mort.setText("♀: "+myDb.getAllBreedeFemaleFromMort(farm_id_local).toString());*/
+//        male_sales_breeder = findViewById(R.id.male_sales_breeder);
+//        female_sales_breeder = findViewById(R.id.female_sales_breeder);
+//        egg_sales_breeder = findViewById(R.id.egg_sales_breeder);
+//        male_sales_breeder.setText("♂: "+myDb.getAllBreederMaleFromSales(farm_id_local).toString());
+//        female_sales_breeder.setText("♀: "+myDb.getAllBreedeFemaleFromSales(farm_id_local));
+//        egg_sales_breeder.setText(myDb.getAllEggSales(farm_id_local).toString());
 
 
-    /*    breeder_feeding_offered = findViewById(R.id.breeder_feeding_offered);
-        breeder_feeding_refused =findViewById(R.id.breeder_feeding_refused);
-        breeder_feeding_consumed =findViewById(R.id.breeder_feeding_consumed);*/
-      /*  breeder_feeding_offered.setText(myDb.getBreederFeedingOffered().toString()+" kg");
-        breeder_feeding_refused.setText(myDb.getBreederFeedingRefused().toString()+ " kg");
-        Integer consumed = myDb.getBreederFeedingOffered()-myDb.getBreederFeedingRefused();
-        breeder_feeding_consumed.setText(consumed.toString() +" kg");*/
+//        breeder_feeding_offered = findViewById(R.id.breeder_feeding_offered);
+//        breeder_feeding_refused =findViewById(R.id.breeder_feeding_refused);
+//        breeder_feeding_consumed =findViewById(R.id.breeder_feeding_consumed);
+//        breeder_feeding_offered.setText(myDb.getBreederFeedingOffered().toString()+" kg");
+//        breeder_feeding_refused.setText(myDb.getBreederFeedingRefused().toString()+ " kg");
+//        Integer consumed = myDb.getBreederFeedingOffered()-myDb.getBreederFeedingRefused();
+//        breeder_feeding_consumed.setText(consumed.toString() +" kg");
 
 
         intact = findViewById(R.id.intact);
-       // weight = findViewById(R.id.weight);
         broken = findViewById(R.id.broken);
         rejected = findViewById(R.id.rejected);
         hen_day = findViewById(R.id.hen_day);
         intact.setText(myDb.getTotalIntact(farm_id_local).toString());
-       // weight.setText(myDb.getTotalWeight(farm_id_local).toString());
         broken.setText(myDb.getTotalBroken(farm_id_local).toString());
         rejected.setText(myDb.getTotalRejects(farm_id_local).toString());
         hen_day.setText(myDb.getHenDayEggProduction(farm_id_local).toString()+" %");
@@ -272,35 +271,36 @@ public class DashBoardActivity extends AppCompatActivity {
 
 
 
-     /*   fertility = findViewById(R.id.fertility);
-        hatchability = findViewById(R.id.hatchability);
-        total_hatchability = findViewById(R.id.total_hatchability);*/
-      /*  fertility.setText(myDb.getFertilityPercentage(farm_id_local).toString()+" %");
-        hatchability.setText(myDb.getHatchabilityPercentage(farm_id_local).toString()+" %");
-        total_hatchability.setText(myDb.getHatchabilityPercentage(farm_id_local).toString()+" %");
-*/
+//        fertility = findViewById(R.id.fertility);
+//        hatchability = findViewById(R.id.hatchability);
+//        total_hatchability = findViewById(R.id.total_hatchability);
+//        fertility.setText(myDb.getFertilityPercentage(farm_id_local).toString()+" %");
+//        hatchability.setText(myDb.getHatchabilityPercentage(farm_id_local).toString()+" %");
+//        total_hatchability.setText(myDb.getHatchabilityPercentage(farm_id_local).toString()+" %");
+
 
         male_count_replacement = findViewById(R.id.male_count_replacement);
         female_count_replacement = findViewById(R.id.female_count_replacement);
         male_count_replacement.setText(myDb.getAllMaleFromReplacements(farm_id_local).toString());
         female_count_replacement.setText(myDb.getAllFemaleFromReplacements(farm_id_local).toString());
-      /*  male_count_replacement_mort = findViewById(R.id.male_count_replacement_mort);
-        female_count_replacement_mort = findViewById(R.id.female_count_replacement_mort);*/
-      /*  male_count_replacement_mort.setText("♂: "+myDb.getAllReplacementMaleFromMort(farm_id_local).toString());
-        female_count_replacement_mort.setText("♀: "+myDb.getAllReplacementFemaleFromMort(farm_id_local).toString());*/
-     /*   male_count_replacement_sales = findViewById(R.id.male_count_replacement_sales);
-        female_count_replacement_sales = findViewById(R.id.female_count_replacement_sales);*/
-      /*  male_count_replacement_sales.setText("♂: "+myDb.getAllReplacementMaleFromSales(farm_id_local).toString());
-        female_count_replacement_sales.setText("♀: "+myDb.getAllReplacementFemaleFromSales(farm_id_local));*/
 
-        /*replacement_feeding_offered = findViewById(R.id.replacement_feeding_offered);
-        replacement_feeding_refused =findViewById(R.id.replacement_feeding_refused);
-        replacement_feeding_consumed =findViewById(R.id.replacement_feeding_consumed);*/
-     /*   replacement_feeding_offered.setText(myDb.getReplacementFeedingOffered().toString()+" kg");
-        replacement_feeding_refused.setText(myDb.getReplacementFeedingRefused().toString()+ " kg");
-        Integer consumed2 = myDb.getReplacementFeedingOffered()-myDb.getReplacementFeedingRefused();
-        replacement_feeding_consumed.setText(consumed2.toString() +" kg");
-*/
+//        male_count_replacement_mort = findViewById(R.id.male_count_replacement_mort);
+//        female_count_replacement_mort = findViewById(R.id.female_count_replacement_mort);
+//        male_count_replacement_mort.setText("♂: "+myDb.getAllReplacementMaleFromMort(farm_id_local).toString());
+//        female_count_replacement_mort.setText("♀: "+myDb.getAllReplacementFemaleFromMort(farm_id_local).toString());*/
+//        male_count_replacement_sales = findViewById(R.id.male_count_replacement_sales);
+//        female_count_replacement_sales = findViewById(R.id.female_count_replacement_sales);
+//        male_count_replacement_sales.setText("♂: "+myDb.getAllReplacementMaleFromSales(farm_id_local).toString());
+//        female_count_replacement_sales.setText("♀: "+myDb.getAllReplacementFemaleFromSales(farm_id_local));*/
+//
+//        replacement_feeding_offered = findViewById(R.id.replacement_feeding_offered);
+//        replacement_feeding_refused =findViewById(R.id.replacement_feeding_refused);
+//        replacement_feeding_consumed =findViewById(R.id.replacement_feeding_consumed);
+//        replacement_feeding_offered.setText(myDb.getReplacementFeedingOffered().toString()+" kg");
+//        replacement_feeding_refused.setText(myDb.getReplacementFeedingRefused().toString()+ " kg");
+//        Integer consumed2 = myDb.getReplacementFeedingOffered()-myDb.getReplacementFeedingRefused();
+//        replacement_feeding_consumed.setText(consumed2.toString() +" kg");
+
 
 
 
@@ -308,22 +308,22 @@ public class DashBoardActivity extends AppCompatActivity {
         female_count_brooder = findViewById(R.id.female_count_brooder);
         male_count_brooder.setText(myDb.getAllMaleFromBrooders(farm_id_local).toString());
         female_count_brooder.setText(myDb.getAllFemaleFromBrooders(farm_id_local).toString());
-       /* male_count_brooder_mort = findViewById(R.id.male_count_brooder_mort);
-        female_count_brooder_mort = findViewById(R.id.female_count_brooder_mort);*/
-      /*  male_count_brooder_mort.setText("♂: "+myDb.getAllBrooderMaleFromMort(farm_id_local).toString());
-        female_count_brooder_mort.setText("♀: "+myDb.getAllBrooderFemaleFromMort(farm_id_local).toString());*/
-      /*  male_count_brooder_sales = findViewById(R.id.male_count_brooder_sales);
-        female_count_brooder_sales = findViewById(R.id.female_count_brooder_sales);*/
-     /*   male_count_brooder_sales.setText("♂:: "+myDb.getAllBrooderMaleFromSales(farm_id_local).toString());
-        female_count_brooder_sales.setText("♀: "+myDb.getAllBrooderFemaleFromSales(farm_id_local).toString());*/
+//        male_count_brooder_mort = findViewById(R.id.male_count_brooder_mort);
+//        female_count_brooder_mort = findViewById(R.id.female_count_brooder_mort);
+//        male_count_brooder_mort.setText("♂: "+myDb.getAllBrooderMaleFromMort(farm_id_local).toString());
+//        female_count_brooder_mort.setText("♀: "+myDb.getAllBrooderFemaleFromMort(farm_id_local).toString());
+//        male_count_brooder_sales = findViewById(R.id.male_count_brooder_sales);
+//        female_count_brooder_sales = findViewById(R.id.female_count_brooder_sales);
+//        male_count_brooder_sales.setText("♂:: "+myDb.getAllBrooderMaleFromSales(farm_id_local).toString());
+//        female_count_brooder_sales.setText("♀: "+myDb.getAllBrooderFemaleFromSales(farm_id_local).toString());
 
-       /* brooder_feeding_offered = findViewById(R.id.brooder_feeding_offered);*/
-     /*   brooder_feeding_refused =findViewById(R.id.brooder_feeding_refused);
-        brooder_feeding_consumed =findViewById(R.id.brooder_feeding_consumed);*/
-      /*  brooder_feeding_offered.setText(myDb.getBrooderFeedingOffered().toString()+" kg");
-        brooder_feeding_refused.setText(myDb.getBrooderFeedingRefused().toString()+ " kg");
-        Integer consumed3 = myDb.getBrooderFeedingOffered()-myDb.getBrooderFeedingRefused();
-        brooder_feeding_consumed.setText(consumed3.toString() +" kg");*/
+//        brooder_feeding_offered = findViewById(R.id.brooder_feeding_offered);
+//        brooder_feeding_refused =findViewById(R.id.brooder_feeding_refused);
+//        brooder_feeding_consumed =findViewById(R.id.brooder_feeding_consumed);
+//        brooder_feeding_offered.setText(myDb.getBrooderFeedingOffered().toString()+" kg");
+//        brooder_feeding_refused.setText(myDb.getBrooderFeedingRefused().toString()+ " kg");
+//        Integer consumed3 = myDb.getBrooderFeedingOffered()-myDb.getBrooderFeedingRefused();
+//        brooder_feeding_consumed.setText(consumed3.toString() +" kg");
 
         layoutManager = new LinearLayoutManager(this);
 
@@ -380,6 +380,7 @@ public class DashBoardActivity extends AppCompatActivity {
                 return false;
             }
         });
+
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.closed);
         mToolbar = (Toolbar)findViewById(R.id.nav_action);
@@ -391,6 +392,7 @@ public class DashBoardActivity extends AppCompatActivity {
 
 
     }
+
     void Logout(){
         FirebaseAuth.getInstance().signOut();
         mGoogleSignInClient.signOut()
@@ -399,6 +401,7 @@ public class DashBoardActivity extends AppCompatActivity {
                             //updateUI(null);
                         });
     }
+
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -449,6 +452,7 @@ public class DashBoardActivity extends AppCompatActivity {
             }
         });
     }
+
     private void API_getHatcheryRecords(){
         APIHelper.getHatcheryRecords("getHatcheryRecords/", new BaseJsonHttpResponseHandler<Object>() {
             @Override
@@ -491,6 +495,7 @@ public class DashBoardActivity extends AppCompatActivity {
             }
         });
     }
+
     private void API_getBreederFeeding(){
         APIHelper.getBreederFeeding("getBreederFeeding/", new BaseJsonHttpResponseHandler<Object>() {
             @Override
@@ -535,6 +540,7 @@ public class DashBoardActivity extends AppCompatActivity {
             }
         });
     }
+
     private void API_getEggProduction(){
         APIHelper.getEggProduction("getEggProduction/", new BaseJsonHttpResponseHandler<Object>() {
             @Override
@@ -577,6 +583,7 @@ public class DashBoardActivity extends AppCompatActivity {
             }
         });
     }
+
     private void API_getPhenoMorphos(){
         APIHelper.getPhenoMorphos("getPhenoMorphos/", new BaseJsonHttpResponseHandler<Object>() {
             @Override
@@ -619,6 +626,7 @@ public class DashBoardActivity extends AppCompatActivity {
             }
         });
     }
+
     private void API_getPhenoMorphoValues(){
         APIHelper.getPhenoMorphoValues("getPhenoMorphoValues/", new BaseJsonHttpResponseHandler<Object>() {
             @Override
@@ -661,6 +669,7 @@ public class DashBoardActivity extends AppCompatActivity {
             }
         });
     }
+
     private void API_getReplacementGrowth(){
         APIHelper.getReplacementGrowth("getReplacementGrowth/", new BaseJsonHttpResponseHandler<Object>() {
             @Override
@@ -704,6 +713,7 @@ public class DashBoardActivity extends AppCompatActivity {
             }
         });
     }
+
     private void API_getReplacementFeeding(){
         APIHelper.getReplacementFeeding("getReplacementFeeding/", new BaseJsonHttpResponseHandler<Object>() {
             @Override
@@ -747,6 +757,7 @@ public class DashBoardActivity extends AppCompatActivity {
             }
         });
     }
+
     private void API_getMortalityAndSales(){
         APIHelper.getMortalityAndSales("getMortalityAndSales/", new BaseJsonHttpResponseHandler<Object>() {
             @Override
@@ -789,6 +800,7 @@ public class DashBoardActivity extends AppCompatActivity {
             }
         });
     }
+
     private void API_getBrooderGrowth(){
         APIHelper.getBrooderGrowth("getBrooderGrowth/", new BaseJsonHttpResponseHandler<Object>() {
             @Override
@@ -831,6 +843,7 @@ public class DashBoardActivity extends AppCompatActivity {
             }
         });
     }
+
     private void API_getFarmInfo(String farm_id){
         APIHelper.getFarmInfo("getFarmInfo/"+farm_id, new BaseJsonHttpResponseHandler<Object>() {
             @Override
@@ -895,6 +908,9 @@ public class DashBoardActivity extends AppCompatActivity {
                     arrayList_pen = jsonPen.getData();
 
                     for (int i = 0; i < arrayList_pen.size(); i++) {
+
+                        System.out.println(arrayList_pen.get(i).toString());
+
                         //check if generation to be inserted is already in the database
                         Cursor cursor1 = myDb.getAllDataFromPenWhereID(arrayList_pen.get(i).getId());
                         cursor1.moveToFirst();
@@ -906,8 +922,6 @@ public class DashBoardActivity extends AppCompatActivity {
 
                     }
                 }catch (Exception e){}
-
-
 
             }
 
@@ -923,6 +937,7 @@ public class DashBoardActivity extends AppCompatActivity {
             }
         });
     }
+
     private void API_getBrooderFeeding(){
         APIHelper.getBrooderFeeding("getBrooderFeeding/", new BaseJsonHttpResponseHandler<Object>() {
             @Override
@@ -967,6 +982,7 @@ public class DashBoardActivity extends AppCompatActivity {
             }
         });
     }
+
     private void API_getFarmID(String email){
         APIHelper.getFarmID("getFarmID/"+email, new BaseJsonHttpResponseHandler<Object>() {
             @Override
@@ -999,6 +1015,7 @@ public class DashBoardActivity extends AppCompatActivity {
             }
         });
     }
+
     private void API_getGeneration(String farm_id){
         APIHelper.getGeneration("getGeneration/"+farm_id, new BaseJsonHttpResponseHandler<Object>() {
             @Override
@@ -1038,6 +1055,7 @@ public class DashBoardActivity extends AppCompatActivity {
             }
         });
     }
+
     private void API_getLine(String generation_id){
         // for(int i = 0; i<arrayList_gen.size();i++){
         APIHelper.getLine("getLine/"+generation_id, new BaseJsonHttpResponseHandler<Object>() {
@@ -1076,6 +1094,7 @@ public class DashBoardActivity extends AppCompatActivity {
             }
         });
     }
+
     private void API_getFamily(){
         APIHelper.getFamily("getFamily/", new BaseJsonHttpResponseHandler<Object>() {
             @Override
@@ -1114,6 +1133,7 @@ public class DashBoardActivity extends AppCompatActivity {
             }
         });
     }
+
     private void API_getBrooderInventory(){
         APIHelper.getBrooderInventory("getBrooderInventory/", new BaseJsonHttpResponseHandler<Object>() {
             @Override
@@ -1155,6 +1175,7 @@ public class DashBoardActivity extends AppCompatActivity {
             }
         });
     }
+
     private void API_getBrooder(){
         APIHelper.getBrooder("getBrooder/", new BaseJsonHttpResponseHandler<Object>() {
             @Override
@@ -1198,6 +1219,7 @@ public class DashBoardActivity extends AppCompatActivity {
             }
         });
     }
+
     private void API_getReplacement(){
         APIHelper.getReplacement("getReplacement/", new BaseJsonHttpResponseHandler<Object>() {
             @Override
@@ -1239,6 +1261,7 @@ public class DashBoardActivity extends AppCompatActivity {
             }
         });
     }
+
     private void API_getReplacementInventory(){
         APIHelper.getReplacementInventory("getReplacementInventory/", new BaseJsonHttpResponseHandler<Object>() {
             @Override
@@ -1282,6 +1305,7 @@ public class DashBoardActivity extends AppCompatActivity {
             }
         });
     }
+
     private void API_getBreeder(){
         APIHelper.getBreeder("getBreeder/", new BaseJsonHttpResponseHandler<Object>() {
             @Override
@@ -1298,9 +1322,11 @@ public class DashBoardActivity extends AppCompatActivity {
                         cursor.moveToFirst();
 
                         if (cursor.getCount() == 0) {
-
-                            boolean isInserted = myDb.insertDataBreederWithID(arrayList_brooder.get(i).getId(), arrayList_brooder.get(i).getFamily_number(),arrayList_brooder.get(i).getFemale_family_number(), arrayList_brooder.get(i).getDate_added(), arrayList_brooder.get(i).getDeleted_at());
-
+                            boolean isInserted = myDb.insertDataBreederWithID(arrayList_brooder.get(i).getId(),
+                                    arrayList_brooder.get(i).getFamily_number(),
+                                    arrayList_brooder.get(i).getFemale_family_number(),
+                                    arrayList_brooder.get(i).getDate_added(),
+                                    arrayList_brooder.get(i).getDeleted_at());
                         }
 
                     }
@@ -1325,6 +1351,7 @@ public class DashBoardActivity extends AppCompatActivity {
             }
         });
     }
+
     private void API_getBreederInventory(){
         APIHelper.getBreederInventory("getBreederInventory/", new BaseJsonHttpResponseHandler<Object>() {
             @Override
@@ -1365,6 +1392,7 @@ public class DashBoardActivity extends AppCompatActivity {
             }
         });
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -1374,6 +1402,7 @@ public class DashBoardActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
     public void showMessage(String title, String message){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setCancelable(true);
@@ -1381,6 +1410,7 @@ public class DashBoardActivity extends AppCompatActivity {
         builder.setMessage(message);
         builder.show();
     }
+
     @Override
     public void onBackPressed() {
 

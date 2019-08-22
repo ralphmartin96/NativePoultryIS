@@ -18,6 +18,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -235,7 +236,7 @@ public class CreatePen extends AppCompatActivity {
             //if internet is available, load data from web database
 
 
-            API_updatePen(farm_id);
+//            API_updatePen(farm_id); // automatically syncs data with web
             API_getPen(farm_id);
 
 
@@ -274,6 +275,7 @@ public class CreatePen extends AppCompatActivity {
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
+
     private void API_addPen(RequestParams requestParams){
         APIHelper.addPen("addPen", requestParams, new BaseJsonHttpResponseHandler<Object>() {
             @Override
@@ -293,6 +295,7 @@ public class CreatePen extends AppCompatActivity {
             }
         });
     }
+
     private void API_updatePen(String farm_id){
 
         APIHelper.getPen("getPen/"+farm_id, new BaseJsonHttpResponseHandler<Object>() {

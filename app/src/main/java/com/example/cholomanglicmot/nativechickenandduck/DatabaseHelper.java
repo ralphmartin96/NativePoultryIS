@@ -626,11 +626,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
+/*
+    boolean isInserted = myDb.insertDataFamily(family,1,line_id);
 
-    /*/*    boolean isInserted = myDb.insertDataFamily(family,1,line_id);
-
-     */
-/*    public static final String TABLE_FAMILY = "family_table";
+    public static final String TABLE_FAMILY = "family_table";
     public static final String FAMILY_COL_0 = "ID";
     public static final String FAMILY_COL_1 = "FAMILY_NUMBER";
     public static final String FAMILY_COL_2 = "is_active";
@@ -670,7 +669,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             return true;
 
     }
-
 
     public boolean insertDataBrooder(Integer brooder_family_number, String brooder_date_added, String brooder_deleted_at ){
         SQLiteDatabase db = this.getWritableDatabase();
@@ -906,7 +904,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-
     public boolean insertDataReplacementInventoryWithID(Integer id,Integer brooder_inv_brooder_id, Integer brooder_inv_pen_number, String brooder_inv_brooder_tag, String brooder_inv_batching_date, Integer brooder_inv_number_male, Integer brooder_inv_number_female, Integer brooder_inv_total, String brooder_inv_last_update, String brooder_inv_deleted_at){
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -1108,11 +1105,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-
-
-
-
-
     public boolean insertDataReplacementGrowthRecords(Integer brooder_growth_brooder_id, Integer brooder_growth_collection_day, String brooder_growth_date_collected, Integer brooder_growth_male_quantity, Float brooder_growth_male_weight, Integer brooder_growth_female_quantity, Float brooder_growth_female_weight, Integer brooder_growth_total_quantity, Float brooder_growth_total_weight, String brooder_growth_deleted_at){
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -1139,7 +1131,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 /*    db.execSQL("create table " + TABLE_REPLACEMENT_PHENOTYPIC_AND_MORPHOMETRIC_RECORDS +" (ID INTEGER PRIMARY KEY, REPLACEMENT_PHENO_MORPHO_INVENTORY_ID INTEGER REFERENCES TABLE_REPLACEMENT_INVENTORIES(ID),  REPLACEMENT_PHENO_MORPHO_COLLECTED TEXT,  REPLACEMENT_PHENO_MORPHO_SEX TEXT, REPLACEMENT_PHENO_MORPHO_TAG_OR_REGISTRY TEXT,REPLACEMENT_PHENO_RECORD TEXT, REPLACEMENT_MORPHO_RECORD TEXT)");
  */
-
     public boolean insertDataReplacementPhenoMorphoRecords(Integer inv_id,  String date, String sex, String tag, String pheno, String morpho){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -1184,38 +1175,39 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-public boolean insertEggQualityRecords(Integer breeder_inv_id, String date, Integer week,Float weight, String color, String shape, Float length, Float width, Float al_height, Float al_weight, Float yolk_weight, String yolk_color, Float shell_weight, Float shell_thick_top, Float shell_thick_middle, Float shell_thick_bottom){
-    SQLiteDatabase db = this.getWritableDatabase();
+    public boolean insertEggQualityRecords(Integer breeder_inv_id, String date, Integer week,Float weight, String color, String shape, Float length, Float width, Float al_height, Float al_weight, Float yolk_weight, String yolk_color, Float shell_weight, Float shell_thick_top, Float shell_thick_middle, Float shell_thick_bottom){
+        SQLiteDatabase db = this.getWritableDatabase();
 
-    ContentValues contentValues = new ContentValues();
+        ContentValues contentValues = new ContentValues();
 
-    contentValues.put(EGG_QUALITY_COL_1, breeder_inv_id);
-    contentValues.put(EGG_QUALITY_COL_2, date);
-    contentValues.put(EGG_QUALITY_COL_3, week);
-    contentValues.put(EGG_QUALITY_COL_4, weight);
-    contentValues.put(EGG_QUALITY_COL_5, color);
-    contentValues.put(EGG_QUALITY_COL_6, shape);
-    contentValues.put(EGG_QUALITY_COL_7, length);
-    contentValues.put(EGG_QUALITY_COL_8, width);
-    contentValues.put(EGG_QUALITY_COL_9, al_height);
-    contentValues.put(EGG_QUALITY_COL_10, al_weight);
-    contentValues.put(EGG_QUALITY_COL_11, yolk_weight);
-    contentValues.put(EGG_QUALITY_COL_12, yolk_color);
-    contentValues.put(EGG_QUALITY_COL_13, shell_weight);
-    contentValues.put(EGG_QUALITY_COL_14, shell_thick_top);
-    contentValues.put(EGG_QUALITY_COL_15, shell_thick_middle);
-    contentValues.put(EGG_QUALITY_COL_16, shell_thick_bottom);
+        contentValues.put(EGG_QUALITY_COL_1, breeder_inv_id);
+        contentValues.put(EGG_QUALITY_COL_2, date);
+        contentValues.put(EGG_QUALITY_COL_3, week);
+        contentValues.put(EGG_QUALITY_COL_4, weight);
+        contentValues.put(EGG_QUALITY_COL_5, color);
+        contentValues.put(EGG_QUALITY_COL_6, shape);
+        contentValues.put(EGG_QUALITY_COL_7, length);
+        contentValues.put(EGG_QUALITY_COL_8, width);
+        contentValues.put(EGG_QUALITY_COL_9, al_height);
+        contentValues.put(EGG_QUALITY_COL_10, al_weight);
+        contentValues.put(EGG_QUALITY_COL_11, yolk_weight);
+        contentValues.put(EGG_QUALITY_COL_12, yolk_color);
+        contentValues.put(EGG_QUALITY_COL_13, shell_weight);
+        contentValues.put(EGG_QUALITY_COL_14, shell_thick_top);
+        contentValues.put(EGG_QUALITY_COL_15, shell_thick_middle);
+        contentValues.put(EGG_QUALITY_COL_16, shell_thick_bottom);
 
 
 
-    long result = db.insert(TABLE_EGG_QUALITY,null,contentValues);
+        long result = db.insert(TABLE_EGG_QUALITY,null,contentValues);
 
-    if (result == -1)
-        return  false;
-    else
-        return true;
+        if (result == -1)
+            return  false;
+        else
+            return true;
 
-}
+    }
+
     public boolean insertEggQualityRecordsWithID(Integer id,Integer breeder_inv_id, String date, Integer week,Float weight, String color, String shape, Float length, Float width, Float al_height, Float al_weight, Float yolk_weight, String yolk_color, Float shell_weight, Float shell_thick_top, Float shell_thick_middle, Float shell_thick_bottom){
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -1496,8 +1488,7 @@ public boolean insertEggQualityRecords(Integer breeder_inv_id, String date, Inte
         else
             return true;
     }
-    public void deleteAll()
-    {
+    public void deleteAll() {
         SQLiteDatabase db = this.getWritableDatabase();
 
         db.execSQL("delete from "+ TABLE_PEN);
@@ -1574,20 +1565,18 @@ public boolean insertEggQualityRecords(Integer breeder_inv_id, String date, Inte
         return res;
     }
 
-
     public Cursor getAllData(){
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor res = db.rawQuery("select * from " +TABLE_PROFILE, null);
         return res;
     }
 
-
-
     public Cursor getAllDataFromPen(){
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor res = db.rawQuery("select * from " +TABLE_PEN, null);
         return res;
     }
+
 /*
     public static final String TABLE_PEN = "pen_table";
     public static final String PEN_COL_0 = "ID";
@@ -1598,6 +1587,7 @@ public boolean insertEggQualityRecords(Integer breeder_inv_id, String date, Inte
     public static final String PEN_COL_5 = "PEN_CURRENT_CAPACITY";
     public static final String PEN_COL_6 = "PEN_IS_ACTIVE";
 */
+
     public Cursor getAllDataFromPenWhere(String pen_number){
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor res = db.rawQuery("select * from " +TABLE_PEN+ " where PEN_NUMBER is ?", new String[]{pen_number});
@@ -1608,18 +1598,6 @@ public boolean insertEggQualityRecords(Integer breeder_inv_id, String date, Inte
         Cursor res = db.rawQuery("select * from " +TABLE_PEN+ " where ID like ?", new String[]{id.toString()});
         return res;
     }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     public Cursor getAllDataFromBrooders(){

@@ -1,5 +1,7 @@
 package com.example.cholomanglicmot.nativechickenandduck.PensDirectory;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 
 public class JSONPen {
@@ -44,9 +46,7 @@ public class JSONPen {
         return data;
     }
 
-    public void setData(ArrayList<Pen> data) {
-        this.data = data;
-    }
+    public void setData(ArrayList<Pen> data) {  this.data = data; }
 
     public String getFirst_page_url() {
         return first_page_url;

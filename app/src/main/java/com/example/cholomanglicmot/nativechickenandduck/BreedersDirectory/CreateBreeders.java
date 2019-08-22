@@ -412,7 +412,6 @@ public class CreateBreeders extends AppCompatActivity {
                         cursor.moveToFirst();
 
                         if (cursor.getCount() == 0) {
-
                             boolean isInserted = myDb.insertDataBreederWithID(arrayList_brooder.get(i).getId(), arrayList_brooder.get(i).getFamily_number(),arrayList_brooder.get(i).getFemale_family_number(), arrayList_brooder.get(i).getDate_added(), arrayList_brooder.get(i).getDeleted_at());
                             Toast.makeText(CreateBreeders.this, "Breeders Added", Toast.LENGTH_SHORT).show();
                         }
@@ -478,6 +477,7 @@ public class CreateBreeders extends AppCompatActivity {
             }
         });
     }
+
     private void API_addBreederInventory(RequestParams requestParams){
         APIHelper.addBreederInventory("addBreederInventory", requestParams, new BaseJsonHttpResponseHandler<Object>() {
             @Override
