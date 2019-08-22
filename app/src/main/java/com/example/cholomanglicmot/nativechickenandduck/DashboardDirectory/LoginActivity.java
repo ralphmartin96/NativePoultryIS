@@ -99,7 +99,7 @@ public class LoginActivity extends AppCompatActivity{
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 
-        Toast.makeText(this, "HAYUFFF", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "HAYUFFF", Toast.LENGTH_SHORT).show();
 
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == GOOGLE_SIGN){
@@ -110,8 +110,6 @@ public class LoginActivity extends AppCompatActivity{
 
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 if(account != null){
-
-
                     firebaseAuthWithGoogle(account);
                 }
             }catch (ApiException e){

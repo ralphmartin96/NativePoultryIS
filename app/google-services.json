@@ -1,38 +1,42 @@
-  {
+{
   "project_info": {
-    "project_number": "42533648213",
-    "firebase_url": "https://native-chicken-and-duck-68e80.firebaseio.com",
-    "project_id": "native-chicken-and-duck-68e80",
-    "storage_bucket": "native-chicken-and-duck-68e80.appspot.com"
+    "project_number": "536452586282",
+    "firebase_url": "https://native-poultry-is.firebaseio.com",
+    "project_id": "native-poultry-is",
+    "storage_bucket": "native-poultry-is.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:42533648213:android:eb6fc99bcccdeead",
+        "mobilesdk_app_id": "1:536452586282:android:eb6fc99bcccdeead",
         "android_client_info": {
           "package_name": "com.example.cholomanglicmot.nativechickenandduck"
         }
       },
       "oauth_client": [
         {
-          "client_id": "42533648213-bo7tartpeqehnpjjeaal54c3i7aq96g0.apps.googleusercontent.com",
+          "client_id": "536452586282-2reu5ehokugfhfjbm88i0vikcsukb3ds.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.cholomanglicmot.nativechickenandduck",
-            "certificate_hash": "959aae6e2dfbeda66aa9e8fbcaae7b9b6cf20491"
+            "certificate_hash": "fbe3a1f35ea97feeaf737b1e0ac2a9be24aec901"
           }
+        },
+        {
+          "client_id": "536452586282-sutl3tdal64j5r0s62jkotpiaqs96nvf.apps.googleusercontent.com",
+          "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBbcyWFskGSzo5XtBqn7_yj-awDpMvUxNc"
+          "current_key": "AIzaSyC1xc6JkK_q9KugzB0n8PTJcKQuAhOYtZQ"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "42533648213-uggj9l9epj9l2a9b5aofei8eel7jcrno.apps.googleusercontent.com",
+              "client_id": "536452586282-sutl3tdal64j5r0s62jkotpiaqs96nvf.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

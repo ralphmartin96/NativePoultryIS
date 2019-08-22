@@ -173,9 +173,6 @@ public class DashBoardActivity extends AppCompatActivity {
         if(isNetworkAvailable){
             //if internet is available, load data from web database
 
-
-
-
             API_getFarmID(email);
 
             API_getFamily();
@@ -201,19 +198,17 @@ public class DashBoardActivity extends AppCompatActivity {
             API_getHatcheryRecords();
             API_getEggQuality();
 
-
-
-
-
         }
 
-        //kunin mo muna yung farm_id na makukuha mo sa ussers table based sa email
+        //kunin mo muna yung farm_id na makukuha mo sa users table based sa email
+
         Cursor cursor = myDb.getFarmIDFromUsers(email);
         cursor.moveToFirst();
+
         if(cursor.getCount() != 0){
             farm_id_local = cursor.getInt(0);
-
         }
+
         if(farm_id_local == null){
             farm_id_local = 0;
         }
