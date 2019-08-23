@@ -77,7 +77,6 @@ public class LogOutDialog extends DialogFragment {
             @Override
             public void onClick(View view) {
 
-
                 getDialog().dismiss();
 
             }
@@ -98,6 +97,7 @@ public class LogOutDialog extends DialogFragment {
 
         return view;
     }
+
     void Logout(){
         FirebaseAuth.getInstance().signOut();
         mGoogleSignInClient.signOut()

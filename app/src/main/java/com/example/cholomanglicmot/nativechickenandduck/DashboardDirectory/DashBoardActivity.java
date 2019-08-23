@@ -169,7 +169,9 @@ public class DashBoardActivity extends AppCompatActivity {
 
         ///////////////////
         boolean isNetworkAvailable = isNetworkAvailable();
+
         if(isNetworkAvailable){
+
             //if internet is available, load data from web database
 
             API_getFarmID(email);
@@ -373,22 +375,6 @@ public class DashBoardActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Dashboard");
 
-    }
-
-    void Logout(){
-        FirebaseAuth.getInstance().signOut();
-        mGoogleSignInClient.signOut()
-                .addOnCompleteListener(this,
-                        task -> {
-                            //updateUI(null);
-                        });
-    }
-
-    private boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
 //    -----------------------------------------------
@@ -1175,7 +1161,6 @@ public class DashBoardActivity extends AppCompatActivity {
     }
 
 
-
     private void API_getFarmInfo(String farm_id){
         APIHelper.getFarmInfo("getFarmInfo/"+farm_id, new BaseJsonHttpResponseHandler<Object>() {
             @Override
@@ -1384,6 +1369,12 @@ public class DashBoardActivity extends AppCompatActivity {
     }
 
 
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
