@@ -3474,23 +3474,12 @@ public Integer getAllMaleFromBrooders(Integer farm_id){
         return res;
     }
 
-
-
     public Cursor getFarmIDFromUsers(String email){
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor res = db.rawQuery("select FARM_ID from " +TABLE_USERS+ " where EMAIL is ?",new String[]{email});
 
         return res;
     }
-
-
-
-
-
-
-
-
-
 
     public Cursor familyChecker(String family, String selected_line, String selected_generation){
 
