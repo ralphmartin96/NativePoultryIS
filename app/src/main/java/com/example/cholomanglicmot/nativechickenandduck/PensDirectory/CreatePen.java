@@ -118,6 +118,7 @@ public class CreatePen extends AppCompatActivity {
 
         myDb = new DatabaseHelper(this);
 
+
         recyclerView = (RecyclerView)findViewById(R.id.recyclerView1);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
@@ -157,8 +158,6 @@ public class CreatePen extends AppCompatActivity {
 
             }
         });
-
-
 
 
         Exp_list.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
@@ -213,6 +212,7 @@ public class CreatePen extends AppCompatActivity {
                 return false;
             }
         });
+
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.closed);
         mToolbar = (Toolbar)findViewById(R.id.nav_action);
@@ -222,8 +222,6 @@ public class CreatePen extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Create Pens");
 
-
-
         Cursor cursor_farm_id = myDb.getFarmIDFromUsers(email);
         cursor_farm_id.moveToFirst();
         if(cursor_farm_id.getCount() != 0){
@@ -232,22 +230,20 @@ public class CreatePen extends AppCompatActivity {
 
         farm_id = farm_id2.toString();
         boolean isNetworkAvailable = isNetworkAvailable();
-        if(isNetworkAvailable){
-            //if internet is available, load data from web database
 
-
-//            API_updatePen(farm_id); // automatically syncs data with web
-            API_getPen(farm_id);
-
-
-
-
-        }
+        /* Syncs data with web once connected to internet*/
+//        if(isNetworkAvailable){
+//
+////            API_updatePen(farm_id);
+//            API_getPen(farm_id); //get data from web
+//
+//        }
 
 //-----DATABASE
             Cursor cursor = myDb.getAllDataFromPen();
 
             cursor.moveToFirst();
+
             if(cursor.getCount() == 0){
                 //show message
                 Toast.makeText(this,"No data", Toast.LENGTH_SHORT).show();
@@ -255,9 +251,9 @@ public class CreatePen extends AppCompatActivity {
             }else{
 
                 do {
-
                     Pen pen = new Pen(cursor.getInt(0),cursor.getString(2), cursor.getString(3), cursor.getInt(4), cursor.getInt(5), cursor.getInt(1), cursor.getInt(6));
                     arrayList.add(pen);
+
                 }while (cursor.moveToNext());
 
                 recycler_adapter = new RecyclerAdapter_Pen(arrayList);
@@ -266,9 +262,8 @@ public class CreatePen extends AppCompatActivity {
 
             }
 
-
-
     }
+
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -320,8 +315,6 @@ public class CreatePen extends AppCompatActivity {
                 }
 
 
-
-
                 //arrayListBrooderInventoryLocal contains all data from local database
                 //arrayListBrooderInventoryWeb   contains all data from web database
 
@@ -333,6 +326,7 @@ public class CreatePen extends AppCompatActivity {
                 for(int i=0;i<arrayListBrooderInventoryLocal.size();i++){
                     id_local.add(arrayListBrooderInventoryLocal.get(i).getId());
                 }
+
                 for(int i=0;i<arrayListBrooderInventoryWeb.size();i++){
                     id_web.add(arrayListBrooderInventoryWeb.get(i).getId());
                 }
@@ -390,6 +384,7 @@ public class CreatePen extends AppCompatActivity {
             }
         });
     }
+
     private void API_getPen(String farm_id){
         APIHelper.getPen("getPen/"+farm_id, new BaseJsonHttpResponseHandler<Object>() {
             @Override
@@ -446,7 +441,6 @@ public class CreatePen extends AppCompatActivity {
     }
     @Override
     public void onBackPressed() {
-
 
         finish();
         startActivity(getIntent());

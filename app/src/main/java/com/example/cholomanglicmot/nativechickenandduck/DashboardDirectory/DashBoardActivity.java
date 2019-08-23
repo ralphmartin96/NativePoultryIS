@@ -97,7 +97,6 @@ import java.util.List;
 import cz.msebera.android.httpclient.Header;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-//import com.squareup.picasso.Picasso;
 
 public class DashBoardActivity extends AppCompatActivity {
     private DrawerLayout mDrawerLayout;
@@ -174,8 +173,8 @@ public class DashBoardActivity extends AppCompatActivity {
 
             //if internet is available, load data from web database
 
-            API_getFarmID(email);
-
+//            API_getFarmID(email);
+//
 //            API_getFamily();
 //            API_getPhenoMorphoValues();
 //            API_getPhenoMorphos();
@@ -256,7 +255,6 @@ public class DashBoardActivity extends AppCompatActivity {
 
         Integer month3 = cal2.get(Calendar.MONTH);
 
-
         DateFormat dateFormat2 = new SimpleDateFormat("YYYY");
         Date date2 = new Date();
         String year = dateFormat2.format(date2);
@@ -327,40 +325,46 @@ public class DashBoardActivity extends AppCompatActivity {
                         Intent intent_create_pens = new Intent(DashBoardActivity.this, CreatePen.class);
                         startActivity(intent_create_pens);
                         break;
+
                     case "Generations and Lines":
                         Intent intent_main = new Intent(DashBoardActivity.this, CreateGenerationsAndLines.class);
                         startActivity(intent_main);
                         break;
+
                     case "Families":
                         Intent intent_families = new Intent(DashBoardActivity.this, CreateFamilies.class);
                         startActivity(intent_families);
                         break;
+
                     case "Breeders":
                         Intent intent_breeders = new Intent(DashBoardActivity.this, CreateBreeders.class);
                         startActivity(intent_breeders);
                         break;
+
                     case "Brooders":
                         Intent intent_brooders = new Intent(DashBoardActivity.this, CreateBrooders.class);
                         startActivity(intent_brooders);
                         break;
+
                     case "Replacements":
                         Intent intent_replacements = new Intent(DashBoardActivity.this, CreateReplacements.class);
                         startActivity(intent_replacements);
                         break;
+
                     case "Reports":
                         break;
+
                     case "Farm Settings":
                         Intent intent_settings = new Intent(DashBoardActivity.this, MainActivity.class);
                         startActivity(intent_settings);
                         break;
+
                     case "Log Out":
                         LogOutDialog dialogFragment = new LogOutDialog();
 
                         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 
                         dialogFragment.show(ft, "dialog");
-
-
                 }
                 return false;
             }
@@ -378,6 +382,8 @@ public class DashBoardActivity extends AppCompatActivity {
     }
 
 //    -----------------------------------------------
+
+/*
 
     private void API_getFamily(){
         APIHelper.getFamily("getFamily/", new BaseJsonHttpResponseHandler<Object>() {
@@ -1048,18 +1054,10 @@ public class DashBoardActivity extends AppCompatActivity {
                         cursor.moveToFirst();
 
                         if (cursor.getCount() == 0) {
-                            /* public boolean insertEggProductionRecordsWithID(Integer id,Integer breeder_inv_id, String date, Integer intact, Float weight, Integer broken, Integer rejects, String remarks, String deleted_at){
-                             */
                             boolean isInserted = myDb.insertEggProductionRecordsWithID(arrayList_brooder.get(i).getId(), arrayList_brooder.get(i).getEgg_breeder_inv_id(),arrayList_brooder.get(i).getDate(), arrayList_brooder.get(i).getIntact(), arrayList_brooder.get(i).getWeight(), arrayList_brooder.get(i).getBroken(), arrayList_brooder.get(i).getRejects(), arrayList_brooder.get(i).getRemarks(), arrayList_brooder.get(i).getDeleted_at(),arrayList_brooder.get(i).getFemale_inventory());
-                            //Toast.makeText(EggProductionRecords.this, "Egg Production Added", Toast.LENGTH_SHORT).show();
                         }
-
                     }
                 }catch (Exception e){}
-
-
-
-
             }
 
             @Override
@@ -1160,6 +1158,7 @@ public class DashBoardActivity extends AppCompatActivity {
         });
     }
 
+ */
 
     private void API_getFarmInfo(String farm_id){
         APIHelper.getFarmInfo("getFarmInfo/"+farm_id, new BaseJsonHttpResponseHandler<Object>() {
@@ -1270,7 +1269,7 @@ public class DashBoardActivity extends AppCompatActivity {
                 myDb = new DatabaseHelper(getApplicationContext());
                 boolean isInsertedUser = myDb.insertDataUser(name, email, null, null, Integer.parseInt(farm_id), null, null, null);
 
-                Toast.makeText(getApplicationContext(), farm_id, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getApplicationContext(), farm_id, Toast.LENGTH_SHORT).show();
 
                 API_getPen(farm_id_local.toString());
 

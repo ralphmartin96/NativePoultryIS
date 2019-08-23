@@ -65,20 +65,13 @@ public class CreatePenDialog extends DialogFragment {
         radioButton2.setId(radio_grower);
         radioButton3.setId(radio_layer);
 
-
         // find the radiobutton by returned id
 
-
-
         myDb = new DatabaseHelper(getContext());
-
 
         mActionOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-
-
 
                 int selectedId = radioGroup.getCheckedRadioButtonId();
                 String selected_pen_type = "None Selected";
@@ -122,10 +115,13 @@ public class CreatePenDialog extends DialogFragment {
                     String email = user.getEmail();
 
                     Uri photo = user.getPhotoUrl();
+
                     ////sample farm_id pero dapat kukunin mo to sa database
                     Integer farm_id =0;
+
                     Cursor cursor_farm_id = myDb.getFarmIDFromUsers(email);
                     cursor_farm_id.moveToFirst();
+
                     if(cursor_farm_id.getCount() != 0){
                         farm_id = cursor_farm_id.getInt(0);
                     }
@@ -134,8 +130,6 @@ public class CreatePenDialog extends DialogFragment {
                     Integer is_active = 1;
                     Integer zero = 0;
                     boolean isInserted = myDb.insertDataPen(farm_id,pen_number, selected_pen_type,Integer.parseInt(mInput_pen_capacity.getText().toString()),0, is_active);
-
-
 
                     if(isNetworkAvailable()){
 
@@ -163,21 +157,20 @@ public class CreatePenDialog extends DialogFragment {
                 }else{
                     Toast.makeText(getActivity(), "Please fill any empty fields", Toast.LENGTH_SHORT).show();
                 }
-
-
-
             }
 
         });
 
         return view;
     }
+
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
+
     private void API_addPen(RequestParams requestParams){
         APIHelper.addPen("addPen", requestParams, new BaseJsonHttpResponseHandler<Object>() {
             @Override
