@@ -17,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListView;
@@ -231,17 +232,14 @@ public class CreateFamilies extends AppCompatActivity {
         if(isNetworkAvailable){
             //if internet is available, load data from web database
 
-            API_updateFamily();
             API_getFarmID(email);
-            //HARDCODED KASI WALA KA PANG DATABASE NA NANDUN EMAIL MO
-
-
-
+//            API_updateFamily();
 
         }
 
         Cursor cursor_farm_id = myDb.getFarmIDFromUsers(email);
         cursor_farm_id.moveToFirst();
+
         farm_id_INT = cursor_farm_id.getInt(0);
 
             Cursor cursor = myDb.getAllDataFromFamily();
@@ -254,9 +252,7 @@ public class CreateFamilies extends AppCompatActivity {
 
             }else{
 
-//BASTA MAY MALI PARIN DITO, YUNG SA LINE AT GENERATION
                 do {
-
 
                     Integer validation_farm_id=0;
                     Integer line_id = cursor.getInt(3);
@@ -281,22 +277,22 @@ public class CreateFamilies extends AppCompatActivity {
                                 //addGeneration = true;
                             }
 
+                            Integer is_active = cursor.getInt(2);
+                            String family_number = cursor.getString(1);
+                            //String validation_farm_id_string = validation_farm_id.toString();
+
+                            Log.d("LINE&GEN", line_number+" "+generation_number);
+
+
+                            if(is_active == 1 && line_number != null && generation_number != null/*&& validation_farm_id ==farm_id_INT*/ /*&& validation_farm_id_string.equals(farm_id)*/){
+                                Family family = new Family(family_number, line_number, generation_number);
+                                arrayList.add(family);
+
+                            }
+
                         }while(cursor1.moveToNext());
 
-
-
                     }
-
-                    Integer is_active = cursor.getInt(2);
-                    String family_number = cursor.getString(1);
-                    //String validation_farm_id_string = validation_farm_id.toString();
-
-                    if(is_active == 1 && line_number != null && generation_number != null/*&& validation_farm_id ==farm_id_INT*/ /*&& validation_farm_id_string.equals(farm_id)*/){
-                        Family family = new Family(family_number, line_number, generation_number);
-                        arrayList.add(family);
-
-                    }
-                    //addGeneration = false;
 
                 }while (cursor.moveToNext());
 
@@ -304,10 +300,7 @@ public class CreateFamilies extends AppCompatActivity {
                 recyclerView.setAdapter(recycler_adapter);
                 recycler_adapter.notifyDataSetChanged();
 
-
         }
-
-
 
     }
 
@@ -317,6 +310,7 @@ public class CreateFamilies extends AppCompatActivity {
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
+
     private void API_getFarmID(String email){
         APIHelper.getFarmID("getFarmID/"+email, new BaseJsonHttpResponseHandler<Object>() {
             @Override
@@ -328,8 +322,6 @@ public class CreateFamilies extends AppCompatActivity {
                 farm_id = farm_id.replaceAll("\\[", "").replaceAll("\\]","");
 
                 API_getFamilyForDisplay(farm_id);
-                //  Toast.makeText(CreateGenerationsAndLines.this, "Generation and Lines loaded from database", Toast.LENGTH_SHORT).show();
-
 
             }
 
@@ -345,6 +337,7 @@ public class CreateFamilies extends AppCompatActivity {
             }
         });
     }
+
     private void API_getFamilyForDisplay(String farm_id){
         APIHelper.getFamilyForDisplay("getFamilyForDisplay/"+farm_id, new BaseJsonHttpResponseHandler<Object>() {
             @Override
@@ -355,10 +348,6 @@ public class CreateFamilies extends AppCompatActivity {
                 arrayList_family = jsonFamily.getData();
 
                 API_getFamily();
-
-             /*   recycler_adapter = new RecyclerAdapter_Family(arrayList_family);
-                recyclerView.setAdapter(recycler_adapter);
-                recycler_adapter.notifyDataSetChanged();*/
 
             }
 
@@ -381,6 +370,7 @@ public class CreateFamilies extends AppCompatActivity {
                 Gson gson = new Gson();
                 JSONFamily1 jsonFamily1 = gson.fromJson(rawJsonResponse, JSONFamily1.class);
                 arrayList_family1 = jsonFamily1.getData();
+
                 for (int i = 0; i < arrayList_family1.size(); i++) {
                     //check if generation to be inserted is already in the database
                     Cursor cursor = myDb.getAllDataFromFamilyWhereID(arrayList_family1.get(i).getId());
@@ -399,7 +389,7 @@ public class CreateFamilies extends AppCompatActivity {
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, String rawJsonResponse, Object response){
 
-                Toast.makeText(getApplicationContext(), "Failed to fetch families from web database ", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Failed to fetch families from web database", Toast.LENGTH_SHORT).show();
             }
 
             @Override

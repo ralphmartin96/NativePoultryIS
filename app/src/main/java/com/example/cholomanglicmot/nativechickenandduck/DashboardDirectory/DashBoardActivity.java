@@ -102,6 +102,7 @@ public class DashBoardActivity extends AppCompatActivity {
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mToggle;
     private Toolbar mToolbar;
+
     TextView male_count_breeder, female_count_breeder,male_count_breeder_mort, female_count_breeder_mort,male_sales_breeder, female_sales_breeder , egg_sales_breeder,breeder_feeding_offered,breeder_feeding_refused,breeder_feeding_consumed,intact, weight, broken, rejected, fertility, hatchability, total_hatchability, hen_day;
     TextView male_count_replacement, female_count_replacement,male_count_replacement_mort, female_count_replacement_mort, male_count_replacement_sales, female_count_replacement_sales,replacement_feeding_offered,replacement_feeding_refused,replacement_feeding_consumed;
     TextView male_count_brooder, female_count_brooder,male_count_brooder_mort, female_count_brooder_mort, male_count_brooder_sales, female_count_brooder_sales,brooder_feeding_offered,brooder_feeding_refused,brooder_feeding_consumed;
@@ -173,7 +174,7 @@ public class DashBoardActivity extends AppCompatActivity {
 
             //if internet is available, load data from web database
 
-//            API_getFarmID(email);
+            API_getFarmID(email);
 //
 //            API_getFamily();
 //            API_getPhenoMorphoValues();
@@ -189,7 +190,6 @@ public class DashBoardActivity extends AppCompatActivity {
 //            API_getReplacementInventory();
 //            API_getReplacementFeeding();
 //            API_getReplacementGrowth();
-//
 //
 //            API_getBreeder();
 //            API_getBreederInventory();
@@ -214,25 +214,7 @@ public class DashBoardActivity extends AppCompatActivity {
         female_count_breeder = findViewById(R.id.female_count_breeder);
         male_count_breeder.setText(myDb.getAllMaleFromBreeders(farm_id_local).toString());
         female_count_breeder.setText(myDb.getAllFemaleFromBreeders(farm_id_local).toString());
-//        male_count_breeder_mort = findViewById(R.id.male_count_breeder_mort);
-//        female_count_breeder_mort = findViewById(R.id.female_count_breeder_mort);
-//        male_count_breeder_mort.setText("♂: "+myDb.getAllBreederMaleFromMort(farm_id_local).toString());
-//        female_count_breeder_mort.setText("♀: "+myDb.getAllBreedeFemaleFromMort(farm_id_local).toString());*/
-//        male_sales_breeder = findViewById(R.id.male_sales_breeder);
-//        female_sales_breeder = findViewById(R.id.female_sales_breeder);
-//        egg_sales_breeder = findViewById(R.id.egg_sales_breeder);
-//        male_sales_breeder.setText("♂: "+myDb.getAllBreederMaleFromSales(farm_id_local).toString());
-//        female_sales_breeder.setText("♀: "+myDb.getAllBreedeFemaleFromSales(farm_id_local));
-//        egg_sales_breeder.setText(myDb.getAllEggSales(farm_id_local).toString());
 
-
-//        breeder_feeding_offered = findViewById(R.id.breeder_feeding_offered);
-//        breeder_feeding_refused =findViewById(R.id.breeder_feeding_refused);
-//        breeder_feeding_consumed =findViewById(R.id.breeder_feeding_consumed);
-//        breeder_feeding_offered.setText(myDb.getBreederFeedingOffered().toString()+" kg");
-//        breeder_feeding_refused.setText(myDb.getBreederFeedingRefused().toString()+ " kg");
-//        Integer consumed = myDb.getBreederFeedingOffered()-myDb.getBreederFeedingRefused();
-//        breeder_feeding_consumed.setText(consumed.toString() +" kg");
         intact = findViewById(R.id.intact);
         broken = findViewById(R.id.broken);
         rejected = findViewById(R.id.rejected);
@@ -262,52 +244,17 @@ public class DashBoardActivity extends AppCompatActivity {
         String monthFinal = String.format("%02d" , month3);
         last_checked = findViewById(R.id.last_checked);
         last_checked.setText("Last checked: "+ monthFinal+"/"+year);
-//        fertility = findViewById(R.id.fertility);
-//        hatchability = findViewById(R.id.hatchability);
-//        total_hatchability = findViewById(R.id.total_hatchability);
-//        fertility.setText(myDb.getFertilityPercentage(farm_id_local).toString()+" %");
-//        hatchability.setText(myDb.getHatchabilityPercentage(farm_id_local).toString()+" %");
-//        total_hatchability.setText(myDb.getHatchabilityPercentage(farm_id_local).toString()+" %");
+
         male_count_replacement = findViewById(R.id.male_count_replacement);
         female_count_replacement = findViewById(R.id.female_count_replacement);
         male_count_replacement.setText(myDb.getAllMaleFromReplacements(farm_id_local).toString());
         female_count_replacement.setText(myDb.getAllFemaleFromReplacements(farm_id_local).toString());
-//        male_count_replacement_mort = findViewById(R.id.male_count_replacement_mort);
-//        female_count_replacement_mort = findViewById(R.id.female_count_replacement_mort);
-//        male_count_replacement_mort.setText("♂: "+myDb.getAllReplacementMaleFromMort(farm_id_local).toString());
-//        female_count_replacement_mort.setText("♀: "+myDb.getAllReplacementFemaleFromMort(farm_id_local).toString());*/
-//        male_count_replacement_sales = findViewById(R.id.male_count_replacement_sales);
-//        female_count_replacement_sales = findViewById(R.id.female_count_replacement_sales);
-//        male_count_replacement_sales.setText("♂: "+myDb.getAllReplacementMaleFromSales(farm_id_local).toString());
-//        female_count_replacement_sales.setText("♀: "+myDb.getAllReplacementFemaleFromSales(farm_id_local));*/
-//
-//        replacement_feeding_offered = findViewById(R.id.replacement_feeding_offered);
-//        replacement_feeding_refused =findViewById(R.id.replacement_feeding_refused);
-//        replacement_feeding_consumed =findViewById(R.id.replacement_feeding_consumed);
-//        replacement_feeding_offered.setText(myDb.getReplacementFeedingOffered().toString()+" kg");
-//        replacement_feeding_refused.setText(myDb.getReplacementFeedingRefused().toString()+ " kg");
-//        Integer consumed2 = myDb.getReplacementFeedingOffered()-myDb.getReplacementFeedingRefused();
-//        replacement_feeding_consumed.setText(consumed2.toString() +" kg");
+
         male_count_brooder = findViewById(R.id.male_count_brooder);
         female_count_brooder = findViewById(R.id.female_count_brooder);
         male_count_brooder.setText(myDb.getAllMaleFromBrooders(farm_id_local).toString());
         female_count_brooder.setText(myDb.getAllFemaleFromBrooders(farm_id_local).toString());
-//        male_count_brooder_mort = findViewById(R.id.male_count_brooder_mort);
-//        female_count_brooder_mort = findViewById(R.id.female_count_brooder_mort);
-//        male_count_brooder_mort.setText("♂: "+myDb.getAllBrooderMaleFromMort(farm_id_local).toString());
-//        female_count_brooder_mort.setText("♀: "+myDb.getAllBrooderFemaleFromMort(farm_id_local).toString());
-//        male_count_brooder_sales = findViewById(R.id.male_count_brooder_sales);
-//        female_count_brooder_sales = findViewById(R.id.female_count_brooder_sales);
-//        male_count_brooder_sales.setText("♂:: "+myDb.getAllBrooderMaleFromSales(farm_id_local).toString());
-//        female_count_brooder_sales.setText("♀: "+myDb.getAllBrooderFemaleFromSales(farm_id_local).toString());
 
-//        brooder_feeding_offered = findViewById(R.id.brooder_feeding_offered);
-//        brooder_feeding_refused =findViewById(R.id.brooder_feeding_refused);
-//        brooder_feeding_consumed =findViewById(R.id.brooder_feeding_consumed);
-//        brooder_feeding_offered.setText(myDb.getBrooderFeedingOffered().toString()+" kg");
-//        brooder_feeding_refused.setText(myDb.getBrooderFeedingRefused().toString()+ " kg");
-//        Integer consumed3 = myDb.getBrooderFeedingOffered()-myDb.getBrooderFeedingRefused();
-//        brooder_feeding_consumed.setText(consumed3.toString() +" kg");
         layoutManager = new LinearLayoutManager(this);
 
         Exp_list.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
@@ -383,7 +330,6 @@ public class DashBoardActivity extends AppCompatActivity {
 
 //    -----------------------------------------------
 
-/*
 
     private void API_getFamily(){
         APIHelper.getFamily("getFamily/", new BaseJsonHttpResponseHandler<Object>() {
@@ -1158,7 +1104,7 @@ public class DashBoardActivity extends AppCompatActivity {
         });
     }
 
- */
+
 
     private void API_getFarmInfo(String farm_id){
         APIHelper.getFarmInfo("getFarmInfo/"+farm_id, new BaseJsonHttpResponseHandler<Object>() {
@@ -1215,6 +1161,7 @@ public class DashBoardActivity extends AppCompatActivity {
 
     private void API_getPen(String farm_id){
         APIHelper.getPen("getPen/"+farm_id, new BaseJsonHttpResponseHandler<Object>() {
+
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
 
@@ -1232,11 +1179,11 @@ public class DashBoardActivity extends AppCompatActivity {
                         cursor1.moveToFirst();
 
                         if (cursor1.getCount() == 0) {
-
                             boolean isInserted = myDb.insertDataPenWithID(arrayList_pen.get(i).getId(), arrayList_pen.get(i).getFarm_id(), arrayList_pen.get(i).getPen_number(), arrayList_pen.get(i).getPen_type(), arrayList_pen.get(i).getPen_inventory(),arrayList_pen.get(i).getPen_capacity(), arrayList_pen.get(i).getIs_active());
                         }
 
                     }
+
                 }catch (Exception e){}
 
             }
@@ -1256,6 +1203,7 @@ public class DashBoardActivity extends AppCompatActivity {
 
     private void API_getFarmID(String email){
         APIHelper.getFarmID("getFarmID/"+email, new BaseJsonHttpResponseHandler<Object>() {
+
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
 
@@ -1269,7 +1217,7 @@ public class DashBoardActivity extends AppCompatActivity {
                 myDb = new DatabaseHelper(getApplicationContext());
                 boolean isInsertedUser = myDb.insertDataUser(name, email, null, null, Integer.parseInt(farm_id), null, null, null);
 
-//                Toast.makeText(getApplicationContext(), farm_id, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), farm_id.toString(), Toast.LENGTH_SHORT).show();
 
                 API_getPen(farm_id_local.toString());
 
@@ -1329,7 +1277,7 @@ public class DashBoardActivity extends AppCompatActivity {
     }
 
     private void API_getLine(String generation_id){
-        // for(int i = 0; i<arrayList_gen.size();i++){
+
         APIHelper.getLine("getLine/"+generation_id, new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
