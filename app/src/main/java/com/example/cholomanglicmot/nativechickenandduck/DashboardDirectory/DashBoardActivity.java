@@ -330,7 +330,6 @@ public class DashBoardActivity extends AppCompatActivity {
 
 //    -----------------------------------------------
 
-
     private void API_getFamily(){
         APIHelper.getFamily("getFamily/", new BaseJsonHttpResponseHandler<Object>() {
             @Override
@@ -1212,14 +1211,12 @@ public class DashBoardActivity extends AppCompatActivity {
 
                 farm_id = farm_id.replaceAll("\\[", "").replaceAll("\\]","");
                 API_getFarmInfo(farm_id);
-                API_getGeneration(farm_id);
-                API_getPen(farm_id);
+//                API_getGeneration(farm_id);
+//                API_getPen(farm_id);
                 myDb = new DatabaseHelper(getApplicationContext());
                 boolean isInsertedUser = myDb.insertDataUser(name, email, null, null, Integer.parseInt(farm_id), null, null, null);
 
-                Toast.makeText(getApplicationContext(), farm_id.toString(), Toast.LENGTH_SHORT).show();
-
-                API_getPen(farm_id_local.toString());
+//                API_getPen(farm_id_local.toString());
 
             }
 
