@@ -66,8 +66,6 @@ public class EditPenDialog extends DialogFragment {
         new_pen_capacity.setHint(pen_capacity.toString());
 
 
-
-
         mActionOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -101,12 +99,6 @@ public class EditPenDialog extends DialogFragment {
                     Intent intent = new Intent(context, CreatePen.class);
                     startActivity(intent);
                 }
-
-
-
-
-
-
             }
 
         });

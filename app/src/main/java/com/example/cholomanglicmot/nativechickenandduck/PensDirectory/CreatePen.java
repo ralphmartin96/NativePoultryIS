@@ -47,6 +47,7 @@ import com.loopj.android.http.RequestParams;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -95,7 +96,6 @@ public class CreatePen extends AppCompatActivity {
 
         Uri photo = user.getPhotoUrl();
 
-
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         View hView =  navigationView.getHeaderView(0);
         TextView nav_user = (TextView)hView.findViewById(R.id.textView8);
@@ -113,9 +113,7 @@ public class CreatePen extends AppCompatActivity {
         Exp_list.setAdapter(adapter);
         create_pen = findViewById(R.id.open_dialog);
 
-
         myDb = new DatabaseHelper(this);
-
 
         recyclerView = (RecyclerView)findViewById(R.id.recyclerView1);
         layoutManager = new LinearLayoutManager(this);
@@ -227,12 +225,15 @@ public class CreatePen extends AppCompatActivity {
         farm_id = farm_id2.toString();
         boolean isNetworkAvailable = isNetworkAvailable();
 
+        local_getPen();
+
         /* Syncs data with web once connected to internet*/
         if(isNetworkAvailable){
-            API_getPen(farm_id); //get data from web
+//            API_getPen(farm_id); //get data from web
 //            API_updatePen(farm_id);
 //            TEST_updatePen(farm_id);
-
+//
+//            Toast.makeText(this, arrayList_pen.size()+"", Toast.LENGTH_SHORT).show();
         }else{
             Toast.makeText(this,"Check your internet connection", Toast.LENGTH_SHORT).show();
         }
@@ -249,17 +250,23 @@ public class CreatePen extends AppCompatActivity {
 //            }else{
 //
 //                do {
-//                    Pen pen = new Pen(cursor.getInt(0),cursor.getString(2), cursor.getString(3), cursor.getInt(4), cursor.getInt(5), cursor.getInt(1), cursor.getInt(6));
+//                    Pen pen = new Pen(
+//                            cursor.getInt(0),
+//                            cursor.getString(2),
+//                            cursor.getString(3),
+//                            cursor.getInt(4),
+//                            cursor.getInt(5),
+//                            cursor.getInt(1),
+//                            cursor.getInt(6)
+//                    );
 //                    arrayList.add(pen);
 //
 //                }while (cursor.moveToNext());
 //
-
-//                Toast.makeText(this, arrayList.size()+"", Toast.LENGTH_SHORT).show();
-//                recycler_adapter = new RecyclerAdapter_Pen(arrayList);
-//                recyclerView.setAdapter(recycler_adapter);
-//                recycler_adapter.notifyDataSetChanged();
-//            }
+                Toast.makeText(this, arrayList.size()+"", Toast.LENGTH_SHORT).show();
+                recycler_adapter = new RecyclerAdapter_Pen(arrayList);
+                recyclerView.setAdapter(recycler_adapter);
+                recycler_adapter.notifyDataSetChanged();
 
     }
 
@@ -317,14 +324,6 @@ public class CreatePen extends AppCompatActivity {
                                 cursor_brooder_inventory.getInt(1), //farm id
                                 cursor_brooder_inventory.getInt(6) //is active
                         );
-
-                        Log.d("PENPEN1", cursor_brooder_inventory.getInt(0)+"");
-                        Log.d("PENPEN2", cursor_brooder_inventory.getInt(2)+"");
-                        Log.d("PENPEN3", cursor_brooder_inventory.getInt(3)+"");
-                        Log.d("PENPEN4", cursor_brooder_inventory.getInt(4)+"");
-                        Log.d("PENPEN5", cursor_brooder_inventory.getInt(5)+"");
-                        Log.d("PENPEN6", cursor_brooder_inventory.getInt(1)+"");
-                        Log.d("PENPEN7", cursor_brooder_inventory.getInt(6)+"");
                         arrayListBrooderInventoryLocal.add(pen);
                     } while (cursor_brooder_inventory.moveToNext());
                 }
@@ -387,59 +386,75 @@ public class CreatePen extends AppCompatActivity {
         });
     }
 
-//    private void TEST_updatePen(String farm_id){
-//
-//        APIHelper.getPen("getPen/"+farm_id, new BaseJsonHttpResponseHandler<Object>() {
-//
-//            @Override
-//            public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
-//
-//                ArrayList<Pen> arrayListBrooderInventoryLocal = new ArrayList<>();
-//
-//                Cursor cursor_brooder_inventory = myDb.getAllDataFromPen();
-//                cursor_brooder_inventory.moveToFirst();
-//
-//
-//                if(cursor_brooder_inventory.getCount() != 0){
-//
-//                    Toast.makeText(getApplicationContext(), cursor_brooder_inventory.getCount()+"", Toast.LENGTH_SHORT).show();
-//
-//                    do {
-//                        Pen pen = new Pen(
-//                                cursor_brooder_inventory.getInt(0), //id
-//                                cursor_brooder_inventory.getString(2), //pen number
-//                                cursor_brooder_inventory.getString(3), //pen type
-//                                cursor_brooder_inventory.getInt(4), //pen inventory
-//                                cursor_brooder_inventory.getInt(5), // pen capacity
-//                                cursor_brooder_inventory.getInt(1), //farm id
-//                                cursor_brooder_inventory.getInt(6) //is active
-//                        );
-//
-//                        Log.d("PENPEN1", cursor_brooder_inventory.getInt(0)+"");
-//                        Log.d("PENPEN2", cursor_brooder_inventory.getInt(2)+"");
-//                        Log.d("PENPEN3", cursor_brooder_inventory.getInt(3)+"");
-//                        Log.d("PENPEN4", cursor_brooder_inventory.getInt(4)+"");
-//                        Log.d("PENPEN5", cursor_brooder_inventory.getInt(5)+"");
-//                        Log.d("PENPEN6", cursor_brooder_inventory.getInt(1)+"");
-//                        Log.d("PENPEN7", cursor_brooder_inventory.getInt(6)+"");
-//
-//                        arrayListBrooderInventoryLocal.add(pen);
-//                    } while (cursor_brooder_inventory.moveToNext());
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(int statusCode, Header[] headers, Throwable throwable, String rawJsonResponse, Object response){
-//
-//                Toast.makeText(getApplicationContext(), "Failed to connect to web database", Toast.LENGTH_SHORT).show();
-//            }
-//
-//            @Override
-//            protected Object parseResponse(String rawJsonData, boolean isFailure) throws Throwable{
-//                return null;
-//            }
-//        });
-//    }
+    private void TEST_updatePen(String farm_id){
+
+        APIHelper.getPen("getPen/"+farm_id, new BaseJsonHttpResponseHandler<Object>() {
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
+
+                Gson gson = new Gson();
+                JSONPen jsonBrooderInventory = gson.fromJson(rawJsonResponse, JSONPen.class);
+                ArrayList<Pen> arrayListBrooderInventoryLocal = arrayList_pen;
+                ArrayList<Pen> arrayListBrooderInventoryWeb = jsonBrooderInventory.getData();
+
+                ArrayList<Integer> id_local = new ArrayList<>();
+                ArrayList<Integer> id_web = new ArrayList<>();
+                ArrayList<Integer> id_to_sync = new ArrayList<>();
+
+                for(int i=0;i<arrayList_pen.size();i++){
+                    id_local.add(arrayList_pen.get(i).getId());
+                }
+
+                for(int i=0;i<arrayListBrooderInventoryWeb.size();i++){
+                    id_web.add(arrayListBrooderInventoryWeb.get(i).getId());
+                }
+
+                for (int i=0;i<id_local.size();i++){
+                    if(!id_web.contains(id_local.get(i))){ //if id_web does not contain the current value of i, add it the an arraylist
+                        id_to_sync.add(id_local.get(i));
+                    }
+                }
+
+                for(int i=0;i<id_to_sync.size();i++){
+
+                    Cursor cursor = myDb.getAllDataFromPenWhereID(id_to_sync.get(i));
+                    cursor.moveToFirst();
+
+                    Integer id = cursor.getInt(0);
+                    Integer farm_id = cursor.getInt(1);
+                    String number = cursor.getString(2);
+                    String type = cursor.getString(3);
+                    Integer total_capacity = cursor.getInt(4);
+                    Integer current_capacity = cursor.getInt(5);
+                    Integer is_active = cursor.getInt(6);
+
+                    RequestParams requestParams = new RequestParams();
+                    requestParams.add("id", id.toString());
+                    requestParams.add("farm_id", farm_id.toString());
+                    requestParams.add("number", number);
+                    requestParams.add("type", type);
+                    requestParams.add("total_capacity", total_capacity.toString());
+                    requestParams.add("current_capacity", current_capacity.toString());
+                    requestParams.add("is_active", is_active.toString());
+
+                    API_addPen(requestParams);
+                }
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, String rawJsonResponse, Object response){
+
+                Toast.makeText(getApplicationContext(), "Failed to connect to web database", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            protected Object parseResponse(String rawJsonData, boolean isFailure) throws Throwable{
+                return null;
+            }
+        });
+    }
 
     private void API_getPen(String farm_id){
 
@@ -457,43 +472,16 @@ public class CreatePen extends AppCompatActivity {
                     Cursor cursor1 = myDb.getAllDataFromPenWhereID(arrayList_pen.get(i).getId());
                     cursor1.moveToFirst();
 
-                    //Adds initial pen data from db
-                    if (cursor1.getCount() == 0) {
-                        //edit insertDataGeneration function, dapat kasama yung primary key "id" kapag nilalagay sa database
-
-                        //WILL DELETE LATER
-//                        boolean isInserted = myDb.insertDataPenWithID(
-//                                arrayList_pen.get(i).getId(),
-//                                arrayList_pen.get(i).getFarm_id(),
-//                                arrayList_pen.get(i).getPen_number(),
-//                                arrayList_pen.get(i).getPen_type(),
-//                                arrayList_pen.get(i).getPen_inventory(),
-//                                arrayList_pen.get(i).getPen_capacity(),
-//                                arrayList_pen.get(i).getIs_active()
-//                        );
-
-                        Pen pen = new Pen(
-                                arrayList_pen.get(i).getId(),
-                                arrayList_pen.get(i).getPen_number(),
-                                arrayList_pen.get(i).getPen_type(),
-                                arrayList_pen.get(i).getPen_inventory(),
-                                arrayList_pen.get(i).getPen_capacity(),
-                                arrayList_pen.get(i).getFarm_id(),
-                                arrayList_pen.get(i).getIs_active()
-                        );
-                        arrayList.add(pen);
-
-                        boolean isInserted = myDb.insertDataPenWithID(
-                                arrayList_pen.get(i).getId(),
-                                arrayList_pen.get(i).getFarm_id(),
-                                arrayList_pen.get(i).getPen_number(),
-                                arrayList_pen.get(i).getPen_type(),
-                                arrayList_pen.get(i).getPen_inventory(),
-                                arrayList_pen.get(i).getPen_capacity(),
-                                arrayList_pen.get(i).getIs_active()
-                        );
-
-                    }
+                    Pen pen = new Pen(
+                            arrayList_pen.get(i).getId(),
+                            arrayList_pen.get(i).getPen_number(),
+                            arrayList_pen.get(i).getPen_type(),
+                            arrayList_pen.get(i).getPen_inventory(),
+                            arrayList_pen.get(i).getPen_capacity(),
+                            arrayList_pen.get(i).getFarm_id(),
+                            arrayList_pen.get(i).getIs_active()
+                    );
+                    arrayList.add(pen);
                 }
 
                 recycler_adapter = new RecyclerAdapter_Pen(arrayList);
@@ -512,6 +500,40 @@ public class CreatePen extends AppCompatActivity {
                 return null;
             }
         });
+    }
+
+    private void local_getPen(){
+
+        Cursor cursor = myDb.getAllDataFromPen();
+
+        cursor.moveToFirst();
+
+        if(cursor.getCount() == 0)
+            Toast.makeText(this,"No data", Toast.LENGTH_SHORT).show();
+
+        else {
+            do {
+                Pen pen = new Pen(
+                        cursor.getInt(0),
+                        cursor.getString(2),
+                        cursor.getString(3),
+                        cursor.getInt(4),
+                        cursor.getInt(5),
+                        cursor.getInt(1),
+                        cursor.getInt(6)
+                );
+
+                Log.d("PENPEN", ""+pen.getFarm_id());
+
+                arrayList.add(pen);
+            }while (cursor.moveToNext());
+        }
+
+        Collections.sort(arrayList, Pen.penComparator);
+
+//        recycler_adapter = new RecyclerAdapter_Pen(arrayList);
+//        recyclerView.setAdapter(recycler_adapter);
+//        recycler_adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -537,8 +559,5 @@ public class CreatePen extends AppCompatActivity {
         startActivity(getIntent());
 
     }
-
-
-
 
 }

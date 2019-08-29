@@ -1,6 +1,7 @@
 package com.example.cholomanglicmot.nativechickenandduck.PensDirectory;
 
 import com.google.gson.annotations.SerializedName;
+import java.util.Comparator;
 
 public class Pen {
     @SerializedName("id")
@@ -83,4 +84,15 @@ public class Pen {
     public void setPen_inventory(Integer pen_inventory) {
         this.pen_inventory = pen_inventory;
     }
+
+    public static Comparator<Pen> penComparator = new Comparator<Pen>() {
+
+        public int compare(Pen p1, Pen p2) {
+
+            String pen1 = p1.getPen_type().toUpperCase();
+            String pen2= p2.getPen_type().toUpperCase();
+
+
+            return pen1.compareTo(pen2);
+        }};
 }
