@@ -528,6 +528,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
     public boolean insertDataPenWithID(Integer id,Integer farm_id, String pen_number, String pen_type, Integer pen_total_capacity, Integer pen_current_capacity, Integer is_active){
+
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(PEN_COL_0, id);
@@ -538,6 +539,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(PEN_COL_5, pen_current_capacity);
         contentValues.put(PEN_COL_6, is_active);
         long result = db.insert(TABLE_PEN,null,contentValues);
+
         if (result == -1)
             return  false;
         else
@@ -751,9 +753,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(REPLACEMENT_COL_2, replacement_date_added);
         contentValues.put(REPLACEMENT_COL_3, replacment_deleted_at);
 
-
-
-
         long result = db.insert(TABLE_REPLACEMENT,null,contentValues);
 
         if (result == -1)
@@ -927,7 +926,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             return true;
 
     }
-
 
     public boolean insertDataBrooderFeedingRecords(Integer brooder_feed_brooder_id, String brooder_feed_date_collected, Float brooder_feed_offered, Float brooder_feed_refused, String brooder_feed_remarks, String brooder_feed_deleted_at){
         SQLiteDatabase db = this.getWritableDatabase();
@@ -1576,17 +1574,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor res = db.rawQuery("select * from " +TABLE_PEN, null);
         return res;
     }
-
-/*
-    public static final String TABLE_PEN = "pen_table";
-    public static final String PEN_COL_0 = "ID";
-    public static final String PEN_COL_1 = "farm_id";
-    public static final String PEN_COL_2 = "PEN_NUMBER";
-    public static final String PEN_COL_3 = "PEN_TYPE";
-    public static final String PEN_COL_4 = "PEN_TOTAL_CAPACITY";
-    public static final String PEN_COL_5 = "PEN_CURRENT_CAPACITY";
-    public static final String PEN_COL_6 = "PEN_IS_ACTIVE";
-*/
 
     public Cursor getAllDataFromPenWhere(String pen_number){
         SQLiteDatabase db = this.getWritableDatabase();

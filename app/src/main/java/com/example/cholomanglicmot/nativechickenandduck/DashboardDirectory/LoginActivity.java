@@ -89,6 +89,7 @@ public class LoginActivity extends AppCompatActivity{
     private boolean isSignedIn() {
         return GoogleSignIn.getLastSignedInAccount(this) != null;
     }
+
     void SignInGoogle(){
 
         progressBar.setVisibility(View.VISIBLE);
@@ -98,8 +99,6 @@ public class LoginActivity extends AppCompatActivity{
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-
-//        Toast.makeText(this, "HAYUFFF", Toast.LENGTH_SHORT).show();
 
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == GOOGLE_SIGN){
@@ -113,7 +112,7 @@ public class LoginActivity extends AppCompatActivity{
                     firebaseAuthWithGoogle(account);
                 }
             }catch (ApiException e){
-                Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Unable to verify", Toast.LENGTH_SHORT).show();
                 e.printStackTrace();
             }
         }
@@ -128,8 +127,7 @@ public class LoginActivity extends AppCompatActivity{
                 .addOnCompleteListener(this, task -> {
                     if(task.isSuccessful()){
                         progressBar.setVisibility(View.INVISIBLE);
-                        Log.d("TAG", "signin success");
-                        Toast.makeText(this, "Signed-in Succesfully", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(this, "Signed-in Success", Toast.LENGTH_SHORT).show();
 
                         FirebaseUser user = mAuth.getCurrentUser();
                         Intent intent_main = new Intent(LoginActivity.this, DashBoardActivity.class);
@@ -139,8 +137,7 @@ public class LoginActivity extends AppCompatActivity{
                     }else{
                         progressBar.setVisibility(View.INVISIBLE);
 
-                        Toast.makeText(this, "Signin Failed", Toast.LENGTH_SHORT).show();
-                        //updateUI(null);
+                        Toast.makeText(this, "Sign in Failed", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -152,13 +149,9 @@ public class LoginActivity extends AppCompatActivity{
             String email = user.getEmail();
 
             Uri photo = user.getPhotoUrl();
-            //Toast.makeText(this, "Name of the user:"+name, Toast.LENGTH_SHORT).show();
-            //Picasso.get().load(photo).into(imageView1);
             sign.setVisibility(View.INVISIBLE);
-//            sign_out_button.setVisibility(View.VISIBLE);
 
         }else{
-           //Picasso.get().load(R.drawable.logo2).into(imageView1);
             sign.setVisibility(View.VISIBLE);
             sign_out_button.setVisibility(View.INVISIBLE);
         }
