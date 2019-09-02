@@ -223,58 +223,54 @@ public class CreatePen extends AppCompatActivity {
         }
 
         farm_id = farm_id2.toString();
-        boolean isNetworkAvailable = isNetworkAvailable();
 
-        local_getPen();
-
-        /* Syncs data with web once connected to internet*/
-        if(isNetworkAvailable){
+//        boolean isNetworkAvailable = isNetworkAvailable();
+//        if(isNetworkAvailable){
 //            API_getPen(farm_id); //get data from web
 //            API_updatePen(farm_id);
 //            TEST_updatePen(farm_id);
 //
 //            Toast.makeText(this, arrayList_pen.size()+"", Toast.LENGTH_SHORT).show();
-        }else{
-            Toast.makeText(this,"Check your internet connection", Toast.LENGTH_SHORT).show();
-        }
+//        }else{
+//            Toast.makeText(this,"Check your internet connection", Toast.LENGTH_SHORT).show();
+//        }
 
-//-----DATABASE
-//            Cursor cursor = myDb.getAllDataFromPen();
-//
-//            cursor.moveToFirst();
-//
-//            if(cursor.getCount() == 0){
-//
-//                Toast.makeText(this,"No data", Toast.LENGTH_SHORT).show();
-//
-//            }else{
-//
-//                do {
-//                    Pen pen = new Pen(
-//                            cursor.getInt(0),
-//                            cursor.getString(2),
-//                            cursor.getString(3),
-//                            cursor.getInt(4),
-//                            cursor.getInt(5),
-//                            cursor.getInt(1),
-//                            cursor.getInt(6)
-//                    );
-//                    arrayList.add(pen);
-//
-//                }while (cursor.moveToNext());
-//
-                Toast.makeText(this, arrayList.size()+"", Toast.LENGTH_SHORT).show();
-                recycler_adapter = new RecyclerAdapter_Pen(arrayList);
-                recyclerView.setAdapter(recycler_adapter);
-                recycler_adapter.notifyDataSetChanged();
+        local_getPen();
+
+        recycler_adapter = new RecyclerAdapter_Pen(arrayList);
+        recyclerView.setAdapter(recycler_adapter);
+        recycler_adapter.notifyDataSetChanged();
 
     }
 
-    private boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    private void local_getPen(){
+
+        Cursor cursor = myDb.getAllDataFromPen();
+        cursor.moveToFirst();
+
+        if(cursor.getCount() == 0)
+            Toast.makeText(this,"No data", Toast.LENGTH_SHORT).show();
+        else {
+            do {
+                Pen pen = new Pen(
+                        cursor.getInt(0),
+                        cursor.getString(2),
+                        cursor.getString(3),
+                        cursor.getInt(4),
+                        cursor.getInt(5),
+                        cursor.getInt(1),
+                        cursor.getInt(6)
+                );
+
+                arrayList.add(pen);
+            }while (cursor.moveToNext());
+        }
+
+        Collections.sort(arrayList, Pen.penComparator);
+
+        recycler_adapter = new RecyclerAdapter_Pen(arrayList);
+        recyclerView.setAdapter(recycler_adapter);
+        recycler_adapter.notifyDataSetChanged();
     }
 
     private void API_addPen(RequestParams requestParams){
@@ -297,6 +293,7 @@ public class CreatePen extends AppCompatActivity {
         });
     }
 
+    //TODO: remove API's for web fetching
     private void API_updatePen(String farm_id){
 
         APIHelper.getPen("getPen/"+farm_id, new BaseJsonHttpResponseHandler<Object>() {
@@ -484,9 +481,9 @@ public class CreatePen extends AppCompatActivity {
                     arrayList.add(pen);
                 }
 
-                recycler_adapter = new RecyclerAdapter_Pen(arrayList);
-                recyclerView.setAdapter(recycler_adapter);
-                recycler_adapter.notifyDataSetChanged();
+//                recycler_adapter = new RecyclerAdapter_Pen(arrayList);
+//                recyclerView.setAdapter(recycler_adapter);
+//                recycler_adapter.notifyDataSetChanged();
 
             }
 
@@ -502,38 +499,11 @@ public class CreatePen extends AppCompatActivity {
         });
     }
 
-    private void local_getPen(){
-
-        Cursor cursor = myDb.getAllDataFromPen();
-
-        cursor.moveToFirst();
-
-        if(cursor.getCount() == 0)
-            Toast.makeText(this,"No data", Toast.LENGTH_SHORT).show();
-
-        else {
-            do {
-                Pen pen = new Pen(
-                        cursor.getInt(0),
-                        cursor.getString(2),
-                        cursor.getString(3),
-                        cursor.getInt(4),
-                        cursor.getInt(5),
-                        cursor.getInt(1),
-                        cursor.getInt(6)
-                );
-
-                Log.d("PENPEN", ""+pen.getFarm_id());
-
-                arrayList.add(pen);
-            }while (cursor.moveToNext());
-        }
-
-        Collections.sort(arrayList, Pen.penComparator);
-
-//        recycler_adapter = new RecyclerAdapter_Pen(arrayList);
-//        recyclerView.setAdapter(recycler_adapter);
-//        recycler_adapter.notifyDataSetChanged();
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
     @Override

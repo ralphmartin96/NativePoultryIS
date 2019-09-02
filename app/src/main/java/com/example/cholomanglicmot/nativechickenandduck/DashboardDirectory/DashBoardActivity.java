@@ -176,7 +176,7 @@ public class DashBoardActivity extends AppCompatActivity {
 
             API_getFarmID(email);
 
-            API_getFamily();
+//            API_getFamily();
 //            API_getPhenoMorphoValues();
 //            API_getPhenoMorphos();
 //            API_getMortalityAndSales();
@@ -342,9 +342,15 @@ public class DashBoardActivity extends AppCompatActivity {
                 farm_id = farm_id.replaceAll("\\[", "").replaceAll("\\]","");
                 API_getFarmInfo(farm_id);
                 API_getPen(farm_id);
-//                API_getGeneration(farm_id);
+                API_getGeneration(farm_id);
+
                 myDb = new DatabaseHelper(getApplicationContext());
-                boolean isInsertedUser = myDb.insertDataUser(name, email, null, null, Integer.parseInt(farm_id), null, null, null);
+                boolean isInsertedUser = myDb.insertDataUser(
+                        name, email,
+                        null, null,
+                        Integer.parseInt(farm_id),
+                        null, null, null
+                );
 
 //                API_getPen(farm_id_local.toString());
 
@@ -371,8 +377,8 @@ public class DashBoardActivity extends AppCompatActivity {
 
                 myDb = new DatabaseHelper(getApplicationContext());
                 rawJsonResponse = rawJsonResponse.replaceAll("\\[", "").replaceAll("\\]","");
-                //  Toast.makeText(DashBoardActivity.this, rawJsonResponse, Toast.LENGTH_SHORT).show();
                 Gson gson = new Gson();
+
                 try{
                     FarmInfo farmInfo = gson.fromJson(rawJsonResponse, FarmInfo.class);
 
@@ -397,10 +403,6 @@ public class DashBoardActivity extends AppCompatActivity {
                     }
 
                 }catch (Exception e){}
-
-
-
-
             }
 
             @Override
@@ -424,17 +426,17 @@ public class DashBoardActivity extends AppCompatActivity {
 
                 Gson gson = new Gson();
                 ArrayList<Pen> arrayList = new ArrayList<>();
+
                 try{
+
                     JSONPen jsonPen = gson.fromJson(rawJsonResponse, JSONPen.class);
-                    arrayList_pen = jsonPen.getData();
+                    arrayList = jsonPen.getData();
 
-                    for (int i = 0; i < arrayList_pen.size(); i++) {
+                    for (int i = 0; i < arrayList.size(); i++) {
 
-//                        arraylist size
-//                        Log.d("PENPEN", i+" "+arrayList_pen.size());
-
-                        Cursor cursor1 = myDb.getAllDataFromPenWhereID(arrayList_pen.get(i).getId());
+                        Cursor cursor1 = myDb.getAllDataFromPenWhereID(arrayList.get(i).getId());
                         cursor1.moveToFirst();
+
 
                         if (cursor1.getCount() == 0) {
 
@@ -448,18 +450,21 @@ public class DashBoardActivity extends AppCompatActivity {
                                     arrayList.get(i).getIs_active()
                             );
 
+//                            if(isInserted) Log.d("POULTRYDEBUGGER", "Inserted pen "+arrayList.get(i).getId());
+
                         }
 
                     }
 
-                }catch (Exception e){}
+                }catch (Exception e){
+                    Log.d("POULTRYDEBUGGER", "Exception caught");
+                }
 
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, String rawJsonResponse, Object response){
-
-                Toast.makeText(getApplicationContext(), "Failed to fetch Pens from web database ", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Failed to fetch Pens from web database", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -479,20 +484,29 @@ public class DashBoardActivity extends AppCompatActivity {
                     JSONGeneration jsonGeneration = gson.fromJson(rawJsonResponse, JSONGeneration.class);
                     ArrayList<Generation> arrayList_gen = jsonGeneration.getData();
 
+//                    Log.d("POULTRYDEBUGGER", "GEN: "+arrayList_gen.size());
+
                     for (int i = 0; i < arrayList_gen.size(); i++) {
-                        //check if generation to be inserted is already in the database
+
                         Cursor cursor = myDb.getDataFromGenerationWhereID(arrayList_gen.get(i).getId());
                         cursor.moveToFirst();
 
                         if (cursor.getCount() == 0) {
                             API_getLine(arrayList_gen.get(i).getId().toString());
-                            //edit insertDataGeneration function, dapat kasama yung primary key "id" kapag nilalagay sa database
-                            boolean isInserted = myDb.insertDataGenerationWithID(arrayList_gen.get(i).getId(), arrayList_gen.get(i).getFarm_id(), arrayList_gen.get(i).getGeneration_number(), arrayList_gen.get(i).getNumerical_generation(), arrayList_gen.get(i).getGeneration_status());
+
+                            boolean isInserted = myDb.insertDataGenerationWithID(
+                                    arrayList_gen.get(i).getId(),
+                                    arrayList_gen.get(i).getFarm_id(),
+                                    arrayList_gen.get(i).getGeneration_number(),
+                                    arrayList_gen.get(i).getNumerical_generation(),
+                                    arrayList_gen.get(i).getGeneration_status()
+                            );
+
+//                            if(isInserted) Log.d("POULTRYDEBUGGER", "Inserted generation "+arrayList_gen.get(i).getId());
                         }
 
                     }
                 }catch (Exception e){}
-
 
             }
 
@@ -518,14 +532,24 @@ public class DashBoardActivity extends AppCompatActivity {
 
                 Gson gson = new Gson();
                 try{
+
                     JSONLine jsonLine = gson.fromJson(rawJsonResponse, JSONLine.class);
                     ArrayList<Line> arrayList = jsonLine.getData();
+
+                    Log.d("POULTRYDEBUGGER", "LINES: "+arrayList.size());
+
                     for(int i=0;i<arrayList.size();i++){
                         Cursor cursor = myDb.getAllDataFromLineWhereID(arrayList.get(i).getId());
+
                         if(cursor.getCount() == 0){
                             //dapat insert mo kasama yung primary key "id"
                             //edit mo yung existing insertDataLine function tapos dapat pati primary key iniinsert mo kapag galing sa web yung data
-                            boolean isInserted = myDb.insertDataLineWithID(arrayList.get(i).getId(),arrayList.get(i).getLine_number(),1,Integer.parseInt(generation_id));
+                            boolean isInserted = myDb.insertDataLineWithID(
+                                    arrayList.get(i).getId(),
+                                    arrayList.get(i).getLine_number(),
+                                    1,
+                                    Integer.parseInt(generation_id)
+                            );
 
                         }
                     }
@@ -550,7 +574,6 @@ public class DashBoardActivity extends AppCompatActivity {
 
 
     private void API_getFamily(){
-//        APIHelper.getFamily("getFamilyForDisplay/"+farm_id, new BaseJsonHttpResponseHandler<Object>() {
         APIHelper.getFamily("getFamily/", new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
@@ -558,6 +581,8 @@ public class DashBoardActivity extends AppCompatActivity {
                 try{
                     JSONFamily1 jsonFamily1 = gson.fromJson(rawJsonResponse, JSONFamily1.class);
                     ArrayList<Family1> arrayList_family1 = jsonFamily1.getData();
+
+//                    Log.d("POULTRYDEBUGGER", arrayList_family1.get(0).getId()+"");
 
                     for (int i = 0; i < arrayList_family1.size(); i++) {
                         //check if generation to be inserted is already in the database
@@ -577,7 +602,6 @@ public class DashBoardActivity extends AppCompatActivity {
 
                     }
                 }catch (Exception e){}
-
 
             }
 

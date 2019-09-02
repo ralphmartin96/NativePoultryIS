@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.icu.text.DateFormat;
 import android.icu.text.SimpleDateFormat;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -538,6 +539,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(PEN_COL_4, pen_total_capacity);
         contentValues.put(PEN_COL_5, pen_current_capacity);
         contentValues.put(PEN_COL_6, is_active);
+
         long result = db.insert(TABLE_PEN,null,contentValues);
 
         if (result == -1)
@@ -4492,6 +4494,23 @@ public Integer getAllMaleFromBrooders(Integer farm_id){
         return true;
     }
 
+    public int getPensSizeWithID(Integer id){
+        SQLiteDatabase db = this.getWritableDatabase();
+        int size=100;
 
+
+        Cursor res = db.rawQuery("SELECT COUNT(*) FROM " +TABLE_PEN+ " WHERE farm_id is ?", new String[]{id.toString()});
+        res.moveToFirst();
+
+        if(res.getCount() != 0){
+//            Log.d("POULTRYDEBUGGER", res.getString(0));
+
+            size = res.getInt(0);
+        }else{
+            size=0;
+        }
+
+        return size;
+    }
 
 }
