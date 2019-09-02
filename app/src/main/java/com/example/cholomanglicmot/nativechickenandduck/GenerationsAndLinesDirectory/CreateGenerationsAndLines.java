@@ -54,13 +54,11 @@ import cz.msebera.android.httpclient.Header;
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.github.yavski.fabspeeddial.FabSpeedDial;
 
-//import com.squareup.picasso.Picasso;
 
 public class CreateGenerationsAndLines extends AppCompatActivity {
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mToggle;
     private Toolbar mToolbar;
-    //private FabSpeedDial create_generation;
     private Button show_data_button;
     String farm_id;
 
@@ -87,7 +85,6 @@ public class CreateGenerationsAndLines extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_generations_and_lines);
 
-        ////////////
         FirebaseAuth mAuth;
 
         mAuth = FirebaseAuth.getInstance();
@@ -109,7 +106,7 @@ public class CreateGenerationsAndLines extends AppCompatActivity {
         nav_user.setText(name);
         Picasso.get().load(photo).into(circleImageView);
         nav_email.setText(email);
-        ///////////////////
+
         Exp_list = findViewById(R.id.exp_list);
         Project_category = DataProvider.getInfo();
         Project_list =  new ArrayList<String>(Project_category.keySet());
@@ -181,7 +178,6 @@ public class CreateGenerationsAndLines extends AppCompatActivity {
             }
         });
 
-
         Exp_list.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             @Override
             public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
@@ -236,6 +232,7 @@ public class CreateGenerationsAndLines extends AppCompatActivity {
                 return false;
             }
         });
+
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.closed);
         mToolbar = (Toolbar)findViewById(R.id.nav_action);
@@ -245,102 +242,103 @@ public class CreateGenerationsAndLines extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Generations and Lines");
 
-
-
-
-
-
-
-
-
         if(isNetworkAvailable()){
-            //if internet is available, load data from web database
 
-
-
-            //HARDCODED KASI WALA KA PANG DATABASE NA NANDUN EMAIL MO
             API_getFarmID(email);
-            API_updateGeneration(farm_id);
-            API_updateLine();
-
-
-
-
-
+//            API_updateGeneration(farm_id);
+//            API_updateLine();
         }
 
+        local_getGenerations();
 
-            Cursor cursor = myDb.getAllDataFromGeneration();
-            Cursor line_cursor = myDb.getAllDataFromLine();
+        recycler_adapter = new RecyclerAdapter_Generation(arrayList, line_dictionary);
+        recyclerView.setAdapter(recycler_adapter);
+        recycler_adapter.notifyDataSetChanged();
 
-//-----DATABASE
-            if (cursor.getCount() == 0) {
-                //show message
-                Toast.makeText(this, "No generations", Toast.LENGTH_SHORT).show();
-                return;
+    }
+
+    private void local_getGenerations() {
+
+        Cursor cursor_generation = myDb.getAllDataFromGeneration();
+
+        if (cursor_generation.getCount() == 0){
+            Toast.makeText(this, "No generations", Toast.LENGTH_SHORT).show();
+            return;
+        }else{
+
+            cursor_generation.moveToFirst();
+
+            do {
+                Generation generation = new Generation(
+                        cursor_generation.getString(2),
+                        cursor_generation.getInt(4),
+                        cursor_generation.getInt(0),
+                        cursor_generation.getInt(1),
+                        cursor_generation.getInt(3),
+                        cursor_generation.getString(5)
+                );
+                arrayList.add(generation);
+
+            } while (cursor_generation.moveToNext());
+
+            cursor_generation.close();
+
+            local_getLines();
+        }
+    }
+
+    private void local_getLines(){
+        Cursor cursor_line = myDb.getAllDataFromLine();
+        cursor_line.moveToFirst();
+
+            if (cursor_line.getCount() == 0) {
+                Toast.makeText(this,"No lines", Toast.LENGTH_SHORT).show();
             } else {
 
-                cursor.moveToFirst();
                 do {
-                            Integer farm_id_checker = cursor.getInt(0);
-                            //Integer farm_id_from_db = Integer.parseInt(farm_id);
-                           // if(farm_id_checker == farm_id_from_db){
-                                Generation generation = new Generation(cursor.getString(2), cursor.getInt(4), cursor.getInt(0), cursor.getInt(1), cursor.getInt(3), cursor.getString(5));
-
-                                arrayList.add(generation);
-                          // }
-
-
-
-
-
-
-                } while (cursor.moveToNext());
-                cursor.close();
-
-                line_cursor.moveToFirst();
-                if (line_cursor.getCount() == 0) {
-                    //show message
-                     Toast.makeText(this,"No lines", Toast.LENGTH_SHORT).show();
-
-                } else {
-
-                    do {
-                        Cursor cursor1 = myDb.getDataFromGenerationWhereID(line_cursor.getInt(3));
-                        cursor1.moveToFirst();
-                        if (cursor1.getCount() != 0) {
-                            generation_number = cursor1.getString(2);
-                        }
-                        if (line_dictionary.containsKey(generation_number)) {
-                            list = line_dictionary.get(generation_number);
-                            list.add(line_cursor.getString(1));
-                        } else {
-                            ArrayList<String> list1 = new ArrayList<String>();
-                            list1.add(line_cursor.getString(1));
-                            line_dictionary.put(generation_number, list1);
-                        }
-
-
-                    } while (line_cursor.moveToNext());
-                }
-
-
-                recycler_adapter = new RecyclerAdapter_Generation(arrayList, line_dictionary);
-                recyclerView.setAdapter(recycler_adapter);
-                recycler_adapter.notifyDataSetChanged(); //does not work, kailangan may way ka para maupdate yung adapter mo
-
-
-
-        }
-
+                    Cursor cursor1 = myDb.getDataFromGenerationWhereID(cursor_line.getInt(3));
+                    cursor1.moveToFirst();
+                    if (cursor1.getCount() != 0) {
+                        generation_number = cursor1.getString(2);
+                    }
+                    if (line_dictionary.containsKey(generation_number)) {
+                        list = line_dictionary.get(generation_number);
+                        list.add(cursor_line.getString(1));
+                    } else {
+                        ArrayList<String> list1 = new ArrayList<String>();
+                        list1.add(cursor_line.getString(1));
+                        line_dictionary.put(generation_number, list1);
+                    }
+                } while (cursor_line.moveToNext());
+            }
 
     }
-    private boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+
+
+
+    private void API_getFarmID(String email){
+        APIHelper.getFarmID("getFarmID/"+email, new BaseJsonHttpResponseHandler<Object>() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
+                farm_id = rawJsonResponse;
+                farm_id = farm_id.replaceAll("\\[", "").replaceAll("\\]","");
+
+//                API_getGeneration(farm_id);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, String rawJsonResponse, Object response){
+
+                Toast.makeText(getApplicationContext(), "Failed ", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            protected Object parseResponse(String rawJsonData, boolean isFailure) throws Throwable{
+                return null;
+            }
+        });
     }
+
     private void API_getGeneration(String farm_id){
         APIHelper.getGeneration("getGeneration/"+farm_id, new BaseJsonHttpResponseHandler<Object>() {
             @Override
@@ -379,6 +377,7 @@ public class CreateGenerationsAndLines extends AppCompatActivity {
             }
         });
     }
+
     private void API_getLine(String generation_id){
        // for(int i = 0; i<arrayList_gen.size();i++){
             APIHelper.getLine("getLine/"+generation_id, new BaseJsonHttpResponseHandler<Object>() {
@@ -416,34 +415,7 @@ public class CreateGenerationsAndLines extends AppCompatActivity {
         }
 
 
-    private void API_getFarmID(String email){
-        APIHelper.getFarmID("getFarmID/"+email, new BaseJsonHttpResponseHandler<Object>() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
 
-
-                farm_id = rawJsonResponse;
-
-                farm_id = farm_id.replaceAll("\\[", "").replaceAll("\\]","");
-
-                API_getGeneration(farm_id);
-              //  Toast.makeText(CreateGenerationsAndLines.this, "Generation and Lines loaded from database", Toast.LENGTH_SHORT).show();
-
-
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, String rawJsonResponse, Object response){
-
-                Toast.makeText(getApplicationContext(), "Failed ", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            protected Object parseResponse(String rawJsonData, boolean isFailure) throws Throwable{
-                return null;
-            }
-        });
-    }
     private void API_addGeneration(RequestParams requestParams){
         APIHelper.addGeneration("addGeneration", requestParams, new BaseJsonHttpResponseHandler<Object>() {
             @Override
@@ -463,6 +435,30 @@ public class CreateGenerationsAndLines extends AppCompatActivity {
             }
         });
     }
+
+    private void API_addLine(RequestParams requestParams){
+        APIHelper.addLine("addLine", requestParams, new BaseJsonHttpResponseHandler<Object>() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
+                Toast.makeText(getApplicationContext(), "Successfully synced lines to web", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, String rawJsonResponse, Object response){
+
+                Toast.makeText(getApplicationContext(), "Failed to add Line to web", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            protected Object parseResponse(String rawJsonData, boolean isFailure) throws Throwable{
+                return null;
+            }
+        });
+    }
+
+
+    //TODO: remove update API's
+
     private void API_updateGeneration(String farm_id){
 
         APIHelper.getGeneration("getGeneration/"+farm_id, new BaseJsonHttpResponseHandler<Object>() {
@@ -485,9 +481,6 @@ public class CreateGenerationsAndLines extends AppCompatActivity {
                         arrayListBrooderInventoryLocal.add(generation);
                     } while (cursor_brooder_inventory.moveToNext());
                 }
-
-
-
 
                 //arrayListBrooderInventoryLocal contains all data from local database
                 //arrayListBrooderInventoryWeb   contains all data from web database
@@ -523,8 +516,6 @@ public class CreateGenerationsAndLines extends AppCompatActivity {
                     Integer is_active = cursor.getInt(4);
                     String deleted_at = cursor.getString(5);
 
-
-
                     RequestParams requestParams = new RequestParams();
                     requestParams.add("id", id.toString());
                     requestParams.add("farm_id", farm_id.toString());
@@ -532,8 +523,6 @@ public class CreateGenerationsAndLines extends AppCompatActivity {
                     requestParams.add("numerical_generation", numerical_generation.toString());
                     requestParams.add("is_active", is_active.toString());
                     requestParams.add("deleted_at", deleted_at);
-
-
 
 
                     API_addGeneration(requestParams);
@@ -556,25 +545,7 @@ public class CreateGenerationsAndLines extends AppCompatActivity {
             }
         });
     }
-    private void API_addLine(RequestParams requestParams){
-        APIHelper.addLine("addLine", requestParams, new BaseJsonHttpResponseHandler<Object>() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
-                Toast.makeText(getApplicationContext(), "Successfully synced lines to web", Toast.LENGTH_SHORT).show();
-            }
 
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, String rawJsonResponse, Object response){
-
-                Toast.makeText(getApplicationContext(), "Failed to add Line to web", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            protected Object parseResponse(String rawJsonData, boolean isFailure) throws Throwable{
-                return null;
-            }
-        });
-    }
     private void API_updateLine(){
 
         APIHelper.getLine("getLine/", new BaseJsonHttpResponseHandler<Object>() {
@@ -598,13 +569,6 @@ public class CreateGenerationsAndLines extends AppCompatActivity {
                     } while (cursor_brooder_inventory.moveToNext());
                 }
 
-
-
-
-                //arrayListBrooderInventoryLocal contains all data from local database
-                //arrayListBrooderInventoryWeb   contains all data from web database
-
-                //put the ID of each brooder inventory to another arraylist
                 ArrayList<Integer> id_local = new ArrayList<>();
                 ArrayList<Integer> id_web = new ArrayList<>();
                 ArrayList<Integer> id_to_sync = new ArrayList<>();
@@ -666,6 +630,15 @@ public class CreateGenerationsAndLines extends AppCompatActivity {
             }
         });
     }
+
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -684,7 +657,6 @@ public class CreateGenerationsAndLines extends AppCompatActivity {
     }
     @Override
     public void onBackPressed() {
-
 
         finish();
         startActivity(getIntent());

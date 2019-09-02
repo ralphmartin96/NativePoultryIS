@@ -176,7 +176,7 @@ public class DashBoardActivity extends AppCompatActivity {
 
             API_getFarmID(email);
 
-//            API_getFamily();
+            API_getFamily();
 //            API_getPhenoMorphoValues();
 //            API_getPhenoMorphos();
 //            API_getMortalityAndSales();
@@ -536,14 +536,10 @@ public class DashBoardActivity extends AppCompatActivity {
                     JSONLine jsonLine = gson.fromJson(rawJsonResponse, JSONLine.class);
                     ArrayList<Line> arrayList = jsonLine.getData();
 
-                    Log.d("POULTRYDEBUGGER", "LINES: "+arrayList.size());
-
                     for(int i=0;i<arrayList.size();i++){
                         Cursor cursor = myDb.getAllDataFromLineWhereID(arrayList.get(i).getId());
 
                         if(cursor.getCount() == 0){
-                            //dapat insert mo kasama yung primary key "id"
-                            //edit mo yung existing insertDataLine function tapos dapat pati primary key iniinsert mo kapag galing sa web yung data
                             boolean isInserted = myDb.insertDataLineWithID(
                                     arrayList.get(i).getId(),
                                     arrayList.get(i).getLine_number(),
@@ -572,7 +568,6 @@ public class DashBoardActivity extends AppCompatActivity {
         });
     }
 
-
     private void API_getFamily(){
         APIHelper.getFamily("getFamily/", new BaseJsonHttpResponseHandler<Object>() {
             @Override
@@ -582,9 +577,10 @@ public class DashBoardActivity extends AppCompatActivity {
                     JSONFamily1 jsonFamily1 = gson.fromJson(rawJsonResponse, JSONFamily1.class);
                     ArrayList<Family1> arrayList_family1 = jsonFamily1.getData();
 
-//                    Log.d("POULTRYDEBUGGER", arrayList_family1.get(0).getId()+"");
+                    Log.d("POULTRYDEBUGGER", "FAMILY SIZE: "+arrayList_family1.size());
 
                     for (int i = 0; i < arrayList_family1.size(); i++) {
+
                         //check if generation to be inserted is already in the database
                         DatabaseHelper myDb = new DatabaseHelper(getApplicationContext());
                         Cursor cursor = myDb.getAllDataFromFamilyWhereID(arrayList_family1.get(i).getId());
