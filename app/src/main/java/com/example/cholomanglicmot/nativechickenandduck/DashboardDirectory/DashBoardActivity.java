@@ -54,7 +54,9 @@ import com.example.cholomanglicmot.nativechickenandduck.BroodersDirectory.JSONMo
 import com.example.cholomanglicmot.nativechickenandduck.DataProvider;
 import com.example.cholomanglicmot.nativechickenandduck.DatabaseHelper;
 import com.example.cholomanglicmot.nativechickenandduck.FamilyDirectory.CreateFamilies;
+import com.example.cholomanglicmot.nativechickenandduck.FamilyDirectory.Family;
 import com.example.cholomanglicmot.nativechickenandduck.FamilyDirectory.Family1;
+import com.example.cholomanglicmot.nativechickenandduck.FamilyDirectory.JSONFamily;
 import com.example.cholomanglicmot.nativechickenandduck.FamilyDirectory.JSONFamily1;
 import com.example.cholomanglicmot.nativechickenandduck.FarmSettingsDirectory.MainActivity;
 import com.example.cholomanglicmot.nativechickenandduck.GenerationsAndLinesDirectory.CreateGenerationsAndLines;
@@ -112,13 +114,16 @@ public class DashBoardActivity extends AppCompatActivity {
     List<String> Project_list;
     ExpandableListView Exp_list;
     ProjectAdapter adapter;
-    String farm_id;
+    String farm_id=null;
     Integer farm_id_local;
-    ArrayList<Pen> arrayList_pen;
+    ArrayList<Line> arrayList_lines = new ArrayList<Line>();
+    ArrayList<Integer> line_ids = new ArrayList<Integer>();
     DatabaseHelper myDb;
     String name, email;
     Uri photo;
     GoogleSignInClient mGoogleSignInClient;
+
+    final String debugTag = "POULTRYDEBUGGER";
 
 
     @Override
@@ -176,7 +181,7 @@ public class DashBoardActivity extends AppCompatActivity {
 
             API_getFarmID(email);
 
-            API_getFamily();
+//            API_getFamily();
 //            API_getPhenoMorphoValues();
 //            API_getPhenoMorphos();
 //            API_getMortalityAndSales();
@@ -197,7 +202,6 @@ public class DashBoardActivity extends AppCompatActivity {
 //            API_getEggQuality();
 //            API_getEggProduction();
 //            API_getHatcheryRecords();
-
         }
 
         Cursor cursor = myDb.getFarmIDFromUsers(email);
@@ -210,6 +214,7 @@ public class DashBoardActivity extends AppCompatActivity {
         if(farm_id_local == null){
             farm_id_local = 0;
         }
+
         male_count_breeder = findViewById(R.id.male_count_breeder);
         female_count_breeder = findViewById(R.id.female_count_breeder);
         male_count_breeder.setText(myDb.getAllMaleFromBreeders(farm_id_local).toString());
@@ -336,13 +341,19 @@ public class DashBoardActivity extends AppCompatActivity {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
 
-
                 farm_id = rawJsonResponse;
-
                 farm_id = farm_id.replaceAll("\\[", "").replaceAll("\\]","");
+
+                try {
+                    Log.d(debugTag, "API_getFarmID: "+farm_id);
+                }catch (Exception e){
+                    Log.d(debugTag, "API_getFarmID: Error");
+                }
+
                 API_getFarmInfo(farm_id);
                 API_getPen(farm_id);
                 API_getGeneration(farm_id);
+//                API_getFamilyForDisplay(farm_id);
 
                 myDb = new DatabaseHelper(getApplicationContext());
                 boolean isInsertedUser = myDb.insertDataUser(
@@ -387,17 +398,12 @@ public class DashBoardActivity extends AppCompatActivity {
                     if(cursor.getCount() != 0){
                         if(cursor.getInt(0) != farmInfo.getId()){
                             boolean isInserted = myDb.insertDataFarm(farmInfo.getId(), farmInfo.getName(), farmInfo.getCode(), farmInfo.getAddress(), farmInfo.getBatching_week(), farmInfo.getBreedable_id());
-                            if(isInserted){
-                                //Toast.makeText(DashBoardActivity.this, "SUCCESS BOI", Toast.LENGTH_SHORT).show();
-                            }
                         }else{
                             Toast.makeText(DashBoardActivity.this, "Farm Info already exists in your account", Toast.LENGTH_SHORT).show();
                         }
                     }else{
                         boolean isInserted = myDb.insertDataFarm(farmInfo.getId(), farmInfo.getName(), farmInfo.getCode(), farmInfo.getAddress(), farmInfo.getBatching_week(), farmInfo.getBreedable_id());
-                        if(isInserted){
-                            //Toast.makeText(DashBoardActivity.this, "SUCCESS BOI", Toast.LENGTH_SHORT).show();
-                        }else{
+                        if(!isInserted){
                             Toast.makeText(DashBoardActivity.this, "Farm Info already exists in your account", Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -450,14 +456,14 @@ public class DashBoardActivity extends AppCompatActivity {
                                     arrayList.get(i).getIs_active()
                             );
 
-//                            if(isInserted) Log.d("POULTRYDEBUGGER", "Inserted pen "+arrayList.get(i).getId());
+//                            if(isInserted) Log.d(debugTag, "Inserted pen "+arrayList.get(i).getId());
 
                         }
 
                     }
 
                 }catch (Exception e){
-                    Log.d("POULTRYDEBUGGER", "Exception caught");
+                    Log.d(debugTag, "Exception in Pen API caught");
                 }
 
             }
@@ -484,7 +490,7 @@ public class DashBoardActivity extends AppCompatActivity {
                     JSONGeneration jsonGeneration = gson.fromJson(rawJsonResponse, JSONGeneration.class);
                     ArrayList<Generation> arrayList_gen = jsonGeneration.getData();
 
-//                    Log.d("POULTRYDEBUGGER", "GEN: "+arrayList_gen.size());
+//                    Log.d(debugTag, "GEN: "+arrayList_gen.size());
 
                     for (int i = 0; i < arrayList_gen.size(); i++) {
 
@@ -502,11 +508,22 @@ public class DashBoardActivity extends AppCompatActivity {
                                     arrayList_gen.get(i).getGeneration_status()
                             );
 
-//                            if(isInserted) Log.d("POULTRYDEBUGGER", "Inserted generation "+arrayList_gen.get(i).getId());
+//                            if(isInserted) Log.d(debugTag, "Inserted generation "+arrayList_gen.get(i).getId());
                         }
 
                     }
-                }catch (Exception e){}
+
+                    Log.d(debugTag, "GEN: "+ line_ids.size());
+
+//                    try {
+//                        Log.d(debugTag, "i: "+ arrayList_lines.size());
+//                    }catch(Exception e){
+//                        Log.d(debugTag, "SIYANAWA");
+//                    }
+
+                }catch (Exception e){
+                    Log.d(debugTag, "Exception in Generations API caught");
+                }
 
             }
 
@@ -529,8 +546,8 @@ public class DashBoardActivity extends AppCompatActivity {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
 
-
                 Gson gson = new Gson();
+
                 try{
 
                     JSONLine jsonLine = gson.fromJson(rawJsonResponse, JSONLine.class);
@@ -547,11 +564,17 @@ public class DashBoardActivity extends AppCompatActivity {
                                     Integer.parseInt(generation_id)
                             );
 
+                            line_ids.add(arrayList.get(i).getId());
                         }
                     }
-                }catch (Exception e){}
 
+                    Log.d(debugTag, "LINE: "+ line_ids.size());
 
+//                    API_getFamily();
+
+                }catch (Exception e){
+                    Log.d(debugTag, "Exception in Lines API caught");
+                }
 
             }
 
@@ -572,16 +595,25 @@ public class DashBoardActivity extends AppCompatActivity {
         APIHelper.getFamily("getFamily/", new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
+
                 Gson gson = new Gson();
+
+                Cursor cursor_line = myDb.getAllDataFromLine();
+                cursor_line.moveToFirst();
+
                 try{
                     JSONFamily1 jsonFamily1 = gson.fromJson(rawJsonResponse, JSONFamily1.class);
                     ArrayList<Family1> arrayList_family1 = jsonFamily1.getData();
 
-                    Log.d("POULTRYDEBUGGER", "FAMILY SIZE: "+arrayList_family1.size());
+                    int count=0;
 
+                    try {
+                        Log.d(debugTag, "Family-Lines count: " + arrayList_lines.size());
+                    }catch (Exception e){
+                        Log.d(debugTag, "Lines error");
+                    }
                     for (int i = 0; i < arrayList_family1.size(); i++) {
 
-                        //check if generation to be inserted is already in the database
                         DatabaseHelper myDb = new DatabaseHelper(getApplicationContext());
                         Cursor cursor = myDb.getAllDataFromFamilyWhereID(arrayList_family1.get(i).getId());
                         cursor.moveToFirst();
@@ -594,10 +626,15 @@ public class DashBoardActivity extends AppCompatActivity {
                                     arrayList_family1.get(i).getLine_id(),
                                     arrayList_family1.get(i).getDeleted_at()
                             );
+
+                            if(isInserted) count++;
                         }
 
                     }
-                }catch (Exception e){}
+//                    Log.d(debugTag, "Family count: "+count);
+                }catch (Exception e){
+                    Log.d(debugTag, "Exception in Family API caught");
+                }
 
             }
 
@@ -1347,7 +1384,6 @@ public class DashBoardActivity extends AppCompatActivity {
             }
         });
     }
-
 
 
     private boolean isNetworkAvailable() {
