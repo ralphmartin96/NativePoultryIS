@@ -112,17 +112,17 @@ public class CreateGenerationDialog extends DialogFragment {
                     //GET farm_id from database
                     //check for internet connection
                     /**/
-                    boolean isNetworkAvailable = isNetworkAvailable();
-                    if(isNetworkAvailable){
-                        RequestParams requestParams = new RequestParams();
-                        requestParams.add("farm_id", farm_id.toString());
-                        requestParams.add("number", generation_number);
-                        requestParams.add("numerical_generation", mInput_generation_number.getText().toString());
-                        requestParams.add("is_active", is_active.toString());
-                        requestParams.add("deleted_at", null);
-
-                        API_addGeneration(requestParams);
-                    }
+//                    boolean isNetworkAvailable = isNetworkAvailable();
+//                    if(isNetworkAvailable){
+//                        RequestParams requestParams = new RequestParams();
+//                        requestParams.add("farm_id", farm_id.toString());
+//                        requestParams.add("number", generation_number);
+//                        requestParams.add("numerical_generation", mInput_generation_number.getText().toString());
+//                        requestParams.add("is_active", is_active.toString());
+//                        requestParams.add("deleted_at", null);
+//
+//                        API_addGeneration(requestParams);
+//                    }
 
 
                     if(isInserted == true){

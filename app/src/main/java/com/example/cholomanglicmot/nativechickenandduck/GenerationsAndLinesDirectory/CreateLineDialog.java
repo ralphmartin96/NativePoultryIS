@@ -94,16 +94,16 @@ public class CreateLineDialog extends DialogFragment {
 
 
                         //add to web server
-                        if(isNetworkAvailable()){
-                            Integer is_active = 1;
-                            RequestParams requestParams = new RequestParams();
-                            requestParams.add("number", line);
-                            requestParams.add("is_active", is_active.toString());
-                            requestParams.add("generation_id", generation_id.toString());
-                            requestParams.add("deleted_at", null);
-
-                            API_addLine(requestParams);
-                        }
+//                        if(isNetworkAvailable()){
+//                            Integer is_active = 1;
+//                            RequestParams requestParams = new RequestParams();
+//                            requestParams.add("number", line);
+//                            requestParams.add("is_active", is_active.toString());
+//                            requestParams.add("generation_id", generation_id.toString());
+//                            requestParams.add("deleted_at", null);
+//
+//                            API_addLine(requestParams);
+//                        }
 
 
 

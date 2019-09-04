@@ -79,26 +79,26 @@ public class CreatePenDialog extends DialogFragment {
                 switch (selectedId) {
                     case radio_brooder:
                         // the first RadioButton is checked.
-                        selected_pen_type = "Brooder";
+                        selected_pen_type = "brooder";
                         /*String.format("%04d" , Integer.parseInt(mInput_generation_number.getText().toString()));*/
                         pen_number = "B"+String.format("%02d" , Integer.parseInt(mInput_pen_number.getText().toString()));
                         break;
                     //other checks for the other RadioButtons ids from the RadioGroup
                     case radio_grower:
                         // the first RadioButton is checked.
-                        selected_pen_type = "Grower";
+                        selected_pen_type = "grower";
                         pen_number = "G"+String.format("%02d" , Integer.parseInt(mInput_pen_number.getText().toString()));
                         break;
                     //other checks for the other RadioButtons ids from the RadioGroup
                     case radio_layer:
                         // the first RadioButton is checked.
-                        selected_pen_type = "Layer";
+                        selected_pen_type = "layer";
                         pen_number = "L"+String.format("%02d" , Integer.parseInt(mInput_pen_number.getText().toString()));
                         break;
                     //other checks for the other RadioButtons ids from the RadioGroup
                     case -1:
 
-                        // no RadioButton is checked inthe Radiogroup
+                        // no RadioButton is checked in the Radio group
                         break;
                 }
 
@@ -129,20 +129,20 @@ public class CreatePenDialog extends DialogFragment {
 
                     Integer is_active = 1;
                     Integer zero = 0;
-                    boolean isInserted = myDb.insertDataPen(farm_id,pen_number, selected_pen_type,Integer.parseInt(mInput_pen_capacity.getText().toString()),0, is_active);
+                    boolean isInserted = myDb.insertDataPen(farm_id,pen_number, selected_pen_type, Integer.parseInt(mInput_pen_capacity.getText().toString()),0, is_active);
 
-                    if(isNetworkAvailable()){
-
-                        RequestParams requestParams = new RequestParams();
-                        requestParams.add("farm_id", farm_id.toString());
-                        requestParams.add("number", pen_number);
-                        requestParams.add("type", selected_pen_type);
-                        requestParams.add("total_capacity", mInput_pen_capacity.getText().toString());
-                        requestParams.add("current_capacity", zero.toString());
-                        requestParams.add("is_active", is_active.toString());
-
-                        API_addPen(requestParams);
-                    }
+//                    if(isNetworkAvailable()){
+//
+//                        RequestParams requestParams = new RequestParams();
+//                        requestParams.add("farm_id", farm_id.toString());
+//                        requestParams.add("number", pen_number);
+//                        requestParams.add("type", selected_pen_type);
+//                        requestParams.add("total_capacity", mInput_pen_capacity.getText().toString());
+//                        requestParams.add("current_capacity", zero.toString());
+//                        requestParams.add("is_active", is_active.toString());
+//
+//                        API_addPen(requestParams);
+//                    }
 
 
                     if(isInserted == true){

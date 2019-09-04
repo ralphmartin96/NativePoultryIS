@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,12 +50,8 @@ public class CreateFamilyDialog extends DialogFragment {
         context = getActivity().getApplicationContext();
 
         line_spinner = view.findViewById(R.id.line_spinner);
-        // find the radiobutton by returned id
-       // spinner.setOnItemSelectedListener(this);
         loadSpinnerDataForGeneration();
 
-        //String selected_generation = generation_spinner.getSelectedItem().toString();
-        //Toast.makeText(getContext(),selected_generation + "yo", Toast.LENGTH_LONG).show();
         generation_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -67,10 +64,8 @@ public class CreateFamilyDialog extends DialogFragment {
 
             }
         });
-
       
         myDb = new DatabaseHelper(getContext());
-
 
         mActionOk.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,45 +78,46 @@ public class CreateFamilyDialog extends DialogFragment {
                     if(cursor_line.getCount() != 0){
                         Integer line_id = cursor_line.getInt(0);
                         String family = new String();
-                        switch (family_number.getText().toString().length()){
-                            case 1:
-                                family = String.format("%04d" , Integer.parseInt(family_number.getText().toString()));
-                                break;
-                            case 2:
-                                family = String.format("%04d" , Integer.parseInt(family_number.getText().toString()));
-                                break;
-                            case 3:
-                                family = String.format("%04d" ,Integer.parseInt(family_number.getText().toString()));
-                                break;
-                            case 4:
-                                family = String.format("%04d" , Integer.parseInt(family_number.getText().toString()));
-                                break;
-                            default:
-                                break;
+                        String line = new String();
+                        String generation = new String();
 
-                        }
+                        family = String.format("%04d" , Integer.parseInt(family_number.getText().toString()));
+                        line = line_spinner.getSelectedItem().toString();
+                        generation = generation_spinner.getSelectedItem().toString();
+
+                        Log.d("POULTRYDEBUGGER", family + " " + line + " " +generation);
+
+//                        switch (family_number.getText().toString().length()){
+//                            case 1:
+//                                family = String.format("%04d" , Integer.parseInt(family_number.getText().toString()));
+//                                break;
+//                            case 2:
+//                                family = String.format("%04d" , Integer.parseInt(family_number.getText().toString()));
+//                                break;
+//                            case 3:
+//                                family = String.format("%04d" ,Integer.parseInt(family_number.getText().toString()));
+//                                break;
+//                            case 4:
+//                                family = String.format("%04d" , Integer.parseInt(family_number.getText().toString()));
+//                                break;
+//                            default:
+//                                break;
+//
+//                        }
+
+
+//                        if(isNetworkAvailable()){
+//                            Integer is_active = 1;
+//                            RequestParams requestParams = new RequestParams();
+//                            requestParams.add("number", family);
+//                            requestParams.add("is_active", is_active.toString());
+//                            requestParams.add("line_id", line_id.toString());
+//                            requestParams.add("deleted_at", null);
+//
+//                            API_addFamily(requestParams);
+//                        }
                         //insert to local
-
                         boolean isInserted = myDb.insertDataFamily(family,1,line_id);
-                       // boolean isInserted = myDb.insertDataFamily(null,null,null);
-
-
-                        //insert to web
-                        if(isNetworkAvailable()){
-                            Integer is_active = 1;
-                            RequestParams requestParams = new RequestParams();
-                            requestParams.add("number", family);
-                            requestParams.add("is_active", is_active.toString());
-                            requestParams.add("line_id", line_id.toString());
-                            requestParams.add("deleted_at", null);
-
-                            API_addFamily(requestParams);
-                        }
-
-
-
-
-
 
                         if(isInserted){
                             Toast.makeText(getActivity(),"Family added to database", Toast.LENGTH_SHORT).show();
@@ -131,6 +127,9 @@ public class CreateFamilyDialog extends DialogFragment {
                         }else{
                             Toast.makeText(getActivity(),"Family not added to database", Toast.LENGTH_SHORT).show();
                         }
+
+                        isInserted = myDb.insertDataFamilyDisplay(line, family, 1, generation);
+
                         getDialog().dismiss();
                     }
 
