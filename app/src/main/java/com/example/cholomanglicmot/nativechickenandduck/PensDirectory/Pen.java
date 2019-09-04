@@ -94,5 +94,6 @@ public class Pen {
 
 
             return pen1.compareTo(pen2);
-        }};
+        }
+    };
 }

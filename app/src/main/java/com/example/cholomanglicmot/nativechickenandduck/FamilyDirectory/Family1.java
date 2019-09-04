@@ -1,5 +1,9 @@
 package com.example.cholomanglicmot.nativechickenandduck.FamilyDirectory;
 
+import com.example.cholomanglicmot.nativechickenandduck.PensDirectory.Pen;
+
+import java.util.Comparator;
+
 public class Family1 {
     private Integer id;
     private String number;
@@ -58,4 +62,16 @@ public class Family1 {
     public void setDeleted_at(String deleted_at) {
         this.deleted_at = deleted_at;
     }
+
+    public static Comparator<Family1> familyComparator = new Comparator<Family1>() {
+
+        public int compare(Family1 f1, Family1 f2) {
+
+            int family1 = f1.getLine_id();
+            int family2= f2.getLine_id();
+
+
+            return family1-(family2);
+        }
+    };
 }

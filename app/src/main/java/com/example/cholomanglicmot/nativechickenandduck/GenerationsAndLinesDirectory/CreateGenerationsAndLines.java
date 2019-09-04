@@ -315,7 +315,6 @@ public class CreateGenerationsAndLines extends AppCompatActivity {
     }
 
 
-
     private void API_getFarmID(String email){
         APIHelper.getFarmID("getFarmID/"+email, new BaseJsonHttpResponseHandler<Object>() {
             @Override

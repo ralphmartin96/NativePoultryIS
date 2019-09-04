@@ -62,8 +62,6 @@ public class CreateFamilies extends AppCompatActivity {
     String farm_id;
     ArrayList<Family> arrayList_family;
     ArrayList<Family1> arrayList_family1;
-    //private Button create_family;
-
 
     LinkedHashMap<String, List<String>> Project_category;
     List<String> Project_list;
@@ -74,6 +72,7 @@ public class CreateFamilies extends AppCompatActivity {
     RecyclerView recyclerView;
     RecyclerView.Adapter recycler_adapter;
     RecyclerView.LayoutManager layoutManager;
+
     ArrayList<Family> arrayList = new ArrayList<>();
     String[] lines;
     Map<String, ArrayList<String>> line_dictionary = new HashMap<String, ArrayList<String>>();
@@ -85,6 +84,9 @@ public class CreateFamilies extends AppCompatActivity {
     boolean addGeneration=false;
     String validation_farm_id_string=null;
     Integer farm_id_INT;
+
+    final String debugTag = "POULTRYDEBUGGER";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -113,7 +115,6 @@ public class CreateFamilies extends AppCompatActivity {
         nav_user.setText(name);
         Picasso.get().load(photo).into(circleImageView);
         nav_email.setText(email);
-        ///////////////////
 
 
         Exp_list = findViewById(R.id.exp_list);
@@ -123,8 +124,6 @@ public class CreateFamilies extends AppCompatActivity {
         Exp_list.setAdapter(adapter);
         create_family = findViewById(R.id.open_dialog);
 
-
-        //delete_pen_table = findViewById(R.id.delete_pen_table);
         myDb = new DatabaseHelper(this);
 
         recyclerView = (RecyclerView)findViewById(R.id.recyclerView1);
@@ -141,9 +140,6 @@ public class CreateFamilies extends AppCompatActivity {
 
             }
         });
-
-
-
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -218,6 +214,7 @@ public class CreateFamilies extends AppCompatActivity {
                 return false;
             }
         });
+
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.closed);
         mToolbar = (Toolbar)findViewById(R.id.nav_action);
@@ -230,12 +227,12 @@ public class CreateFamilies extends AppCompatActivity {
 
         boolean isNetworkAvailable = isNetworkAvailable();
         if(isNetworkAvailable){
-            //if internet is available, load data from web database
 
             API_getFarmID(email);
 //            API_updateFamily();
 
         }
+
 
         Cursor cursor_farm_id = myDb.getFarmIDFromUsers(email);
         cursor_farm_id.moveToFirst();
@@ -284,10 +281,13 @@ public class CreateFamilies extends AppCompatActivity {
                             Log.d("LINE&GEN", line_number+" "+generation_number);
 
 
-                            if(is_active == 1 && line_number != null && generation_number != null/*&& validation_farm_id ==farm_id_INT*/ /*&& validation_farm_id_string.equals(farm_id)*/){
-                                Family family = new Family(family_number, line_number, generation_number);
+                            if(is_active == 1 && line_number != null && generation_number != null){
+                                Family family = new Family(
+                                        family_number,
+                                        line_number,
+                                        generation_number
+                                );
                                 arrayList.add(family);
-
                             }
 
                         }while(cursor1.moveToNext());
@@ -304,25 +304,16 @@ public class CreateFamilies extends AppCompatActivity {
 
     }
 
-    private boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-    }
-
     private void API_getFarmID(String email){
         APIHelper.getFarmID("getFarmID/"+email, new BaseJsonHttpResponseHandler<Object>() {
+
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
 
-
                 farm_id = rawJsonResponse;
-
                 farm_id = farm_id.replaceAll("\\[", "").replaceAll("\\]","");
 
                 API_getFamilyForDisplay(farm_id);
-
             }
 
             @Override
@@ -347,6 +338,8 @@ public class CreateFamilies extends AppCompatActivity {
                 JSONFamily jsonFamily = gson.fromJson(rawJsonResponse, JSONFamily.class);
                 arrayList_family = jsonFamily.getData();
 
+//                Log.d("POULTRYDEBUGGER", "FAMILY SIZE in FAM: "+arrayList_family.size());
+
                 API_getFamily();
 
             }
@@ -363,6 +356,7 @@ public class CreateFamilies extends AppCompatActivity {
             }
         });
     }
+
     private void API_getFamily(){
         APIHelper.getFamily("getFamily/", new BaseJsonHttpResponseHandler<Object>() {
             @Override
@@ -399,8 +393,6 @@ public class CreateFamilies extends AppCompatActivity {
         });
     }
 
-
-
     private void API_addFamily(RequestParams requestParams){
         APIHelper.addFamily("addFamily", requestParams, new BaseJsonHttpResponseHandler<Object>() {
             @Override
@@ -420,6 +412,7 @@ public class CreateFamilies extends AppCompatActivity {
             }
         });
     }
+
     private void API_updateFamily(){
 
         APIHelper.getFamily("getFamily/", new BaseJsonHttpResponseHandler<Object>() {
@@ -511,6 +504,14 @@ public class CreateFamilies extends AppCompatActivity {
             }
         });
     }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 

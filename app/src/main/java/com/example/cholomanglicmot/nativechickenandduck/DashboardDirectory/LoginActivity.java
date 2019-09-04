@@ -78,7 +78,6 @@ public class LoginActivity extends AppCompatActivity{
 
             }
         });
-       // sign_out_button.setOnClickListener(view -> Logout());
 
         if(mAuth.getCurrentUser() != null){
             FirebaseUser user = mAuth.getCurrentUser();
