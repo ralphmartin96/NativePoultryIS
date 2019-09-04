@@ -1,5 +1,7 @@
 package com.example.cholomanglicmot.nativechickenandduck.FamilyDirectory;
 
+import java.util.Comparator;
+
 public class Family {
 
     private String family_number;
@@ -38,6 +40,17 @@ public class Family {
     public void setFamily_number(String family_number) {
         this.family_number = family_number;
     }
+
+    public static Comparator<Family> familyComparator = new Comparator<Family>() {
+
+        public int compare(Family f1, Family f2) {
+
+            String family1 = f1.getGeneration_number();
+            String family2 = f2.getGeneration_number();
+
+            return family1.compareTo(family2);
+        }
+    };
 
 }
 

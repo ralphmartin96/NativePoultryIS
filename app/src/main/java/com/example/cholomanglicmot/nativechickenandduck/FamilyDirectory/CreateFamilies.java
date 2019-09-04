@@ -34,6 +34,7 @@ import com.example.cholomanglicmot.nativechickenandduck.DatabaseHelper;
 import com.example.cholomanglicmot.nativechickenandduck.FarmSettingsDirectory.MainActivity;
 import com.example.cholomanglicmot.nativechickenandduck.GenerationsAndLinesDirectory.CreateGenerationsAndLines;
 import com.example.cholomanglicmot.nativechickenandduck.PensDirectory.CreatePen;
+import com.example.cholomanglicmot.nativechickenandduck.PensDirectory.Pen;
 import com.example.cholomanglicmot.nativechickenandduck.ProjectAdapter;
 import com.example.cholomanglicmot.nativechickenandduck.R;
 import com.example.cholomanglicmot.nativechickenandduck.ReplacementsDirectory.CreateReplacements;
@@ -45,6 +46,7 @@ import com.loopj.android.http.RequestParams;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -226,81 +228,113 @@ public class CreateFamilies extends AppCompatActivity {
 
 
         boolean isNetworkAvailable = isNetworkAvailable();
-        if(isNetworkAvailable){
 
-            API_getFarmID(email);
+
+//        if(isNetworkAvailable){
+//
+//            API_getFarmID(email);
 //            API_updateFamily();
+//
+//        }
 
+        local_getFamilyForDisplay();
+
+//        {
+//
+//        Cursor cursor_farm_id = myDb.getFarmIDFromUsers(email);
+//        cursor_farm_id.moveToFirst();
+//
+//        farm_id_INT = cursor_farm_id.getInt(0);
+//
+//            Cursor cursor = myDb.getAllDataFromFamily();
+//            cursor.moveToFirst();
+//
+////-----DATABASE
+//            if(cursor.getCount() == 0){
+//                //show message
+//                Toast.makeText(this,"No data", Toast.LENGTH_SHORT).show();
+//
+//            }else {
+//
+//                do {
+//
+//                    Integer validation_farm_id = 0;
+//                    Integer line_id = cursor.getInt(3);
+//                    Cursor cursor1 = myDb.getDataFromLineWhereID(line_id);
+//
+//
+//                    cursor1.moveToFirst();
+//
+//                    if (cursor1.getCount() != 0) {
+//
+//                        do {
+//                            line_number = cursor1.getString(1);
+//                            generation_id = cursor1.getInt(3);
+//
+//                            Cursor cursor2 = myDb.getDataFromGenerationWhereID(generation_id);
+//                            cursor2.moveToFirst();
+////ANG GAWIN MO NA LANG DITO, GAMITIN MO YUNG FARM_ID
+//                            if (cursor2.getCount() != 0) {
+//                                validation_farm_id = cursor2.getInt(1);
+//                                //validation_farm_id_string = validation_farm_id.toString();
+//                                generation_number = cursor2.getString(2);
+//                                //addGeneration = true;
+//                            }
+//
+//                            Integer is_active = cursor.getInt(2);
+//                            String family_number = cursor.getString(1);
+//                            //String validation_farm_id_string = validation_farm_id.toString();
+//
+//                            Log.d("LINE&GEN", line_number + " " + generation_number);
+//
+//
+//                            if (is_active == 1 && line_number != null && generation_number != null) {
+//                                Family family = new Family(
+//                                        family_number,
+//                                        line_number,
+//                                        generation_number
+//                                );
+//                                arrayList.add(family);
+//                            }
+//
+//                        } while (cursor1.moveToNext());
+//
+//                    }
+//
+//                } while (cursor.moveToNext());
+//            }
+//                recycler_adapter = new RecyclerAdapter_Family(arrayList);
+//                recyclerView.setAdapter(recycler_adapter);
+//                recycler_adapter.notifyDataSetChanged();
+//
+//        }
+
+        recycler_adapter = new RecyclerAdapter_Family(arrayList);
+        recyclerView.setAdapter(recycler_adapter);
+        recycler_adapter.notifyDataSetChanged();
+
+    }
+
+    private void local_getFamilyForDisplay(){
+
+        Cursor cursor = myDb.getAllDataFromFamilyForDisplay();
+        cursor.moveToFirst();
+
+        if(cursor.getCount() == 0)
+            Toast.makeText(this,"No data", Toast.LENGTH_SHORT).show();
+        else {
+            do {
+                Family family = new Family(
+                        cursor.getString(1),
+                        cursor.getString(0),
+                        cursor.getString(3)
+                );
+
+                arrayList.add(family);
+            }while (cursor.moveToNext());
         }
 
-
-        Cursor cursor_farm_id = myDb.getFarmIDFromUsers(email);
-        cursor_farm_id.moveToFirst();
-
-        farm_id_INT = cursor_farm_id.getInt(0);
-
-            Cursor cursor = myDb.getAllDataFromFamily();
-            cursor.moveToFirst();
-
-//-----DATABASE
-            if(cursor.getCount() == 0){
-                //show message
-                Toast.makeText(this,"No data", Toast.LENGTH_SHORT).show();
-
-            }else{
-
-                do {
-
-                    Integer validation_farm_id=0;
-                    Integer line_id = cursor.getInt(3);
-                    Cursor cursor1 = myDb.getDataFromLineWhereID(line_id);
-
-
-                    cursor1.moveToFirst();
-
-                    if(cursor1.getCount() != 0){
-
-                        do{
-                            line_number = cursor1.getString(1);
-                            generation_id = cursor1.getInt(3);
-
-                            Cursor cursor2 = myDb.getDataFromGenerationWhereID(generation_id);
-                            cursor2.moveToFirst();
-//ANG GAWIN MO NA LANG DITO, GAMITIN MO YUNG FARM_ID
-                            if(cursor2.getCount() != 0){
-                                validation_farm_id = cursor2.getInt(1);
-                                //validation_farm_id_string = validation_farm_id.toString();
-                                generation_number = cursor2.getString(2);
-                                //addGeneration = true;
-                            }
-
-                            Integer is_active = cursor.getInt(2);
-                            String family_number = cursor.getString(1);
-                            //String validation_farm_id_string = validation_farm_id.toString();
-
-                            Log.d("LINE&GEN", line_number+" "+generation_number);
-
-
-                            if(is_active == 1 && line_number != null && generation_number != null){
-                                Family family = new Family(
-                                        family_number,
-                                        line_number,
-                                        generation_number
-                                );
-                                arrayList.add(family);
-                            }
-
-                        }while(cursor1.moveToNext());
-
-                    }
-
-                }while (cursor.moveToNext());
-
-                recycler_adapter = new RecyclerAdapter_Family(arrayList);
-                recyclerView.setAdapter(recycler_adapter);
-                recycler_adapter.notifyDataSetChanged();
-
-        }
+        Collections.sort(arrayList, Family.familyComparator);
 
     }
 
@@ -313,7 +347,7 @@ public class CreateFamilies extends AppCompatActivity {
                 farm_id = rawJsonResponse;
                 farm_id = farm_id.replaceAll("\\[", "").replaceAll("\\]","");
 
-                API_getFamilyForDisplay(farm_id);
+//                API_getFamilyForDisplay(farm_id);
             }
 
             @Override
@@ -373,7 +407,12 @@ public class CreateFamilies extends AppCompatActivity {
                     if (cursor.getCount() == 0) {
                         // API_getLine(arrayList_pen.get(i).getId().toString());
                         //edit insertDataGeneration function, dapat kasama yung primary key "id" kapag nilalagay sa database
-                        boolean isInserted = myDb.insertDataFamilyWithID(arrayList_family1.get(i).getId(), arrayList_family1.get(i).getNumber(), arrayList_family1.get(i).getIs_active(), arrayList_family1.get(i).getLine_id(), arrayList_family1.get(i).getDeleted_at());
+                        boolean isInserted = myDb.insertDataFamilyWithID(
+                                arrayList_family1.get(i).getId(),
+                                arrayList_family1.get(i).getNumber(),
+                                arrayList_family1.get(i).getIs_active(),
+                                arrayList_family1.get(i).getLine_id(),
+                                arrayList_family1.get(i).getDeleted_at());
                     }
 
                 }
