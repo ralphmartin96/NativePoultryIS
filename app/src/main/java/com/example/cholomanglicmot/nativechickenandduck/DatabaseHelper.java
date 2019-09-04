@@ -99,8 +99,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String FAMILY_COL_4 = "deleted_at";
 
 
-
-
+    public static final String TABLE_FAMILY_DISPLAY = "family_display_table";
+    public static final String FAMILY_DISPLAY_COL_0 = "LINE_NUMBER";
+    public static final String FAMILY_DISPLAY_COL_1 = "FAMILY_NUMBER";
+    public static final String FAMILY_DISPLAY_COL_2 = "is_active";
+    public static final String FAMILY_DISPLAY_COL_3 = "GENERATION_NUMBER";
 
 
     public static final String TABLE_BROODER = "brooder_table";
@@ -312,7 +315,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String MORT_SALES_COL_13  = "MORT_AND_SALES_DELETED_AT";
 
 
-
     public static final String TABLE_PHENO_MORPHOS = "pheno_morphos";
     public static final String PHENO_MORPHOS_COL_0 = "id";
     public static final String PHENO_MORPHOS_COL_1   = "replacement_inventory";
@@ -345,13 +347,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("create table " + TABLE_PEN +" (ID INTEGER PRIMARY KEY, farm_id INTEGER, PEN_NUMBER TEXT, PEN_TYPE TEXT,PEN_TOTAL_CAPACITY INTEGER,PEN_CURRENT_CAPACITY INTEGER, PEN_IS_ACTIVE INTEGER)");
         db.execSQL("create table " + TABLE_GENERATION +" (ID INTEGER PRIMARY KEY, farm_id INTEGER, GENERATION_NUMBER TEXT, numerical_generation INTEGER ,is_active INTEGER, deleted_at TEXT, FOREIGN KEY (farm_id) REFERENCES TABLE_FARMS(ID))");
 
-
         db.execSQL("create table " + TABLE_LINE +" (ID INTEGER PRIMARY KEY,LINE_NUMBER TEXT, is_active INTEGER, LINE_GENERATION INTEGER, deleted_at TEXT, FOREIGN KEY (LINE_GENERATION) REFERENCES TABLE_GENERATION(ID))");
 
         db.execSQL("create table " + TABLE_FAMILY +" (ID INTEGER PRIMARY KEY, FAMILY_NUMBER TEXT, is_active INTEGER, FAMILY_LINE INTEGER, deleted_at TEXT, FOREIGN KEY (FAMILY_LINE) REFERENCES TABLE_LINE(ID))");
-
-
-
+        db.execSQL("create table " + TABLE_FAMILY_DISPLAY +" (LINE_NUMBER TEXT, FAMILY_NUMBER TEXT, is_active INTEGER, GENERATION_NUMBER TEXT)");
 
         db.execSQL("create table " + TABLE_BROODER +" (ID INTEGER PRIMARY KEY, BROODER_FAMILY INTEGER, BROODER_DATE_ADDED TEXT, BROODER_DELETED_AT TEXT, FOREIGN KEY (BROODER_FAMILY) REFERENCES TABLE_FAMILY(ID))");
         db.execSQL("create table " + TABLE_BROODER_INVENTORIES +" (ID INTEGER PRIMARY KEY,BROODER_INV_BROODER_ID INTEGER, BROODER_INV_PEN_NUMBER INTEGER, BROODER_INV_BROODER_TAG TEXT, BROODER_INV_BATCHING_DATE TEXT, BROODER_INV_NUMBER_MALE INTEGER, BROODER_INV_NUMBER_FEMALE INTEGER, BROODER_INV_TOTAL INTEGER, BROODER_INV_LAST_UPDATE TEXT, BROODER_INV_DELETED_AT TEXT, FOREIGN KEY (BROODER_INV_BROODER_ID) REFERENCES TABLE_BROODER(ID))");
@@ -656,6 +655,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             return true;
 
     }
+
+    public boolean insertDataFamilyDisplay(String line_number, String family_number, Integer is_active, String generation_number ){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(FAMILY_DISPLAY_COL_0, line_number);
+        contentValues.put(FAMILY_DISPLAY_COL_1, family_number);
+        contentValues.put(FAMILY_DISPLAY_COL_2, is_active);
+        contentValues.put(FAMILY_DISPLAY_COL_3, generation_number);
+
+        long result = db.insert(TABLE_FAMILY_DISPLAY,null,contentValues);
+
+        if (result == -1)
+            return  false;
+        else
+            return true;
+
+    }
+
     public boolean insertDataFamilyWithID(Integer id, String family_number, Integer is_active, Integer family_line_number, String deleted_at ){
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -1518,6 +1536,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         return res;
     }
+
     public Cursor getAllDataFromFamily(){
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor res = db.rawQuery("select * from " +TABLE_FAMILY, null);
@@ -1525,6 +1544,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return res;
     }
 
+    public Cursor getAllDataFromFamilyForDisplay(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor res = db.rawQuery("select * from " +TABLE_FAMILY_DISPLAY, null);
+
+        return res;
+    }
 
     public Cursor getAllDataFromFarms(Integer id){
         SQLiteDatabase db = this.getWritableDatabase();
@@ -1536,6 +1561,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public Cursor getAllDataFromFamilyWhereID(Integer id){
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor res = db.rawQuery("select * from " +TABLE_FAMILY+ " where ID is ?", new String[]{id.toString()});
+
+        return res;
+    }
+
+    public Cursor getAllDataFromFamilyForDisplay(String line, String family, String generation){
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor res = db.rawQuery("select * from " +TABLE_FAMILY_DISPLAY + " where " +
+                        "LINE_NUMBER = ? and " +
+                        "FAMILY_NUMBER = ? and " +
+                        "GENERATION_NUMBER = ?",
+                new String[]{line, family, generation});
 
         return res;
     }
@@ -4530,7 +4566,6 @@ public Integer getAllMaleFromBrooders(Integer farm_id){
         res.moveToFirst();
 
         if(res.getCount() != 0) size = res.getInt(0);
-        else size=0;
 
         return size;
     }
@@ -4543,9 +4578,20 @@ public Integer getAllMaleFromBrooders(Integer farm_id){
         Cursor res = db.rawQuery("SELECT COUNT(*) FROM "+TABLE_FAMILY, new String[]{});
         res.moveToFirst();
 
-        if(res.getCount() != 0)
-            size = res.getInt(0);
-        else size=0;
+        if(res.getCount() != 0) size = res.getInt(0);
+
+        return size;
+    }
+
+    public int getFamilyForDisplaySize(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        int size=0;
+
+
+        Cursor res = db.rawQuery("SELECT COUNT(*) FROM "+TABLE_FAMILY_DISPLAY, new String[]{});
+        res.moveToFirst();
+
+        if(res.getCount() != 0) size = res.getInt(0);
 
         return size;
     }
