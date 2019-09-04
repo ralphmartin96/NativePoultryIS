@@ -101,26 +101,31 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class DashBoardActivity extends AppCompatActivity {
+
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mToggle;
     private Toolbar mToolbar;
 
-    TextView male_count_breeder, female_count_breeder,male_count_breeder_mort, female_count_breeder_mort,male_sales_breeder, female_sales_breeder , egg_sales_breeder,breeder_feeding_offered,breeder_feeding_refused,breeder_feeding_consumed,intact, weight, broken, rejected, fertility, hatchability, total_hatchability, hen_day;
-    TextView male_count_replacement, female_count_replacement,male_count_replacement_mort, female_count_replacement_mort, male_count_replacement_sales, female_count_replacement_sales,replacement_feeding_offered,replacement_feeding_refused,replacement_feeding_consumed;
-    TextView male_count_brooder, female_count_brooder,male_count_brooder_mort, female_count_brooder_mort, male_count_brooder_sales, female_count_brooder_sales,brooder_feeding_offered,brooder_feeding_refused,brooder_feeding_consumed;
+    TextView male_count_breeder;
+    TextView female_count_breeder;
+    TextView intact;
+    TextView broken;
+    TextView rejected;
+    TextView hen_day;
+    TextView male_count_replacement;
+    TextView female_count_replacement;
+    TextView male_count_brooder;
+    TextView female_count_brooder;
     TextView last_checked;
+
     RecyclerView.LayoutManager layoutManager;
     LinkedHashMap<String, List<String>> Project_category;
     List<String> Project_list;
     ExpandableListView Exp_list;
     ProjectAdapter adapter;
-    String farm_id=null;
     Integer farm_id_local;
-    ArrayList<Line> arrayList_lines = new ArrayList<Line>();
-    ArrayList<Integer> line_ids = new ArrayList<Integer>();
     DatabaseHelper myDb;
-    String name, email;
-    Uri photo;
+    String name;
     GoogleSignInClient mGoogleSignInClient;
 
     final String debugTag = "POULTRYDEBUGGER";
@@ -215,50 +220,53 @@ public class DashBoardActivity extends AppCompatActivity {
             farm_id_local = 0;
         }
 
-        male_count_breeder = findViewById(R.id.male_count_breeder);
-        female_count_breeder = findViewById(R.id.female_count_breeder);
-        male_count_breeder.setText(myDb.getAllMaleFromBreeders(farm_id_local).toString());
-        female_count_breeder.setText(myDb.getAllFemaleFromBreeders(farm_id_local).toString());
+        {
+            male_count_breeder = findViewById(R.id.male_count_breeder);
+            female_count_breeder = findViewById(R.id.female_count_breeder);
+            male_count_breeder.setText(myDb.getAllMaleFromBreeders(farm_id_local).toString());
+            female_count_breeder.setText(myDb.getAllFemaleFromBreeders(farm_id_local).toString());
 
-        intact = findViewById(R.id.intact);
-        broken = findViewById(R.id.broken);
-        rejected = findViewById(R.id.rejected);
-        hen_day = findViewById(R.id.hen_day);
-        intact.setText(myDb.getTotalIntact(farm_id_local).toString());
-        broken.setText(myDb.getTotalBroken(farm_id_local).toString());
-        rejected.setText(myDb.getTotalRejects(farm_id_local).toString());
-        hen_day.setText(myDb.getHenDayEggProduction(farm_id_local).toString()+" %");
+            intact = findViewById(R.id.intact);
+            broken = findViewById(R.id.broken);
+            rejected = findViewById(R.id.rejected);
+            hen_day = findViewById(R.id.hen_day);
+            intact.setText(myDb.getTotalIntact(farm_id_local).toString());
+            broken.setText(myDb.getTotalBroken(farm_id_local).toString());
+            rejected.setText(myDb.getTotalRejects(farm_id_local).toString());
+            hen_day.setText(myDb.getHenDayEggProduction(farm_id_local).toString() + " %");
 
 
-        DateFormat dateFormat = new SimpleDateFormat("MM");
-        Date date = new Date();
-        String month = dateFormat.format(date);
+            DateFormat dateFormat = new SimpleDateFormat("MM");
+            Date date = new Date();
+            String month = dateFormat.format(date);
 
-        Calendar cal = Calendar.getInstance();
-        Calendar cal2 = Calendar.getInstance();
+            Calendar cal = Calendar.getInstance();
+            Calendar cal2 = Calendar.getInstance();
 
-        int month2 = cal.get(Calendar.MONTH);
-        cal2.add(month2, -1);
+            int month2 = cal.get(Calendar.MONTH);
+            cal2.add(month2, -1);
 
-        Integer month3 = cal2.get(Calendar.MONTH);
+            Integer month3 = cal2.get(Calendar.MONTH);
 
-        DateFormat dateFormat2 = new SimpleDateFormat("YYYY");
-        Date date2 = new Date();
-        String year = dateFormat2.format(date2);
+            DateFormat dateFormat2 = new SimpleDateFormat("YYYY");
+            Date date2 = new Date();
+            String year = dateFormat2.format(date2);
 
-        String monthFinal = String.format("%02d" , month3);
-        last_checked = findViewById(R.id.last_checked);
-        last_checked.setText("Last checked: "+ monthFinal+"/"+year);
+            String monthFinal = String.format("%02d", month3);
+            last_checked = findViewById(R.id.last_checked);
+            last_checked.setText("Last checked: " + monthFinal + "/" + year);
 
-        male_count_replacement = findViewById(R.id.male_count_replacement);
-        female_count_replacement = findViewById(R.id.female_count_replacement);
-        male_count_replacement.setText(myDb.getAllMaleFromReplacements(farm_id_local).toString());
-        female_count_replacement.setText(myDb.getAllFemaleFromReplacements(farm_id_local).toString());
+            male_count_replacement = findViewById(R.id.male_count_replacement);
+            female_count_replacement = findViewById(R.id.female_count_replacement);
+            male_count_replacement.setText(myDb.getAllMaleFromReplacements(farm_id_local).toString());
+            female_count_replacement.setText(myDb.getAllFemaleFromReplacements(farm_id_local).toString());
 
-        male_count_brooder = findViewById(R.id.male_count_brooder);
-        female_count_brooder = findViewById(R.id.female_count_brooder);
-        male_count_brooder.setText(myDb.getAllMaleFromBrooders(farm_id_local).toString());
-        female_count_brooder.setText(myDb.getAllFemaleFromBrooders(farm_id_local).toString());
+            male_count_brooder = findViewById(R.id.male_count_brooder);
+            female_count_brooder = findViewById(R.id.female_count_brooder);
+            male_count_brooder.setText(myDb.getAllMaleFromBrooders(farm_id_local).toString());
+            female_count_brooder.setText(myDb.getAllFemaleFromBrooders(farm_id_local).toString());
+
+        }
 
         layoutManager = new LinearLayoutManager(this);
 
@@ -333,6 +341,7 @@ public class DashBoardActivity extends AppCompatActivity {
 
     }
 
+
 //    -----------------------------------------------
 
     private void API_getFarmID(String email){
@@ -341,19 +350,14 @@ public class DashBoardActivity extends AppCompatActivity {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
 
+                String farm_id;
+
                 farm_id = rawJsonResponse;
                 farm_id = farm_id.replaceAll("\\[", "").replaceAll("\\]","");
-
-                try {
-                    Log.d(debugTag, "API_getFarmID: "+farm_id);
-                }catch (Exception e){
-                    Log.d(debugTag, "API_getFarmID: Error");
-                }
 
                 API_getFarmInfo(farm_id);
                 API_getPen(farm_id);
                 API_getGeneration(farm_id);
-//                API_getFamilyForDisplay(farm_id);
 
                 myDb = new DatabaseHelper(getApplicationContext());
                 boolean isInsertedUser = myDb.insertDataUser(
@@ -362,8 +366,6 @@ public class DashBoardActivity extends AppCompatActivity {
                         Integer.parseInt(farm_id),
                         null, null, null
                 );
-
-//                API_getPen(farm_id_local.toString());
 
             }
 
@@ -513,14 +515,6 @@ public class DashBoardActivity extends AppCompatActivity {
 
                     }
 
-                    Log.d(debugTag, "GEN: "+ line_ids.size());
-
-//                    try {
-//                        Log.d(debugTag, "i: "+ arrayList_lines.size());
-//                    }catch(Exception e){
-//                        Log.d(debugTag, "SIYANAWA");
-//                    }
-
                 }catch (Exception e){
                     Log.d(debugTag, "Exception in Generations API caught");
                 }
@@ -557,20 +551,16 @@ public class DashBoardActivity extends AppCompatActivity {
                         Cursor cursor = myDb.getAllDataFromLineWhereID(arrayList.get(i).getId());
 
                         if(cursor.getCount() == 0){
+                            API_getFamily(arrayList.get(i).getId());
+
                             boolean isInserted = myDb.insertDataLineWithID(
                                     arrayList.get(i).getId(),
                                     arrayList.get(i).getLine_number(),
                                     1,
                                     Integer.parseInt(generation_id)
                             );
-
-                            line_ids.add(arrayList.get(i).getId());
                         }
                     }
-
-                    Log.d(debugTag, "LINE: "+ line_ids.size());
-
-//                    API_getFamily();
 
                 }catch (Exception e){
                     Log.d(debugTag, "Exception in Lines API caught");
@@ -591,7 +581,7 @@ public class DashBoardActivity extends AppCompatActivity {
         });
     }
 
-    private void API_getFamily(){
+    private void API_getFamily(Integer line_id){
         APIHelper.getFamily("getFamily/", new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
@@ -605,33 +595,29 @@ public class DashBoardActivity extends AppCompatActivity {
                     JSONFamily1 jsonFamily1 = gson.fromJson(rawJsonResponse, JSONFamily1.class);
                     ArrayList<Family1> arrayList_family1 = jsonFamily1.getData();
 
-                    int count=0;
-
-                    try {
-                        Log.d(debugTag, "Family-Lines count: " + arrayList_lines.size());
-                    }catch (Exception e){
-                        Log.d(debugTag, "Lines error");
-                    }
                     for (int i = 0; i < arrayList_family1.size(); i++) {
 
-                        DatabaseHelper myDb = new DatabaseHelper(getApplicationContext());
-                        Cursor cursor = myDb.getAllDataFromFamilyWhereID(arrayList_family1.get(i).getId());
-                        cursor.moveToFirst();
+                        if(arrayList_family1.get(i).getLine_id() == line_id) {
 
-                        if (cursor.getCount() == 0) {
-                            boolean isInserted = myDb.insertDataFamilyWithID(
-                                    arrayList_family1.get(i).getId(),
-                                    arrayList_family1.get(i).getNumber(),
-                                    arrayList_family1.get(i).getIs_active(),
-                                    arrayList_family1.get(i).getLine_id(),
-                                    arrayList_family1.get(i).getDeleted_at()
-                            );
+                            DatabaseHelper myDb = new DatabaseHelper(getApplicationContext());
+                            Cursor cursor = myDb.getAllDataFromFamilyWhereID(arrayList_family1.get(i).getId());
+                            cursor.moveToFirst();
 
-                            if(isInserted) count++;
+                            if (cursor.getCount() == 0) {
+                                boolean isInserted = myDb.insertDataFamilyWithID(
+                                        arrayList_family1.get(i).getId(),
+                                        arrayList_family1.get(i).getNumber(),
+                                        arrayList_family1.get(i).getIs_active(),
+                                        arrayList_family1.get(i).getLine_id(),
+                                        arrayList_family1.get(i).getDeleted_at()
+                                );
+
+                            }
+
                         }
 
                     }
-//                    Log.d(debugTag, "Family count: "+count);
+
                 }catch (Exception e){
                     Log.d(debugTag, "Exception in Family API caught");
                 }
@@ -650,6 +636,8 @@ public class DashBoardActivity extends AppCompatActivity {
             }
         });
     }
+
+
 
     private void API_getPhenoMorphos(){
         APIHelper.getPhenoMorphos("getPhenoMorphos/", new BaseJsonHttpResponseHandler<Object>() {
