@@ -4498,17 +4498,54 @@ public Integer getAllMaleFromBrooders(Integer farm_id){
         SQLiteDatabase db = this.getWritableDatabase();
         int size=100;
 
-
         Cursor res = db.rawQuery("SELECT COUNT(*) FROM " +TABLE_PEN+ " WHERE farm_id is ?", new String[]{id.toString()});
         res.moveToFirst();
 
-        if(res.getCount() != 0){
-//            Log.d("POULTRYDEBUGGER", res.getString(0));
+        if(res.getCount() != 0) size = res.getInt(0);
+        else size=0;
 
+        return size;
+    }
+
+    public int getGenerationSize(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        int size=100;
+
+
+        Cursor res = db.rawQuery("SELECT COUNT(*) FROM " +TABLE_GENERATION+ " WHERE farm_id is ?", new String[]{});
+        res.moveToFirst();
+
+        if(res.getCount() != 0) size = res.getInt(0);
+        else size=0;
+
+        return size;
+    }
+
+    public int getLineSize(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        int size=0;
+
+
+        Cursor res = db.rawQuery("SELECT COUNT(*) FROM "+TABLE_LINE, new String[]{});
+        res.moveToFirst();
+
+        if(res.getCount() != 0) size = res.getInt(0);
+        else size=0;
+
+        return size;
+    }
+
+    public int getFamilySize(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        int size=0;
+
+
+        Cursor res = db.rawQuery("SELECT COUNT(*) FROM "+TABLE_FAMILY, new String[]{});
+        res.moveToFirst();
+
+        if(res.getCount() != 0)
             size = res.getInt(0);
-        }else{
-            size=0;
-        }
+        else size=0;
 
         return size;
     }
