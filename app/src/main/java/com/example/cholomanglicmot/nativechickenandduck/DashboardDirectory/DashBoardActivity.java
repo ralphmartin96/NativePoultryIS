@@ -358,6 +358,7 @@ public class DashBoardActivity extends AppCompatActivity {
                 API_getFarmInfo(farm_id);
                 API_getPen(farm_id);
                 API_getGeneration(farm_id);
+                API_getFamilyForDisplay(farm_id);
 
                 myDb = new DatabaseHelper(getApplicationContext());
                 boolean isInsertedUser = myDb.insertDataUser(
@@ -620,6 +621,62 @@ public class DashBoardActivity extends AppCompatActivity {
 
                 }catch (Exception e){
                     Log.d(debugTag, "Exception in Family API caught");
+                }
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, String rawJsonResponse, Object response){
+
+                Toast.makeText(getApplicationContext(), "Failed to fetch Pens from web database ", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            protected Object parseResponse(String rawJsonData, boolean isFailure) throws Throwable{
+                return null;
+            }
+        });
+    }
+
+    private void API_getFamilyForDisplay(String farm_id){
+        APIHelper.getFamily("getFamilyForDisplay/"+farm_id, new BaseJsonHttpResponseHandler<Object>() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
+
+                Gson gson = new Gson();
+
+                try{
+                    JSONFamily jsonFamily = gson.fromJson(rawJsonResponse, JSONFamily.class);
+                    ArrayList<Family> arrayList_family = jsonFamily.getData();
+
+                    for (int i = 0; i < arrayList_family.size(); i++) {
+
+
+                            DatabaseHelper myDb = new DatabaseHelper(getApplicationContext());
+
+                            Cursor cursor = myDb.getAllDataFromFamilyForDisplay(
+                                    arrayList_family.get(i).getLine_number(),
+                                    arrayList_family.get(i).getFamily_number(),
+                                    arrayList_family.get(i).getGeneration_number()
+                            );
+
+                            cursor.moveToFirst();
+
+                            if (cursor.getCount() == 0) {
+                                boolean isInserted = myDb.insertDataFamilyDisplay(
+                                        arrayList_family.get(i).getLine_number(),
+                                        arrayList_family.get(i).getFamily_number(),
+                                        1,
+                                        arrayList_family.get(i).getGeneration_number()
+                                );
+
+//                                if(isInserted) Log.d(debugTag, "Inserted family "+arrayList_family.get(i).getFamily_number());
+                            }
+
+                    }
+
+                }catch (Exception e){
+                    Log.d(debugTag, "Exception in FamilyForDisplay API caught");
                 }
 
             }
