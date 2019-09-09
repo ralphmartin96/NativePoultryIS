@@ -65,6 +65,9 @@ public class CreatePen extends AppCompatActivity {
     String farm_id;
     Integer farm_id2=0;
     ArrayList<Pen> arrayList_pen;
+    ArrayList<Pen> arrayList_brooder_pen;
+    ArrayList<Pen> arrayList_grower_pen;
+    ArrayList<Pen> arrayList_layer_pen;
 
     LinkedHashMap<String, List<String>> Project_category;
     List<String> Project_list;
@@ -245,6 +248,8 @@ public class CreatePen extends AppCompatActivity {
 
     private void local_getPen(){
 
+        arrayList = new ArrayList<Pen>();
+
         Cursor cursor = myDb.getAllDataFromPen();
         cursor.moveToFirst();
 
@@ -252,10 +257,24 @@ public class CreatePen extends AppCompatActivity {
             Toast.makeText(this,"No data", Toast.LENGTH_SHORT).show();
         else {
             do {
+                String type = "";
+
+                switch(cursor.getString(3).toUpperCase()){
+                    case "BROODER":
+                        type = "Brooder";
+                        break;
+                    case "GROWER":
+                        type = "Grower";
+                        break;
+                    case "LAYER":
+                        type = "Layer";
+                        break;
+                }
+
                 Pen pen = new Pen(
                         cursor.getInt(0),
                         cursor.getString(2),
-                        cursor.getString(3),
+                        type, //cursor.getString(3),
                         cursor.getInt(4),
                         cursor.getInt(5),
                         cursor.getInt(1),
@@ -268,9 +287,9 @@ public class CreatePen extends AppCompatActivity {
 
         Collections.sort(arrayList, Pen.penComparator);
 
-        recycler_adapter = new RecyclerAdapter_Pen(arrayList);
-        recyclerView.setAdapter(recycler_adapter);
-        recycler_adapter.notifyDataSetChanged();
+//        recycler_adapter = new RecyclerAdapter_Pen(arrayList);
+//        recyclerView.setAdapter(recycler_adapter);
+//        recycler_adapter.notifyDataSetChanged();
     }
 
     private void API_addPen(RequestParams requestParams){

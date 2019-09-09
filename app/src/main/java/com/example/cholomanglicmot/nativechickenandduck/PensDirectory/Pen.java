@@ -89,9 +89,8 @@ public class Pen {
 
         public int compare(Pen p1, Pen p2) {
 
-            String pen1 = p1.getPen_type().toUpperCase();
-            String pen2= p2.getPen_type().toUpperCase();
-
+            String pen1 = p1.getPen_number().toUpperCase();
+            String pen2= p2.getPen_number().toUpperCase();
 
             return pen1.compareTo(pen2);
         }
