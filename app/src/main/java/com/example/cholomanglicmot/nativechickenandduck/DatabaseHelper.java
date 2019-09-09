@@ -1624,12 +1624,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return res;
     }
 
-
     public Cursor getAllDataFromBrooders(){
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor res = db.rawQuery("select * from " +TABLE_BROODER,null);
         return res;
     }
+
     public Cursor getIDFromBroodersWhere(Integer family){
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor res = db.rawQuery("select * from " +TABLE_BROODER+ " where BROODER_FAMILY is ?", new String[]{family.toString()},null);
@@ -4589,6 +4589,30 @@ public Integer getAllMaleFromBrooders(Integer farm_id){
 
 
         Cursor res = db.rawQuery("SELECT COUNT(*) FROM "+TABLE_FAMILY_DISPLAY, new String[]{});
+        res.moveToFirst();
+
+        if(res.getCount() != 0) size = res.getInt(0);
+
+        return size;
+    }
+
+    public int getBroodersSize(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        int size=0;
+
+        Cursor res = db.rawQuery("SELECT COUNT(*) FROM "+TABLE_BROODER, new String[]{});
+        res.moveToFirst();
+
+        if(res.getCount() != 0) size = res.getInt(0);
+
+        return size;
+    }
+
+    public int getBroodersInventorySize(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        int size=0;
+
+        Cursor res = db.rawQuery("SELECT COUNT(*) FROM "+TABLE_BROODER_INVENTORIES, new String[]{});
         res.moveToFirst();
 
         if(res.getCount() != 0) size = res.getInt(0);
