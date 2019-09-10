@@ -186,13 +186,13 @@ public class DashBoardActivity extends AppCompatActivity {
 
             API_getFarmID(email);
 
-//            API_getPhenoMorphoValues();
-//            API_getPhenoMorphos();
-//            API_getMortalityAndSales();
-//
 //            API_getBrooderInventory();
 //            API_getBrooderFeeding();
 //            API_getBrooderGrowth();
+//
+//            API_getPhenoMorphoValues();
+//            API_getPhenoMorphos();
+//            API_getMortalityAndSales();
 //
 //            API_getReplacement();
 //            API_getReplacementInventory();
@@ -829,97 +829,10 @@ public class DashBoardActivity extends AppCompatActivity {
 
 
 
-    private void API_getBrooder(){
-        APIHelper.getBrooder("getBrooder/", new BaseJsonHttpResponseHandler<Object>() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
-
-                Gson gson = new Gson();
-                try{
-                    JSONBrooder jsonBrooder = gson.fromJson(rawJsonResponse, JSONBrooder.class);
-                    ArrayList<Brooders>arrayList_brooder = jsonBrooder.getData();
-
-                    for (int i = 0; i < arrayList_brooder.size(); i++) {
-
-                        Cursor cursor = myDb.getAllDataFromBroodersWhereID(arrayList_brooder.get(i).getId());
-                        cursor.moveToFirst();
-
-                        if (cursor.getCount() == 0) {
-
-                            boolean isInserted = myDb.insertDataBrooderWithID(
-                                    arrayList_brooder.get(i).getId(),
-                                    arrayList_brooder.get(i).getBrooder_family_number(),
-                                    arrayList_brooder.get(i).getBrooder_date_added(),
-                                    arrayList_brooder.get(i).getBrooder_deleted_at()
-                            );
-                            // Toast.makeText(CreateBrooders.this, "Brooders Added", Toast.LENGTH_SHORT).show();
-                        }
-
-                    }
-
-                }catch(Exception e){
-
-                }
-
-
-
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, String rawJsonResponse, Object response){
-
-                Toast.makeText(getApplicationContext(), "Failed to fetch Brooders from web database ", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            protected Object parseResponse(String rawJsonData, boolean isFailure) throws Throwable{
-                return null;
-            }
-        });
-    }
-
-//    private void API_getBrooderInventory(){
-//        APIHelper.getBrooderInventory("getBrooderInventory/", new BaseJsonHttpResponseHandler<Object>() {
-//            @Override
-//            public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
-//
-//                Gson gson = new Gson();
-//                try{
-//                    JSONBrooderInventory jsonBrooderInventory = gson.fromJson(rawJsonResponse, JSONBrooderInventory.class);
-//                    ArrayList<Brooder_Inventory> arrayList_brooderInventory = jsonBrooderInventory.getData();
-//
-//                    for (int i = 0; i < arrayList_brooderInventory.size(); i++) {
-//
-//                        Cursor cursor = myDb.getAllDataFromBrooderInventoryWhereID(arrayList_brooderInventory.get(i).getId());
-//                        cursor.moveToFirst();
-//                        if(cursor.getCount() == 0){
-//                            boolean isInserted = myDb.insertDataBrooderInventoryWithID(arrayList_brooderInventory.get(i).getId(), arrayList_brooderInventory.get(i).getBrooder_inv_brooder_id(), arrayList_brooderInventory.get(i).getBrooder_inv_pen(), arrayList_brooderInventory.get(i).getBrooder_inv_brooder_tag(),arrayList_brooderInventory.get(i).getBrooder_inv_batching_date(),arrayList_brooderInventory.get(i).getBrooder_male_quantity(),arrayList_brooderInventory.get(i).getBrooder_female_quantity(),arrayList_brooderInventory.get(i).getBrooder_total_quantity(), arrayList_brooderInventory.get(i).getBrooder_inv_last_update(), arrayList_brooderInventory.get(i).getBrooder_inv_deleted_at());
-//
-//                        }
-//
-//
-//                    }
-//                }catch (Exception e){}
-//            }
-//
-//            @Override
-//            public void onFailure(int statusCode, Header[] headers, Throwable throwable, String rawJsonResponse, Object response){
-//
-//                Toast.makeText(getApplicationContext(), "Failed to fetch Brooders Inventory from web database ", Toast.LENGTH_SHORT).show();
-//            }
-//
-//            @Override
-//            protected Object parseResponse(String rawJsonData, boolean isFailure) throws Throwable{
-//                return null;
-//            }
-//        });
-//    }
-
     private void API_getBrooderInventory(int pen_id){
         APIHelper.getBrooderInventory("getBrooderInventory/", new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
-
 
                 Gson gson = new Gson();
                 try{
@@ -932,8 +845,8 @@ public class DashBoardActivity extends AppCompatActivity {
                             Cursor cursor = myDb.getAllDataFromBrooderInventoryWhereID(brooder_inventory.getId());
                             cursor.moveToFirst();
 
-
                             if(cursor.getCount() == 0){
+
                                 boolean isInserted = myDb.insertDataBrooderInventoryWithID(
                                         brooder_inventory.getId(),
                                         brooder_inventory.getBrooder_inv_brooder_id(),
@@ -946,6 +859,8 @@ public class DashBoardActivity extends AppCompatActivity {
                                         brooder_inventory.getBrooder_inv_last_update(),
                                         brooder_inventory.getBrooder_inv_deleted_at()
                                 );
+
+                                API_getBrooderFeeding(brooder_inventory.getId());
                             }
 
                         }
@@ -968,29 +883,46 @@ public class DashBoardActivity extends AppCompatActivity {
         });
     }
 
-    private void API_getBrooderFeeding(){
+    private void API_getBrooderFeeding(int inventory_id){
         APIHelper.getBrooderFeeding("getBrooderFeeding/", new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
 
                 Gson gson = new Gson();
                 try {
-                    JSONBrooderFeeding jsonBrooderInventory = gson.fromJson(rawJsonResponse, JSONBrooderFeeding.class);
-                    ArrayList<Brooder_FeedingRecords> arrayList_brooderInventory = jsonBrooderInventory.getData();
+                    JSONBrooderFeeding jsonBrooderFeeding = gson.fromJson(rawJsonResponse, JSONBrooderFeeding.class);
+                    ArrayList<Brooder_FeedingRecords> arrayList_brooderFeeding = jsonBrooderFeeding.getData();
 
 
-                    for (int i = 0; i < arrayList_brooderInventory.size(); i++) {
-                        Cursor cursor = myDb.getAllDataFromBrooderFeedingRecordsWhereFeedingID(arrayList_brooderInventory.get(i).getId());
+                    for (Brooder_FeedingRecords feedingRecords : arrayList_brooderFeeding) {
+
+                        Cursor cursor = myDb.getAllDataFromBrooderFeedingRecordsWhereFeedingID(feedingRecords.getId());
                         cursor.moveToFirst();
 
-                        if (cursor.getCount() == 0) {
+                        if(feedingRecords.getBrooder_feeding_inventory_id() == inventory_id) {
+
+                            if (cursor.getCount() == 0) {
+
+                                boolean isInserted = myDb.insertDataBrooderFeedingRecordsWithID(
+                                        feedingRecords.getId(),
+                                        feedingRecords.getBrooder_feeding_inventory_id(),
+                                        feedingRecords.getBrooder_feeding_date_collected(),
+                                        feedingRecords.getBrooder_feeding_offered(),
+                                        feedingRecords.getBrooder_feeding_refused(),
+                                        feedingRecords.getBrooder_feeding_remarks(),
+                                        feedingRecords.getBrooder_feeding_deleted_at()
+                                );
+
+                            }
 
 
-                            boolean isInserted = myDb.insertDataBrooderFeedingRecordsWithID(arrayList_brooderInventory.get(i).getId(), arrayList_brooderInventory.get(i).getBrooder_feeding_inventory_id(), arrayList_brooderInventory.get(i).getBrooder_feeding_date_collected(), arrayList_brooderInventory.get(i).getBrooder_feeding_offered(),arrayList_brooderInventory.get(i).getBrooder_feeding_refused(),arrayList_brooderInventory.get(i).getBrooder_feeding_remarks(),arrayList_brooderInventory.get(i).getBrooder_feeding_deleted_at());
+                            cursor.close();
 
                         }
 
                     }
+
+                    Log.d(debugTag, "Feed: "+ myDb.getBroodersFeedingSize());
 
                 }catch (Exception e){
 
@@ -1023,15 +955,24 @@ public class DashBoardActivity extends AppCompatActivity {
 
 
                     for (int i = 0; i < arrayList_brooderInventory.size(); i++) {
-                        //check if generation to be inserted is already in the database
+
                         Cursor cursor = myDb.getAllDataFromBrooderGrowthRecordsWhereGrowthID(arrayList_brooderInventory.get(i).getId());
                         cursor.moveToFirst();
 
                         if (cursor.getCount() == 0) {
-
-
-                            boolean isInserted = myDb.insertDataBrooderGrowthRecordsWithID(arrayList_brooderInventory.get(i).getId(), arrayList_brooderInventory.get(i).getBrooder_growth_inventory_id(), arrayList_brooderInventory.get(i).getBrooder_growth_collection_day(), arrayList_brooderInventory.get(i).getBrooder_growth_date_collected(),arrayList_brooderInventory.get(i).getBrooder_growth_male_quantity(),arrayList_brooderInventory.get(i).getBrooder_growth_male_weight(),arrayList_brooderInventory.get(i).getBrooder_growth_female_quantity(),arrayList_brooderInventory.get(i).getBrooder_growth_female_weight(),arrayList_brooderInventory.get(i).getBrooder_growth_total_quantity(),arrayList_brooderInventory.get(i).getBrooder_growth_total_weight(),arrayList_brooderInventory.get(i).getBrooder_growth_deleted_at());
-                            //Toast.makeText(BrooderInventoryActivity.this, "oyoyooyoy", Toast.LENGTH_SHORT).show();
+                            boolean isInserted = myDb.insertDataBrooderGrowthRecordsWithID(
+                                    arrayList_brooderInventory.get(i).getId(),
+                                    arrayList_brooderInventory.get(i).getBrooder_growth_inventory_id(),
+                                    arrayList_brooderInventory.get(i).getBrooder_growth_collection_day(),
+                                    arrayList_brooderInventory.get(i).getBrooder_growth_date_collected(),
+                                    arrayList_brooderInventory.get(i).getBrooder_growth_male_quantity(),
+                                    arrayList_brooderInventory.get(i).getBrooder_growth_male_weight(),
+                                    arrayList_brooderInventory.get(i).getBrooder_growth_female_quantity(),
+                                    arrayList_brooderInventory.get(i).getBrooder_growth_female_weight(),
+                                    arrayList_brooderInventory.get(i).getBrooder_growth_total_quantity(),
+                                    arrayList_brooderInventory.get(i).getBrooder_growth_total_weight(),
+                                    arrayList_brooderInventory.get(i).getBrooder_growth_deleted_at()
+                            );
                         }
 
                     }
