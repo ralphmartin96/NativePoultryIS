@@ -4620,4 +4620,16 @@ public Integer getAllMaleFromBrooders(Integer farm_id){
         return size;
     }
 
+    public int getBroodersFeedingSize(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        int size=0;
+
+        Cursor res = db.rawQuery("SELECT COUNT(*) FROM "+TABLE_BROODER_FEEDING_RECORDS, new String[]{});
+        res.moveToFirst();
+
+        if(res.getCount() != 0) size = res.getInt(0);
+
+        return size;
+    }
+
 }
