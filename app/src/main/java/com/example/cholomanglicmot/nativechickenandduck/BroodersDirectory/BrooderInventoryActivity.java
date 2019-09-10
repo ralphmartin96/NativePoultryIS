@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,11 +53,14 @@ public class BrooderInventoryActivity extends AppCompatActivity {
     Integer fam_id=0;
     String farm_code=null;
 
+    final String debugTag = "POULTRYDEBUGGER";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_brooder_inventory);
         String brooder_pen;
+
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
             if(extras == null) {
@@ -83,87 +87,60 @@ public class BrooderInventoryActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
 
+        local_getBrooderInventory(brooder_pen);
 
+        recycler_adapter = new RecyclerAdapter_Brooder_Inventory(arrayList_temp, brooder_pen);
+        recyclerView.setAdapter(recycler_adapter);
+        recycler_adapter.notifyDataSetChanged();
 
-        boolean isNetworkAvailable = isNetworkAvailable();
-        if (isNetworkAvailable) {
-            //if internet is available, load data from web database
+    }
 
+    private void local_getBrooderInventory(String brooder_pen){
 
+        Cursor cursor_brooder_inventory = myDb.getAllDataFromBrooderInventory(); //para sa pagstore ng data sa arraylist
+        cursor_brooder_inventory.moveToFirst();
 
-            API_updateBrooderInventory();
-            API_getBrooderInventory();
+        if(cursor_brooder_inventory.getCount() == 0){
+            Toast.makeText(this,"No data inventories.", Toast.LENGTH_LONG).show();
+        }else {
+            do {
+                Brooder_Inventory brooder_inventory = new Brooder_Inventory(
+                        cursor_brooder_inventory.getInt(0),
+                        cursor_brooder_inventory.getInt(1),
+                        cursor_brooder_inventory.getInt(2),
+                        cursor_brooder_inventory.getString(3),
+                        cursor_brooder_inventory.getString(4),
+                        cursor_brooder_inventory.getInt(5),
+                        cursor_brooder_inventory.getInt(6),
+                        cursor_brooder_inventory.getInt(7),
+                        cursor_brooder_inventory.getString(8),
+                        cursor_brooder_inventory.getString(9)
+                );
+                arrayListBrooderInventory.add(brooder_inventory);
+            } while (cursor_brooder_inventory.moveToNext());
+        }
+        cursor_brooder_inventory.close();
 
+        Cursor cursor1 = myDb.getAllDataFromPenWhere(brooder_pen);
+        cursor1.moveToFirst();
+
+        if(cursor1.getCount() != 0){
+            brooder_pen_id = cursor1.getInt(0);
+        }
+
+        cursor1.close();
+
+        for (Brooder_Inventory brooder_inv : arrayListBrooderInventory){
+
+            if(brooder_inv.getBrooder_inv_pen().equals(brooder_pen_id)
+                    && brooder_inv.getBrooder_inv_deleted_at() == null){
+                arrayList_temp.add(brooder_inv);
+            }
 
         }
 
-            Cursor cursor_brooder_inventory = myDb.getAllDataFromBrooderInventory(); //para sa pagstore ng data sa arraylist
-            cursor_brooder_inventory.moveToFirst();
-            if(cursor_brooder_inventory.getCount() == 0){
-                //show message
-                Toast.makeText(this,"No data inventories.", Toast.LENGTH_LONG).show();
-
-            }else {
-                do {
-
-                    Brooder_Inventory brooder_inventory = new Brooder_Inventory(cursor_brooder_inventory.getInt(0),cursor_brooder_inventory.getInt(1), cursor_brooder_inventory.getInt(2), cursor_brooder_inventory.getString(3),cursor_brooder_inventory.getString(4), cursor_brooder_inventory.getInt(5), cursor_brooder_inventory.getInt(6),cursor_brooder_inventory.getInt(7), cursor_brooder_inventory.getString(8), cursor_brooder_inventory.getString(9));
-                    arrayListBrooderInventory.add(brooder_inventory);
-                } while (cursor_brooder_inventory.moveToNext());
-            }
-            cursor_brooder_inventory.close();
-
-/*    do{
-                String breeder_tag = cursorBreederInv.getString(3);
-
-                if(breeder_tag.contains(farm_code)){
-                    Breeder_Inventory breeder_inventory = new Breeder_Inventory(cursorBreederInv.getInt(0), cursorBreederInv.getInt(1), cursorBreederInv.getInt(2), cursorBreederInv.getString(3), cursorBreederInv.getString(4), cursorBreederInv.getInt(5), cursorBreederInv.getInt(6), cursorBreederInv.getInt(7),cursorBreederInv.getString(8), cursorBreederInv.getString(9),cursorBreederInv.getString(10),cursorBreederInv.getString(11),cursorBreederInv.getString(12));
-
-                    arrayListBreederInventory2.add(breeder_inventory);
-                }
-            }while (cursorBreederInv.moveToNext());*/
-         /*   Toast.makeText(this, brooder_pen_id.toString(), Toast.LENGTH_SHORT).show();*/
-  /*      Cursor cursor1 = myDb.getAllDataFromPenWhere(brooder_pen);
-        cursor1.moveToFirst();
-        if(cursor1.getCount() != 0){
-            brooder_pen_id = cursor1.getInt(0);
-        }*/
-        //Toast.makeText(this, brooder_pen_id.toString(), Toast.LENGTH_SHORT).show();
-
-
-        for (int i=0;i<arrayListBrooderInventory.size();i++){
-            Cursor cursor1 = myDb.getAllDataFromPenWhere(brooder_pen);
-            cursor1.moveToFirst();
-            if(cursor1.getCount() != 0){
-                brooder_pen_id = cursor1.getInt(0);
-            }
-            Toast.makeText(this, brooder_pen_id.toString(), Toast.LENGTH_SHORT).show();
-            cursor1.close();
-               // String breeder_tag = arrayListBrooderInventory.get(i).getBrooder_inv_brooder_tag();
-                Integer brooder_pen_id_2 = brooder_pen_id;
-                if(arrayListBrooderInventory.get(i).getBrooder_inv_pen().equals(brooder_pen_id) && arrayListBrooderInventory.get(i).getBrooder_inv_deleted_at() == null){
-
-                    arrayList_temp.add(arrayListBrooderInventory.get(i)); //arrayList_temp ay naglalaman ng lahat ng brooder_inv sa loob ng pen na napili
-
-                }
-            }
-
-
-
-            recycler_adapter = new RecyclerAdapter_Brooder_Inventory(arrayList_temp, brooder_pen);//arrayList = brooder_pen, arrayListInventory = brooder_inventory, arrayListBrooders = brooders
-            recyclerView.setAdapter(recycler_adapter);
-            recycler_adapter.notifyDataSetChanged();
-
-
-
-
-
     }
-    private boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-    }
+
     private void API_getBrooderInventory(){
         APIHelper.getBrooderInventory("getBrooderInventory/", new BaseJsonHttpResponseHandler<Object>() {
             @Override
@@ -180,8 +157,18 @@ public class BrooderInventoryActivity extends AppCompatActivity {
 
                     if (cursor.getCount() == 0) {
 
-
-                        boolean isInserted = myDb.insertDataBrooderInventoryWithID(arrayList_brooderInventory.get(i).getId(), arrayList_brooderInventory.get(i).getBrooder_inv_brooder_id(), arrayList_brooderInventory.get(i).getBrooder_inv_pen(), arrayList_brooderInventory.get(i).getBrooder_inv_brooder_tag(),arrayList_brooderInventory.get(i).getBrooder_inv_batching_date(),arrayList_brooderInventory.get(i).getBrooder_male_quantity(),arrayList_brooderInventory.get(i).getBrooder_female_quantity(),arrayList_brooderInventory.get(i).getBrooder_total_quantity(), arrayList_brooderInventory.get(i).getBrooder_inv_last_update(), arrayList_brooderInventory.get(i).getBrooder_inv_deleted_at());
+                        boolean isInserted = myDb.insertDataBrooderInventoryWithID(
+                                arrayList_brooderInventory.get(i).getId(),
+                                arrayList_brooderInventory.get(i).getBrooder_inv_brooder_id(),
+                                arrayList_brooderInventory.get(i).getBrooder_inv_pen(),
+                                arrayList_brooderInventory.get(i).getBrooder_inv_brooder_tag(),
+                                arrayList_brooderInventory.get(i).getBrooder_inv_batching_date(),
+                                arrayList_brooderInventory.get(i).getBrooder_male_quantity(),
+                                arrayList_brooderInventory.get(i).getBrooder_female_quantity(),
+                                arrayList_brooderInventory.get(i).getBrooder_total_quantity(),
+                                arrayList_brooderInventory.get(i).getBrooder_inv_last_update(),
+                                arrayList_brooderInventory.get(i).getBrooder_inv_deleted_at()
+                        );
 
                     }
 
@@ -201,6 +188,7 @@ public class BrooderInventoryActivity extends AppCompatActivity {
             }
         });
     }
+
     private void API_updateBrooderInventory(){
 
         APIHelper.getBrooderInventory("getBrooderInventory/", new BaseJsonHttpResponseHandler<Object>() {
@@ -299,6 +287,7 @@ public class BrooderInventoryActivity extends AppCompatActivity {
             }
         });
     }
+
     private void API_addBrooderInventory(RequestParams requestParams){
         APIHelper.addBrooderInventory("addBrooderInventory", requestParams, new BaseJsonHttpResponseHandler<Object>() {
             @Override
@@ -317,6 +306,13 @@ public class BrooderInventoryActivity extends AppCompatActivity {
                 return null;
             }
         });
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
     @Override
