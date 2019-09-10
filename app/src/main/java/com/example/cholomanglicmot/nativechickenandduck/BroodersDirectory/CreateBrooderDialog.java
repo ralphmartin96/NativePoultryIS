@@ -109,10 +109,6 @@ public class CreateBrooderDialog extends DialogFragment {
         brooder_total_number = view.findViewById(R.id.total_brooder_number);
         context = getActivity();
 
-
-
-
-
         loadSpinnerDataForGeneration();
         generation_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -238,17 +234,17 @@ public class CreateBrooderDialog extends DialogFragment {
                         boolean isInserted = myDb.insertDataBrooder(familyID,brooder_date_added.getText().toString(),null);
 
 
-                        if(isNetworkAvailable) {
-
-
-                            RequestParams requestParams = new RequestParams();
-                            requestParams.add("family_id", familyID.toString());
-                            requestParams.add("date_added", brooder_date_added.getText().toString());
-                            requestParams.add("deleted_at", null);
-
-                            API_addBrooder(requestParams);
-
-                        }
+//                        if(isNetworkAvailable) {
+//
+//
+//                            RequestParams requestParams = new RequestParams();
+//                            requestParams.add("family_id", familyID.toString());
+//                            requestParams.add("date_added", brooder_date_added.getText().toString());
+//                            requestParams.add("deleted_at", null);
+//
+//                            API_addBrooder(requestParams);
+//
+//                        }
 
 
                         //GET ID OF INSERTED BROODER

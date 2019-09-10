@@ -79,11 +79,8 @@ public class CreateBrooders extends AppCompatActivity {
     RecyclerView.LayoutManager layoutManager;
 
     ArrayList<Brooders_Pen> arrayList = new ArrayList<>();
-    ArrayList<Brooder_Inventory> arrayList2 = new ArrayList<>();
-    ArrayList<Brooders> arrayList3 = new ArrayList<>();
     ArrayList<Brooder_Inventory> arrayList_brooderInventory = new ArrayList<>();
 
-    //RecyclerAdapter_Brooder_Pen recyclerAdapter_brooder_pen;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -195,22 +192,19 @@ public class CreateBrooders extends AppCompatActivity {
 
         //get brooders
         //get brooder_inventories
-        boolean isNetworkAvailable = isNetworkAvailable();
-        if (isNetworkAvailable) {
-            //if internet is available, load data from web database
-
-
-            //HARDCODED KASI WALA KA PANG DATABASE NA NANDUN EMAIL MO
-            API_updateBrooder();
-            API_getBrooderInventory();
-            API_updateBrooderInventory();
-            API_getBrooder();
-
-
-        }
+//        boolean isNetworkAvailable = isNetworkAvailable();
+//        if (isNetworkAvailable) {
+//            //if internet is available, load data from web database
+//
+//            API_updateBrooder();
+//            API_getBrooderInventory();
+//            API_updateBrooderInventory();
+//            API_getBrooder();
+//        }
 
 
 /////////////////////////
+
         StringBuffer buffer = new StringBuffer();
         Cursor cursor_pen = myDb.getAllDataFromPen();
         cursor_pen.moveToFirst();
@@ -218,41 +212,44 @@ public class CreateBrooders extends AppCompatActivity {
 
         //////////////////////////////////////////
 
+        local_getBrooder();
+//        API_getBrooderInventory();
 
-        Cursor cursor_brooder_pen = myDb.getBroodersFromPen(); //naloload na kasi na-load na siya from the pen
+        recycler_adapter = new RecyclerAdapter_Brooder_Pen(arrayList);
+        recyclerView.setAdapter(recycler_adapter);
+        recycler_adapter.notifyDataSetChanged();
+
+    }
+
+    private void local_getBrooder(){
+        Cursor cursor_brooder_pen = myDb.getBroodersFromPen();
 
         if (cursor_brooder_pen.getCount() == 0) {
-            //show message
             Toast.makeText(this, "No Brooder data", Toast.LENGTH_SHORT).show();
             return;
         } else {
 
             cursor_brooder_pen.moveToFirst();
             do {
-
-                Brooders_Pen broodersPen = new Brooders_Pen(cursor_brooder_pen.getString(2), cursor_brooder_pen.getInt(5), cursor_brooder_pen.getInt(4) - cursor_brooder_pen.getInt(5));
+                Brooders_Pen broodersPen = new Brooders_Pen(
+                        cursor_brooder_pen.getString(2),
+                        cursor_brooder_pen.getInt(5),
+                        cursor_brooder_pen.getInt(4) - cursor_brooder_pen.getInt(5)
+                );
                 arrayList.add(broodersPen);
             } while (cursor_brooder_pen.moveToNext());
 
-
-            recycler_adapter = new RecyclerAdapter_Brooder_Pen(arrayList/*, arrayList2, arrayList3*/);//arrayList = brooder_pen, arrayListInventory = brooder_inventory, arrayListBrooders = brooders
-            recyclerView.setAdapter(recycler_adapter);
-            recycler_adapter.notifyDataSetChanged();
-
         }
 
-
-
-
-
-
     }
+
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
+
     private void API_getBrooder(){
         APIHelper.getBrooder("getBrooder/", new BaseJsonHttpResponseHandler<Object>() {
             @Override
@@ -275,8 +272,6 @@ public class CreateBrooders extends AppCompatActivity {
 
                 }
 
-
-
             }
 
             @Override
@@ -291,6 +286,7 @@ public class CreateBrooders extends AppCompatActivity {
             }
         });
     }
+
     private void API_getBrooderInventory(){
         APIHelper.getBrooderInventory("getBrooderInventory/", new BaseJsonHttpResponseHandler<Object>() {
             @Override
@@ -328,6 +324,7 @@ public class CreateBrooders extends AppCompatActivity {
             }
         });
     }
+
     private void API_updateBrooderInventory(){
 
         APIHelper.getBrooderInventory("getBrooderInventory/", new BaseJsonHttpResponseHandler<Object>() {
@@ -426,6 +423,7 @@ public class CreateBrooders extends AppCompatActivity {
             }
         });
     }
+
     private void API_addBrooderInventory(RequestParams requestParams){
         APIHelper.addBrooderInventory("addBrooderInventory", requestParams, new BaseJsonHttpResponseHandler<Object>() {
             @Override
@@ -445,6 +443,7 @@ public class CreateBrooders extends AppCompatActivity {
             }
         });
     }
+
     private void API_addBrooder(RequestParams requestParams){
         APIHelper.addBrooderFamily("addBrooderFamily", requestParams, new BaseJsonHttpResponseHandler<Object>() {
             @Override
@@ -464,6 +463,7 @@ public class CreateBrooders extends AppCompatActivity {
             }
         });
     }
+
     private void API_updateBrooder(){
 
         APIHelper.getBrooder("getBrooder/", new BaseJsonHttpResponseHandler<Object>() {
@@ -551,6 +551,7 @@ public class CreateBrooders extends AppCompatActivity {
             }
         });
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
