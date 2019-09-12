@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -106,8 +107,6 @@ public class BrooderFeedingRecordsActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
 
-        ///////////////////////////////DATABASE
-
         FirebaseAuth mAuth;
 
         mAuth = FirebaseAuth.getInstance();
@@ -120,87 +119,11 @@ public class BrooderFeedingRecordsActivity extends AppCompatActivity {
 
         Uri photo = user.getPhotoUrl();
 
-        Cursor cursor_farm_id = myDb.getFarmIDFromUsers(email);
-        cursor_farm_id.moveToFirst();
-        if(cursor_farm_id.getCount() != 0){
-            farm_id = cursor_farm_id.getInt(0);
-        }
-        Cursor cursor_code = myDb.getAllDataFromFarms(farm_id);
-        cursor_code.moveToFirst();
-        if(cursor_code.getCount() != 0){
-            farm_code = cursor_code.getString(2);
-        }
+        local_getBrooderFeeding();
 
-        Cursor cursor = myDb.getAllDataFromPenWhere(brooder_pen);
-        cursor.moveToFirst();
-        if(cursor.getCount()!=0){
-            pen_id = cursor.getInt(0);
-        }
-
-        boolean isNetworkAvailable = isNetworkAvailable();
-        if (isNetworkAvailable) {
-            //if internet is available, load data from web database
-
-
-
-
-            API_updateBrooderFeeding();
-            API_getBrooderFeeding();
-
-
-        }
-        //Toast.makeText(this, pen_id.toString(), Toast.LENGTH_SHORT).show();
-        Cursor cursor_inventory = myDb.getDataFromBrooderInventoryWherePen(pen_id);
-        cursor_inventory.moveToFirst();
-        if(cursor_inventory.getCount() == 0){
-            //show message
-           // Toast.makeText(this,"No data inventories.", Toast.LENGTH_LONG).show();
-
-        }else {
-            do {
-                String breeder_tag = cursor_inventory.getString(3);
-
-                if(breeder_tag.contains(farm_code)) {
-                    Brooder_Inventory brooder_inventory = new Brooder_Inventory(cursor_inventory.getInt(0), cursor_inventory.getInt(1), cursor_inventory.getInt(2), cursor_inventory.getString(3), cursor_inventory.getString(4), cursor_inventory.getInt(5), cursor_inventory.getInt(6), cursor_inventory.getInt(7), cursor_inventory.getString(8), cursor_inventory.getString(9));
-                    arrayListBrooderInventory.add(brooder_inventory);
-                }
-            } while (cursor_inventory.moveToNext());
-        }
-
-
-
-
-        Cursor cursor_feeding = myDb.getAllDataFromBrooderFeedingRecords();
-            cursor_feeding.moveToFirst();
-            if(cursor_feeding.getCount() != 0){
-                do{
-
-                    Brooder_FeedingRecords brooderFeedingRecords = new Brooder_FeedingRecords(cursor_feeding.getInt(0),cursor_feeding.getInt(1), cursor_feeding.getString(2), null,cursor_feeding.getFloat(3),cursor_feeding.getFloat(4), cursor_feeding.getString(5), cursor_feeding.getString(6));
-
-                    arrayListBrooderFeedingRecords.add(brooderFeedingRecords);
-
-
-                    /*    }
-                    }*/
-                }while(cursor_feeding.moveToNext());
-            }
-
-            ArrayList<Brooder_FeedingRecords> arrayList_final = new ArrayList<Brooder_FeedingRecords>();
-
-            for(int i=0;i<arrayListBrooderInventory.size();i++){
-                for(int k=0;k<arrayListBrooderFeedingRecords.size();k++){
-                    if(arrayListBrooderInventory.get(i).getId()==arrayListBrooderFeedingRecords.get(k).getBrooder_feeding_inventory_id() && arrayListBrooderFeedingRecords.get(k).getBrooder_feeding_deleted_at() == null){
-                        arrayList_final.add(arrayListBrooderFeedingRecords.get(k));
-                    }
-                }
-            }
-
-
-
-            recycler_adapter = new RecyclerAdapter_Brooder_Feeding(arrayList_final);
-            recyclerView.setAdapter(recycler_adapter);
-            recycler_adapter.notifyDataSetChanged();
-
+        recycler_adapter = new RecyclerAdapter_Brooder_Feeding(arrayListBrooderFeedingRecords);
+        recyclerView.setAdapter(recycler_adapter);
+        recycler_adapter.notifyDataSetChanged();
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -218,17 +141,34 @@ public class BrooderFeedingRecordsActivity extends AppCompatActivity {
                     create_brooder_feeding_records.hide();
                 }
             }
+
         });
-
-
-
-
     }
-    private boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+
+    private void local_getBrooderFeeding(){
+
+        Cursor cursor_feeding = myDb.getAllDataFromBrooderFeedingRecords();
+        cursor_feeding.moveToFirst();
+
+        if(cursor_feeding.getCount() != 0){
+            do{
+
+                Brooder_FeedingRecords brooderFeedingRecords = new Brooder_FeedingRecords(
+                        cursor_feeding.getInt(0),
+                        cursor_feeding.getInt(1),
+                        cursor_feeding.getString(2),
+                        null,
+                        cursor_feeding.getFloat(3),
+                        cursor_feeding.getFloat(4),
+                        cursor_feeding.getString(5),
+                        cursor_feeding.getString(6)
+                );
+
+                arrayListBrooderFeedingRecords.add(brooderFeedingRecords);
+            }while(cursor_feeding.moveToNext());
+        }
+
+//        Log.d("POULTRYDEBUGGER", "Feeds: "+ arrayListBrooderFeedingRecords.size());
     }
 
     private void API_addBrooderFeeding(RequestParams requestParams){
@@ -254,6 +194,7 @@ public class BrooderFeedingRecordsActivity extends AppCompatActivity {
         });
 
     }
+
     private void API_updateBrooderFeeding(){
         APIHelper.getBrooderFeeding("getBrooderFeeding/", new BaseJsonHttpResponseHandler<Object>() {
             @Override
@@ -276,9 +217,6 @@ public class BrooderFeedingRecordsActivity extends AppCompatActivity {
 
                     } while (cursor_brooder_feeding.moveToNext());
                 }
-
-
-
 
                 //arrayListBrooderInventoryLocal contains all data from local database
                 //arrayListBrooderInventoryWeb   contains all data from web database
@@ -327,7 +265,7 @@ public class BrooderFeedingRecordsActivity extends AppCompatActivity {
 
                     //Toast.makeText(BrooderFeedingRecordsActivity.this, id_to_sync.get(i).toString(), Toast.LENGTH_SHORT).show();
 
-                    API_addBrooderFeeding(requestParams);
+//                    API_addBrooderFeeding(requestParams);
 
 
 
@@ -348,6 +286,7 @@ public class BrooderFeedingRecordsActivity extends AppCompatActivity {
             }
         });
     }
+
     private void API_getBrooderFeeding(){
         APIHelper.getBrooderFeeding("getBrooderFeeding/", new BaseJsonHttpResponseHandler<Object>() {
             @Override
@@ -387,6 +326,14 @@ public class BrooderFeedingRecordsActivity extends AppCompatActivity {
             }
         });
     }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
     @Override
     public void onBackPressed() {
 
