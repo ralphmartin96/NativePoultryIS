@@ -44,19 +44,18 @@ public class BrooderFeedingRecordsActivity extends AppCompatActivity {
     RecyclerView.Adapter recycler_adapter;
     RecyclerView.LayoutManager layoutManager;
     ArrayList<Brooder_FeedingRecords> arrayListBrooderFeedingRecords = new ArrayList<>();//create constructor first for brooder feeding records
-    ArrayList<Brooder_FeedingRecords> arrayListBrooderFeedingRecords2 = new ArrayList<>();//create constructor first for brooder feeding records
-    ArrayList<Brooder_Inventory>arrayListBrooderInventory = new ArrayList<>();
+    ArrayList<Brooder_Inventory> arrayListBrooderInventory = new ArrayList<>();
     //ArrayList<Brooder_Inventory>arrayList_temp = new ArrayList<>();
     ArrayList<Brooder_Inventory>arrayList_temp2 = new ArrayList<>();
     FloatingActionButton create_brooder_feeding_records;
-    Integer pen_id , brooder_pen_id;
+    Integer pen_id;
     String brooder_pen;
     Integer farm_id;
     Integer fam_id=0;
     String farm_code=null;
     Map<Integer, Integer> inventory_dictionary = new HashMap<Integer, Integer>();
-    ArrayList<Integer> list = new ArrayList<>();
-
+    ArrayList<Integer> inventories_list = new ArrayList<>();
+    ArrayList<Integer> feeding_list = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,7 +118,13 @@ public class BrooderFeedingRecordsActivity extends AppCompatActivity {
 
         Uri photo = user.getPhotoUrl();
 
+
+        pen_id = myDb.getPenIDWithNumber(brooder_pen);
+        inventories_list = myDb.getInventoryWithPen(pen_id);
+
         local_getBrooderFeeding();
+
+//        Log.d("POULTRYDEBUGGER", "Pen id: "+myDb.getPenIDWithNumber(brooder_pen));
 
         recycler_adapter = new RecyclerAdapter_Brooder_Feeding(arrayListBrooderFeedingRecords);
         recyclerView.setAdapter(recycler_adapter);
@@ -153,22 +158,28 @@ public class BrooderFeedingRecordsActivity extends AppCompatActivity {
         if(cursor_feeding.getCount() != 0){
             do{
 
-                Brooder_FeedingRecords brooderFeedingRecords = new Brooder_FeedingRecords(
-                        cursor_feeding.getInt(0),
-                        cursor_feeding.getInt(1),
-                        cursor_feeding.getString(2),
-                        null,
-                        cursor_feeding.getFloat(3),
-                        cursor_feeding.getFloat(4),
-                        cursor_feeding.getString(5),
-                        cursor_feeding.getString(6)
-                );
+                for(Integer inventory_id : inventories_list){
 
-                arrayListBrooderFeedingRecords.add(brooderFeedingRecords);
+                    if(inventory_id.equals(cursor_feeding.getInt(1))) {
+
+                        Brooder_FeedingRecords brooderFeedingRecords = new Brooder_FeedingRecords(
+                                cursor_feeding.getInt(0),
+                                cursor_feeding.getInt(1),
+                                cursor_feeding.getString(2),
+                                null,
+                                cursor_feeding.getFloat(3),
+                                cursor_feeding.getFloat(4),
+                                cursor_feeding.getString(5),
+                                cursor_feeding.getString(6)
+                        );
+                        arrayListBrooderFeedingRecords.add(brooderFeedingRecords);
+                        Log.d("POULTRYDEBUGGER", "Feed id: "+ cursor_feeding.getInt(0));
+                    }
+                }
+
             }while(cursor_feeding.moveToNext());
         }
 
-//        Log.d("POULTRYDEBUGGER", "Feeds: "+ arrayListBrooderFeedingRecords.size());
     }
 
     private void API_addBrooderFeeding(RequestParams requestParams){

@@ -4530,6 +4530,54 @@ public Integer getAllMaleFromBrooders(Integer farm_id){
         return true;
     }
 
+    public int getPenIDWithNumber(String pen_number){
+        SQLiteDatabase db = this.getWritableDatabase();
+        int id;
+
+        Cursor res = db.rawQuery("SELECT ID FROM " +TABLE_PEN+ " WHERE PEN_NUMBER is ?", new String[]{pen_number});
+        res.moveToFirst();
+
+        if(res.getCount() != 0) id = res.getInt(0);
+        else id=0;
+
+        return id;
+    }
+
+
+    public ArrayList<Integer> getInventoryWithPen(Integer pen_id){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ArrayList<Integer> inventories = new ArrayList<>();
+
+//        Cursor res = db.rawQuery("SELECT ID FROM " +TABLE_BROODER_INVENTORIES+ " WHERE BROODER_INV_PEN_NUMBER is ? AND BROODER_INV_DELETED_AT IS NULL", new String[]{String.valueOf(pen_id)});
+        Cursor res = db.rawQuery("SELECT ID FROM " +TABLE_BROODER_INVENTORIES+ " WHERE BROODER_INV_PEN_NUMBER is ?", new String[]{pen_id.toString()});
+        res.moveToFirst();
+
+        if(res.getCount()!=0){
+            do{
+                inventories.add(res.getInt(0));
+            }while(res.moveToNext());
+        }
+
+        return inventories;
+    }
+
+    public ArrayList<Integer> getFeedingWithInventory(Integer inventory_id){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ArrayList<Integer> feeding = new ArrayList<>();
+
+        Cursor res = db.rawQuery("SELECT ID FROM " +TABLE_BROODER_FEEDING_RECORDS+ " WHERE BROODER_FEEDING_INVENTORY_ID is ? AND BROODER_FEEDING_DELETED_AT IS NULL", new String[]{inventory_id.toString()});
+
+        res.moveToFirst();
+
+        if(res.getCount()!=0){
+            do{
+                feeding.add(res.getInt(0));
+            }while(res.moveToNext());
+        }
+
+        return feeding;
+    }
+
     public int getPensSizeWithID(Integer id){
         SQLiteDatabase db = this.getWritableDatabase();
         int size=100;

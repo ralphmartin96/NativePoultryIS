@@ -17,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -110,8 +111,6 @@ public class CreateBrooders extends AppCompatActivity {
         nav_user.setText(name);
         Picasso.get().load(photo).into(circleImageView);
         nav_email.setText(email);
-        ///////////////////
-
 
         Exp_list = findViewById(R.id.exp_list);
         Project_category = DataProvider.getInfo();
@@ -181,6 +180,7 @@ public class CreateBrooders extends AppCompatActivity {
                 return false;
             }
         });
+
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.closed);
         mToolbar = (Toolbar) findViewById(R.id.nav_action);
@@ -190,30 +190,15 @@ public class CreateBrooders extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Create Brooders");
 
-        //get brooders
-        //get brooder_inventories
-//        boolean isNetworkAvailable = isNetworkAvailable();
-//        if (isNetworkAvailable) {
-//            //if internet is available, load data from web database
-//
-//            API_updateBrooder();
-//            API_getBrooderInventory();
-//            API_updateBrooderInventory();
-//            API_getBrooder();
-//        }
-
-
-/////////////////////////
-
         StringBuffer buffer = new StringBuffer();
         Cursor cursor_pen = myDb.getAllDataFromPen();
         cursor_pen.moveToFirst();
 
+        int pen_id = myDb.getBroodersFeedingSize();
 
-        //////////////////////////////////////////
+//        Log.d("POULTRYDEBUGGER", "FEED SIZE: "+myDb.getBroodersFeedingSize());
 
         local_getBrooder();
-//        API_getBrooderInventory();
 
         recycler_adapter = new RecyclerAdapter_Brooder_Pen(arrayList);
         recyclerView.setAdapter(recycler_adapter);

@@ -90,14 +90,12 @@ public class CreateBrooderDialog extends DialogFragment {
         ///////////////////
 
         boolean isNetworkAvailable = isNetworkAvailable();
-        //GET BATCHING WEEK
-        //THEN GET TAG
+
         if(isNetworkAvailable){
             API_getFarmID(email);
         }
 
         mActionOk = view.findViewById(R.id.action_ok);
-
 
         brooder_pen = getArguments().getString("brooder_pen");
 
