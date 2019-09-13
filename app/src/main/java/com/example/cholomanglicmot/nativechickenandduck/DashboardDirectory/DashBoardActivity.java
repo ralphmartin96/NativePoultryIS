@@ -882,64 +882,6 @@ public class DashBoardActivity extends AppCompatActivity {
         });
     }
 
-    private void API_getBrooderFeeding(){
-        APIHelper.getBrooderFeeding("getBrooderFeeding/", new BaseJsonHttpResponseHandler<Object>() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
-
-                Gson gson = new Gson();
-                try {
-                    JSONBrooderFeeding jsonBrooderFeeding = gson.fromJson(rawJsonResponse, JSONBrooderFeeding.class);
-                    ArrayList<Brooder_FeedingRecords> arrayList_brooderFeeding = jsonBrooderFeeding.getData();
-
-
-                    for (Brooder_FeedingRecords feedingRecords : arrayList_brooderFeeding) {
-
-                        Cursor cursor = myDb.getAllDataFromBrooderFeedingRecordsWhereFeedingID(feedingRecords.getId());
-                        cursor.moveToFirst();
-
-
-                        if (cursor.getCount() == 0) {
-
-                            boolean isInserted = myDb.insertDataBrooderFeedingRecordsWithID(
-                                    feedingRecords.getId(),
-                                    feedingRecords.getBrooder_feeding_inventory_id(),
-                                    feedingRecords.getBrooder_feeding_date_collected(),
-                                    feedingRecords.getBrooder_feeding_offered(),
-                                    feedingRecords.getBrooder_feeding_refused(),
-                                    feedingRecords.getBrooder_feeding_remarks(),
-                                    feedingRecords.getBrooder_feeding_deleted_at()
-                            );
-
-                        }
-
-
-                        cursor.close();
-
-
-                    }
-
-                    Log.d(debugTag, "Feed: "+ myDb.getBroodersFeedingSize());
-
-                }catch (Exception e){
-
-                }
-
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, String rawJsonResponse, Object response){
-
-                Toast.makeText(getApplicationContext(), "Failed to fetch Brooders Inventory from web database ", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            protected Object parseResponse(String rawJsonData, boolean isFailure) throws Throwable{
-                return null;
-            }
-        });
-    }
-
     private void API_getBrooderFeeding(int inventory_id){
         APIHelper.getBrooderFeeding("getBrooderFeeding/", new BaseJsonHttpResponseHandler<Object>() {
             @Override
@@ -949,7 +891,6 @@ public class DashBoardActivity extends AppCompatActivity {
                 try {
                     JSONBrooderFeeding jsonBrooderFeeding = gson.fromJson(rawJsonResponse, JSONBrooderFeeding.class);
                     ArrayList<Brooder_FeedingRecords> arrayList_brooderFeeding = jsonBrooderFeeding.getData();
-
 
                     for (Brooder_FeedingRecords feedingRecords : arrayList_brooderFeeding) {
 
@@ -972,14 +913,11 @@ public class DashBoardActivity extends AppCompatActivity {
 
                             }
 
-
-                            cursor.close();
-
                         }
 
-                    }
+                        cursor.close();
 
-                    Log.d(debugTag, "Feed: "+ myDb.getBroodersFeedingSize());
+                    }
 
                 }catch (Exception e){
 
@@ -1043,6 +981,64 @@ public class DashBoardActivity extends AppCompatActivity {
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, String rawJsonResponse, Object response){
 
                 Toast.makeText(getApplicationContext(), "Failed to fetch Brooders Growth Records from web database ", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            protected Object parseResponse(String rawJsonData, boolean isFailure) throws Throwable{
+                return null;
+            }
+        });
+    }
+
+    private void API_getBrooderFeeding(){
+        APIHelper.getBrooderFeeding("getBrooderFeeding/", new BaseJsonHttpResponseHandler<Object>() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
+
+                Gson gson = new Gson();
+                try {
+                    JSONBrooderFeeding jsonBrooderFeeding = gson.fromJson(rawJsonResponse, JSONBrooderFeeding.class);
+                    ArrayList<Brooder_FeedingRecords> arrayList_brooderFeeding = jsonBrooderFeeding.getData();
+
+
+                    for (Brooder_FeedingRecords feedingRecords : arrayList_brooderFeeding) {
+
+                        Cursor cursor = myDb.getAllDataFromBrooderFeedingRecordsWhereFeedingID(feedingRecords.getId());
+                        cursor.moveToFirst();
+
+
+                        if (cursor.getCount() == 0) {
+
+                            boolean isInserted = myDb.insertDataBrooderFeedingRecordsWithID(
+                                    feedingRecords.getId(),
+                                    feedingRecords.getBrooder_feeding_inventory_id(),
+                                    feedingRecords.getBrooder_feeding_date_collected(),
+                                    feedingRecords.getBrooder_feeding_offered(),
+                                    feedingRecords.getBrooder_feeding_refused(),
+                                    feedingRecords.getBrooder_feeding_remarks(),
+                                    feedingRecords.getBrooder_feeding_deleted_at()
+                            );
+
+                        }
+
+
+                        cursor.close();
+
+
+                    }
+
+                    Log.d(debugTag, "Feed: "+ myDb.getBroodersFeedingSize());
+
+                }catch (Exception e){
+
+                }
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, String rawJsonResponse, Object response){
+
+                Toast.makeText(getApplicationContext(), "Failed to fetch Brooders Inventory from web database ", Toast.LENGTH_SHORT).show();
             }
 
             @Override
