@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,13 +25,22 @@ import com.loopj.android.http.RequestParams;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import cz.msebera.android.httpclient.Header;
 
 public class ViewBrooderInventoryDialog extends DialogFragment {
 
     DatabaseHelper myDb;
-    TextView textView, family_number, line_number, generation_number, brooder_male_count, brooder_female_count, brooder_total, brooder_date_added,batching_date ;
+    TextView textView;
+    TextView family_number;
+    TextView line_number;
+    TextView generation_number;
+    TextView brooder_male_count;
+    TextView brooder_female_count;
+    TextView brooder_total;
+    TextView brooder_date_added;
+    TextView batching_date ;
     EditText edit_male_count, edit_female_count;
     Button update, save;
     List<String> famLineGen = new ArrayList<>();
@@ -41,6 +51,7 @@ public class ViewBrooderInventoryDialog extends DialogFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
         View view = inflater.inflate(R.layout.dialog_view_brooder_inventory, container, false);
 
         final String brooder_tag = getArguments().getString("Brooder Tag");
@@ -51,24 +62,30 @@ public class ViewBrooderInventoryDialog extends DialogFragment {
         myDb = new DatabaseHelper(getContext());
 
         Integer fam_id = myDb.getFamIDFromBrooders(brooder_id);
+//        Log.d("POULTRYDEBUGGER", "BROODER: "+brooder_id);
+//        Log.d("POULTRYDEBUGGER", "FAMILY: "+fam_id);
 
         String famLineGen = myDb.getFamLineGen(fam_id);
         String delims = " ";
-        try{
-            String[] tokens = famLineGen.split(delims);
-            String fam = tokens[0];
-            String line = tokens[1];
-            String gen = tokens[2];
-            family_number.setText(fam);
-            line_number.setText(line);
-            generation_number.setText(gen);
-        }catch (Exception e){}
-
 
         textView = view.findViewById(R.id.textView);
         family_number = view.findViewById(R.id.family_number); //galing sa brooder table
         line_number = view.findViewById(R.id.line_number);//galing sa brooder table
         generation_number = view.findViewById(R.id.generation_number);//galing sa brooder table
+
+        try{
+            String[] tokens = famLineGen.split(delims);
+
+            String fam = tokens[0];
+            String line = tokens[1];
+            String gen = tokens[2];
+
+            family_number.setText(fam);
+            line_number.setText(line);
+            generation_number.setText(gen);
+
+        }catch (Exception e){}
+
         batching_date = view.findViewById(R.id.batching_date);
         brooder_male_count = view.findViewById(R.id.brooder_male_count);
         brooder_female_count = view.findViewById(R.id.brooder_female_count);
@@ -85,6 +102,7 @@ public class ViewBrooderInventoryDialog extends DialogFragment {
 
         Cursor cursor = myDb.getDataFromBrooderInventoryWherePenAndID(brooder_tag, brooder_pen);
         cursor.moveToFirst();
+
         if(cursor.getCount() != 0){
             //textView.setText(cursor.getString(3));
             batching_date.setText(cursor.getString(4));

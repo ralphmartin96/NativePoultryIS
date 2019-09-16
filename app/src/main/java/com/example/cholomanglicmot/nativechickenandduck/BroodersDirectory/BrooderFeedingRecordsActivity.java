@@ -124,8 +124,6 @@ public class BrooderFeedingRecordsActivity extends AppCompatActivity {
 
         local_getBrooderFeeding();
 
-//        Log.d("POULTRYDEBUGGER", "Pen id: "+myDb.getPenIDWithNumber(brooder_pen));
-
         recycler_adapter = new RecyclerAdapter_Brooder_Feeding(arrayListBrooderFeedingRecords);
         recyclerView.setAdapter(recycler_adapter);
         recycler_adapter.notifyDataSetChanged();

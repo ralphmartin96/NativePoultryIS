@@ -194,10 +194,6 @@ public class CreateBrooders extends AppCompatActivity {
         Cursor cursor_pen = myDb.getAllDataFromPen();
         cursor_pen.moveToFirst();
 
-        int pen_id = myDb.getBroodersFeedingSize();
-
-//        Log.d("POULTRYDEBUGGER", "FEED SIZE: "+myDb.getBroodersFeedingSize());
-
         local_getBrooder();
 
         recycler_adapter = new RecyclerAdapter_Brooder_Pen(arrayList);
