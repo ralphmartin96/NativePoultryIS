@@ -126,6 +126,7 @@ public class DashBoardActivity extends AppCompatActivity {
     Integer farm_id_local;
     DatabaseHelper myDb;
     String name;
+    String email;
     GoogleSignInClient mGoogleSignInClient;
 
     final String debugTag = "POULTRYDEBUGGER";
@@ -150,12 +151,11 @@ public class DashBoardActivity extends AppCompatActivity {
 
         FirebaseUser user = mAuth.getCurrentUser();
 
-        String name = user.getDisplayName();
+        name = user.getDisplayName();
 
         String email = user.getEmail();
 
         Uri photo = user.getPhotoUrl();
-
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         View hView =  navigationView.getHeaderView(0);
@@ -177,7 +177,7 @@ public class DashBoardActivity extends AppCompatActivity {
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         ///////////////////////////////////
 
-        ///////////////////
+
         boolean isNetworkAvailable = isNetworkAvailable();
 
         if(isNetworkAvailable){
@@ -185,26 +185,25 @@ public class DashBoardActivity extends AppCompatActivity {
             //if internet is available, load data from web database
 
             API_getFarmID(email);
-
-//            API_getBrooderInventory();
-//            API_getBrooderFeeding();
-//            API_getBrooderGrowth();
+//                        API_getBrooderInventory();
+//                        API_getBrooderFeeding();
+//                        API_getBrooderGrowth();
 //
-//            API_getPhenoMorphoValues();
-//            API_getPhenoMorphos();
-//            API_getMortalityAndSales();
+//                        API_getPhenoMorphoValues();
+//                        API_getPhenoMorphos();
+//                        API_getMortalityAndSales();
 //
-//            API_getReplacement();
-//            API_getReplacementInventory();
-//            API_getReplacementFeeding();
-//            API_getReplacementGrowth();
+//                        API_getReplacement();
+//                        API_getReplacementInventory();
+//                        API_getReplacementFeeding();
+//                        API_getReplacementGrowth();
 //
-//            API_getBreeder();
-//            API_getBreederInventory();
-//            API_getBreederFeeding();
-//            API_getEggQuality();
-//            API_getEggProduction();
-//            API_getHatcheryRecords();
+//                        API_getBreeder();
+//                        API_getBreederInventory();
+//                        API_getBreederFeeding();
+//                        API_getEggQuality();
+//                        API_getEggProduction();
+//                        API_getHatcheryRecords();
         }
 
         Cursor cursor = myDb.getFarmIDFromUsers(email);
@@ -339,8 +338,7 @@ public class DashBoardActivity extends AppCompatActivity {
 
     }
 
-
-//    -----------------------------------------------
+    //    -----------------------------------------------
 
     private void API_getFarmID(String email){
         APIHelper.getFarmID("getFarmID/"+email, new BaseJsonHttpResponseHandler<Object>() {
@@ -612,7 +610,10 @@ public class DashBoardActivity extends AppCompatActivity {
                                         arrayList_family1.get(i).getDeleted_at()
                                 );
 
-//                                Log.d(debugTag, "Fam id: "+line_id+" "+arrayList_family1.get(i).getId());
+
+                                if(isInserted){
+                                    API_getBrooder(arrayList_family1.get(i).getId());
+                                }
 
                             }
 
@@ -827,6 +828,54 @@ public class DashBoardActivity extends AppCompatActivity {
     }
 
 
+
+    private void API_getBrooder(int family_id){
+        APIHelper.getBrooder("getBrooder/", new BaseJsonHttpResponseHandler<Object>() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
+
+                Gson gson = new Gson();
+                try{
+                    JSONBrooder jsonBrooder = gson.fromJson(rawJsonResponse, JSONBrooder.class);
+                    ArrayList<Brooders> arrayList_brooder = jsonBrooder.getData();
+
+                    for(Brooders brooder: arrayList_brooder){
+
+                        if(brooder.getBrooder_family_number()==family_id){
+
+                            Cursor cursor = myDb.getAllDataFromBroodersWhereID(brooder.getId());
+                            cursor.moveToFirst();
+
+                            if(cursor.getCount() == 0){
+
+                                boolean isInserted = myDb.insertDataBrooderWithID(
+                                        brooder.getId(),
+                                        brooder.getBrooder_family_number(),
+                                        brooder.getBrooder_date_added(),
+                                        brooder.getBrooder_deleted_at()
+                                );
+
+                            }
+
+                        }
+
+                    }
+
+                }catch (Exception e){}
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, String rawJsonResponse, Object response){
+                Toast.makeText(getApplicationContext(), "Failed to fetch Brooders Inventory from web database ", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            protected Object parseResponse(String rawJsonData, boolean isFailure) throws Throwable{
+                return null;
+            }
+        });
+    }
 
     private void API_getBrooderInventory(int pen_id){
         APIHelper.getBrooderInventory("getBrooderInventory/", new BaseJsonHttpResponseHandler<Object>() {
