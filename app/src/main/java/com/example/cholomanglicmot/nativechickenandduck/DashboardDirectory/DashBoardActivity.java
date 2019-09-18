@@ -454,9 +454,9 @@ public class DashBoardActivity extends AppCompatActivity {
                                     pen.getIs_active()
                             );
 
-                            if(pen.getPen_type().equals("brooder")){
-                                arrayList_pen_id.add(pen.getId());
-                            }
+                            if(isInserted)
+                                if(pen.getPen_type().equals("brooder"))
+                                    arrayList_pen_id.add(pen.getId());
                         }
                     }
 
@@ -556,7 +556,7 @@ public class DashBoardActivity extends AppCompatActivity {
                                     Integer.parseInt(generation_id)
                             );
 
-                            arrayList_line_id.add(line.getId());
+                            if(isInserted) arrayList_line_id.add(line.getId());
                         }
                     }
 
@@ -594,6 +594,7 @@ public class DashBoardActivity extends AppCompatActivity {
                 try{
                     JSONFamily1 jsonFamily1 = gson.fromJson(rawJsonResponse, JSONFamily1.class);
                     ArrayList<Family1> arrayList_family1 = jsonFamily1.getData();
+                    ArrayList<Integer> arrayList_family1_id = new ArrayList<>();
 
                     for (Family1 family : arrayList_family1) {
 
@@ -614,7 +615,7 @@ public class DashBoardActivity extends AppCompatActivity {
 
 
                                 if(isInserted){
-                                    API_getBrooder(family.getId());
+                                    arrayList_family1_id.add(family.getId());
                                 }
 
                             }
@@ -622,6 +623,8 @@ public class DashBoardActivity extends AppCompatActivity {
                         }
 
                     }
+
+                    API_getBrooder(arrayList_family1_id);
 
                 }catch (Exception e){
                     Log.d(debugTag, "Exception in Family API caught");
@@ -653,28 +656,28 @@ public class DashBoardActivity extends AppCompatActivity {
                     JSONFamily jsonFamily = gson.fromJson(rawJsonResponse, JSONFamily.class);
                     ArrayList<Family> arrayList_family = jsonFamily.getData();
 
-                    for (int i = 0; i < arrayList_family.size(); i++) {
+                    for (Family family : arrayList_family) {
 
 
                             DatabaseHelper myDb = new DatabaseHelper(getApplicationContext());
 
                             Cursor cursor = myDb.getAllDataFromFamilyForDisplay(
-                                    arrayList_family.get(i).getLine_number(),
-                                    arrayList_family.get(i).getFamily_number(),
-                                    arrayList_family.get(i).getGeneration_number()
+                                    family.getLine_number(),
+                                    family.getFamily_number(),
+                                    family.getGeneration_number()
                             );
 
                             cursor.moveToFirst();
 
                             if (cursor.getCount() == 0) {
                                 boolean isInserted = myDb.insertDataFamilyDisplay(
-                                        arrayList_family.get(i).getLine_number(),
-                                        arrayList_family.get(i).getFamily_number(),
+                                        family.getLine_number(),
+                                        family.getFamily_number(),
                                         1,
-                                        arrayList_family.get(i).getGeneration_number()
+                                        family.getGeneration_number()
                                 );
 
-//                                if(isInserted) Log.d(debugTag, "Inserted family "+arrayList_family.get(i).getFamily_number());
+//                                if(isInserted) Log.d(debugTag, "Inserted family "+family.getFamily_number());
                             }
 
                     }
@@ -828,7 +831,7 @@ public class DashBoardActivity extends AppCompatActivity {
 
 
 
-    private void API_getBrooder(int family_id){
+    private void API_getBrooder(ArrayList<Integer> arrayList_family_id){
         APIHelper.getBrooder("getBrooder/", new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
@@ -840,7 +843,7 @@ public class DashBoardActivity extends AppCompatActivity {
 
                     for(Brooders brooder: arrayList_brooder){
 
-                        if(brooder.getBrooder_family_number()==family_id){
+                        if(arrayList_family_id.contains(brooder.getBrooder_family_number())){
 
                             Cursor cursor = myDb.getAllDataFromBroodersWhereID(brooder.getId());
                             cursor.moveToFirst();
@@ -885,6 +888,7 @@ public class DashBoardActivity extends AppCompatActivity {
                 try{
                     JSONBrooderInventory jsonBrooderInventory = gson.fromJson(rawJsonResponse, JSONBrooderInventory.class);
                     ArrayList<Brooder_Inventory> arrayList_brooderInventory = jsonBrooderInventory.getData();
+                    ArrayList<Integer> arrayList_brooderInventory_id = new ArrayList<>();
 
                     for(Brooder_Inventory brooder_inventory : arrayList_brooderInventory){
 
@@ -907,12 +911,17 @@ public class DashBoardActivity extends AppCompatActivity {
                                         brooder_inventory.getBrooder_inv_deleted_at()
                                 );
 
-                                API_getBrooderFeeding(brooder_inventory.getId());
+                                if(isInserted)
+                                    arrayList_brooderInventory_id.add(brooder_inventory.getId());
+
                             }
 
                         }
 
                     }
+
+                    API_getBrooderFeeding(arrayList_brooderInventory_id);
+
 
                 }catch (Exception e){}
 
@@ -930,7 +939,7 @@ public class DashBoardActivity extends AppCompatActivity {
         });
     }
 
-    private void API_getBrooderFeeding(int inventory_id){
+    private void API_getBrooderFeeding(ArrayList<Integer> arrayList_brooderInventory_id){
         APIHelper.getBrooderFeeding("getBrooderFeeding/", new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
@@ -945,7 +954,7 @@ public class DashBoardActivity extends AppCompatActivity {
                         Cursor cursor = myDb.getAllDataFromBrooderFeedingRecordsWhereFeedingID(feedingRecords.getId());
                         cursor.moveToFirst();
 
-                        if(feedingRecords.getBrooder_feeding_inventory_id() == inventory_id) {
+                        if(arrayList_brooderInventory_id.contains(feedingRecords.getBrooder_feeding_inventory_id())) {
 
                             if (cursor.getCount() == 0) {
 
