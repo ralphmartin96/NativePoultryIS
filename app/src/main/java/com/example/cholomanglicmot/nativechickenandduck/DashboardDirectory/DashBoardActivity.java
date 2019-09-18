@@ -427,7 +427,7 @@ public class DashBoardActivity extends AppCompatActivity {
 
                 Gson gson = new Gson();
                 ArrayList<Pen> arrayList_pen = new ArrayList<>();
-                ArrayList<Integer> arrayList_pen_id = new ArrayList<>();
+                ArrayList<Integer> arrayList_brooder_pen_id = new ArrayList<>();
 
                 try{
 
@@ -452,12 +452,13 @@ public class DashBoardActivity extends AppCompatActivity {
                             );
 
                             if(isInserted)
-                                if(pen.getPen_type().equals("brooder"))
-                                    arrayList_pen_id.add(pen.getId());
+                                if (pen.getPen_type().equals("brooder"))
+                                    arrayList_brooder_pen_id.add(pen.getId());
+
                         }
                     }
 
-                    API_getBrooderInventory(arrayList_pen_id);
+                    API_getBrooderInventory(arrayList_brooder_pen_id);
 
                 }catch (Exception e){
                     Log.d(debugTag, "Exception in Pen API caught");
@@ -622,6 +623,7 @@ public class DashBoardActivity extends AppCompatActivity {
                     }
 
                     API_getBrooder(arrayList_family1_id);
+                    API_getBreeder(arrayList_family1_id);
 
                 }catch (Exception e){
                     Log.d(debugTag, "Exception in Family API caught");
@@ -919,48 +921,115 @@ public class DashBoardActivity extends AppCompatActivity {
         });
     }
 
-    private void API_getBrooderFeeding(){
-        APIHelper.getBrooderFeeding("getBrooderFeeding/", new BaseJsonHttpResponseHandler<Object>() {
+
+
+    private void API_getBreeder(ArrayList<Integer> arrayList_family_id){
+        APIHelper.getBreeder("getBreeder/", new BaseJsonHttpResponseHandler<Object>() {
+
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
 
                 Gson gson = new Gson();
-                try {
-                    JSONBrooderFeeding jsonBrooderFeeding = gson.fromJson(rawJsonResponse, JSONBrooderFeeding.class);
-                    ArrayList<Brooder_FeedingRecords> arrayList_brooderFeeding = jsonBrooderFeeding.getData();
+                try{
+                    JSONBreeder jsonBreeder = gson.fromJson(rawJsonResponse, JSONBreeder.class);
+                    ArrayList<Breeders> arrayList_breeder = jsonBreeder.getData();
+                    ArrayList<Integer> arrayList_breeder_id = new ArrayList<>();
+
+                    for (Breeders breeder : arrayList_breeder) {
+
+                        if(arrayList_family_id.contains(breeder.getFamily_number())) {
+
+                            Cursor cursor = myDb.getAllDataFromBreedersWhereID(breeder.getId());
+                            cursor.moveToFirst();
+
+                            if (cursor.getCount() == 0) {
+                                boolean isInserted = myDb.insertDataBreederWithID(
+                                        breeder.getId(),
+                                        breeder.getFamily_number(),
+                                        breeder.getFemale_family_number(),
+                                        breeder.getDate_added(),
+                                        breeder.getDeleted_at()
+                                );
+
+                                if (isInserted)
+                                    arrayList_breeder_id.add(breeder.getId());
 
 
-                    for (Brooder_FeedingRecords feedingRecords : arrayList_brooderFeeding) {
-
-                        Cursor cursor = myDb.getAllDataFromBrooderFeedingRecordsWhereFeedingID(feedingRecords.getId());
-                        cursor.moveToFirst();
-
-
-                        if (cursor.getCount() == 0) {
-
-                            boolean isInserted = myDb.insertDataBrooderFeedingRecordsWithID(
-                                    feedingRecords.getId(),
-                                    feedingRecords.getBrooder_feeding_inventory_id(),
-                                    feedingRecords.getBrooder_feeding_date_collected(),
-                                    feedingRecords.getBrooder_feeding_offered(),
-                                    feedingRecords.getBrooder_feeding_refused(),
-                                    feedingRecords.getBrooder_feeding_remarks(),
-                                    feedingRecords.getBrooder_feeding_deleted_at()
-                            );
-
+                            }
                         }
+                    }
+
+                    API_getBreederInventory(arrayList_breeder_id);
+
+                }catch (Exception e){
+                    Log.d("JSON", e.toString());
+                }
 
 
-                        cursor.close();
 
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, String rawJsonResponse, Object response){
+
+                Toast.makeText(getApplicationContext(), "Failed to fetch Breeders from web database ", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            protected Object parseResponse(String rawJsonData, boolean isFailure) throws Throwable{
+                return null;
+            }
+        });
+    }
+
+    private void API_getBreederInventory(ArrayList<Integer> arrayList_breeder_id){
+        APIHelper.getBreederInventory("getBreederInventory/", new BaseJsonHttpResponseHandler<Object>() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
+
+                Gson gson = new Gson();
+
+                try{
+                    JSONBreederInventory jsonBreederInventory = gson.fromJson(rawJsonResponse, JSONBreederInventory.class);
+                    ArrayList<Breeder_Inventory> arrayList_breederInventory = jsonBreederInventory.getData();
+
+                    for (Breeder_Inventory breeder_inventory : arrayList_breederInventory) {
+
+                        if(arrayList_breeder_id.contains(breeder_inventory.getBreeder_inv_breeder_id())) {
+
+                            Cursor cursor = myDb.getAllDataFromBreederInventoryWhereID(breeder_inventory.getId());
+                            cursor.moveToFirst();
+
+                            if (cursor.getCount() == 0) {
+
+                                boolean isInserted = myDb.insertDataBreederInventoryWithID(
+                                        breeder_inventory.getId(),
+                                        breeder_inventory.getBreeder_inv_breeder_id(),
+                                        breeder_inventory.getBreeder_inv_pen(),
+                                        breeder_inventory.getBreeder_inv_breeder_tag(),
+                                        breeder_inventory.getBreeder_inv_batching_date(),
+                                        breeder_inventory.getBreeder_male_quantity(),
+                                        breeder_inventory.getBreeder_female_quantity(),
+                                        breeder_inventory.getBreeder_total_quantity(),
+                                        breeder_inventory.getBreeder_inv_last_update(),
+                                        breeder_inventory.getBreeder_inv_deleted_at(),
+                                        breeder_inventory.getBreeder_code(),
+                                        breeder_inventory.getMale_wingband(),
+                                        breeder_inventory.getFemale_wingband()
+                                );
+
+                                if(isInserted)
+                                    Log.d(debugTag, "Inserted breeder inventory "+ breeder_inventory.getId() + " to local database");
+                                else
+                                    Log.d(debugTag, "Failed to insert breeder inventory "+ breeder_inventory.getId() + " to local database");
+
+                            }
+                        }
 
                     }
 
-                    Log.d(debugTag, "Feed: "+ myDb.getBroodersFeedingSize());
+                }catch (Exception e){}
 
-                }catch (Exception e){
-
-                }
 
             }
 
@@ -968,6 +1037,171 @@ public class DashBoardActivity extends AppCompatActivity {
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, String rawJsonResponse, Object response){
 
                 Toast.makeText(getApplicationContext(), "Failed to fetch Brooders Inventory from web database ", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            protected Object parseResponse(String rawJsonData, boolean isFailure) throws Throwable{
+                return null;
+            }
+        });
+    }
+
+    private void API_getBreederFeeding(){
+        APIHelper.getBreederFeeding("getBreederFeeding/", new BaseJsonHttpResponseHandler<Object>() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
+
+                Gson gson = new Gson();
+                try{
+                    JSONBreederFeeding jsonBreederInventory = gson.fromJson(rawJsonResponse, JSONBreederFeeding.class);
+                    ArrayList<Breeder_FeedingRecords> arrayList_brooderInventory = jsonBreederInventory.getData();
+
+
+                    for (int i = 0; i < arrayList_brooderInventory.size(); i++) {
+                        //check if generation to be inserted is already in the database
+                        Cursor cursor = myDb.getAllDataFromBreederFeedingRecordsWhereFeedingID(arrayList_brooderInventory.get(i).getId());
+                        cursor.moveToFirst();
+
+                        if (cursor.getCount() == 0) {
+
+
+                            boolean isInserted = myDb.insertDataBreederFeedingRecordsWithID(arrayList_brooderInventory.get(i).getId(), arrayList_brooderInventory.get(i).getBrooder_feeding_inventory_id(), arrayList_brooderInventory.get(i).getBrooder_feeding_date_collected(), arrayList_brooderInventory.get(i).getBrooder_feeding_offered(),arrayList_brooderInventory.get(i).getBrooder_feeding_refused(),arrayList_brooderInventory.get(i).getBrooder_feeding_remarks(),arrayList_brooderInventory.get(i).getBrooder_feeding_deleted_at());
+
+                        }
+
+                    }
+                }catch (Exception e){
+
+                }
+
+
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, String rawJsonResponse, Object response){
+
+                Toast.makeText(getApplicationContext(), "Failed to fetch Brooders Inventory from web database ", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            protected Object parseResponse(String rawJsonData, boolean isFailure) throws Throwable{
+                return null;
+            }
+        });
+    }
+
+    private void API_getEggProduction(){
+        APIHelper.getEggProduction("getEggProduction/", new BaseJsonHttpResponseHandler<Object>() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
+
+                Gson gson = new Gson();
+                try{
+                    JSONEggProduction jsonBreeder = gson.fromJson(rawJsonResponse, JSONEggProduction.class);
+                    ArrayList<Egg_Production> arrayList_brooder = jsonBreeder.getData();
+
+                    for (int i = 0; i < arrayList_brooder.size(); i++) {
+                        //check if generation to be inserted is already in the database
+                        Cursor cursor = myDb.getAllDataFromEggProductionWhereID(arrayList_brooder.get(i).getId());
+                        cursor.moveToFirst();
+
+                        if (cursor.getCount() == 0) {
+                            boolean isInserted = myDb.insertEggProductionRecordsWithID(arrayList_brooder.get(i).getId(), arrayList_brooder.get(i).getEgg_breeder_inv_id(),arrayList_brooder.get(i).getDate(), arrayList_brooder.get(i).getIntact(), arrayList_brooder.get(i).getWeight(), arrayList_brooder.get(i).getBroken(), arrayList_brooder.get(i).getRejects(), arrayList_brooder.get(i).getRemarks(), arrayList_brooder.get(i).getDeleted_at(),arrayList_brooder.get(i).getFemale_inventory());
+                        }
+                    }
+                }catch (Exception e){}
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, String rawJsonResponse, Object response){
+
+                Toast.makeText(getApplicationContext(), "Failed to fetch Breeders from web database ", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            protected Object parseResponse(String rawJsonData, boolean isFailure) throws Throwable{
+                return null;
+            }
+        });
+    }
+
+    private void API_getEggQuality(){
+        APIHelper.getEggQuality("getEggQuality/", new BaseJsonHttpResponseHandler<Object>() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
+
+                Gson gson = new Gson();
+                try{
+                    JSONEggQuality jsonBreeder = gson.fromJson(rawJsonResponse, JSONEggQuality.class);
+                    ArrayList<Egg_Quality> arrayList_brooder = jsonBreeder.getData();
+
+                    for (int i = 0; i < arrayList_brooder.size(); i++) {
+                        //check if generation to be inserted is already in the database
+                        Cursor cursor = myDb.getAllDataFromBreederEggQualWhereID(arrayList_brooder.get(i).getId());
+                        cursor.moveToFirst();
+
+                        if (cursor.getCount() == 0) {
+
+
+
+                            boolean isInserted = myDb.insertEggQualityRecordsWithID(arrayList_brooder.get(i).getId(), arrayList_brooder.get(i).getEgg_breeder_inv_id(),arrayList_brooder.get(i).getDate(), arrayList_brooder.get(i).getWeek(), arrayList_brooder.get(i).getWeight(), arrayList_brooder.get(i).getColor(), arrayList_brooder.get(i).getShape(), arrayList_brooder.get(i).getLength(), arrayList_brooder.get(i).getWidth(), arrayList_brooder.get(i).getAlbument_height(), arrayList_brooder.get(i).getAlbument_weight(), arrayList_brooder.get(i).getYolk_weight(), arrayList_brooder.get(i).getYolk_color(), arrayList_brooder.get(i).getShell_weight(), arrayList_brooder.get(i).getShell_thickness_top(), arrayList_brooder.get(i).getShell_thickness_middle(), arrayList_brooder.get(i).getShell_thickness_bottom());
+                            //Toast.makeText(EggQualityRecords.this, "Egg Qualities Added", Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                }catch (Exception e){}
+
+
+
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, String rawJsonResponse, Object response){
+
+                Toast.makeText(getApplicationContext(), "Failed to fetch Breeders from web database ", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            protected Object parseResponse(String rawJsonData, boolean isFailure) throws Throwable{
+                return null;
+            }
+        });
+    }
+
+    private void API_getHatcheryRecords(){
+        APIHelper.getHatcheryRecords("getHatcheryRecords/", new BaseJsonHttpResponseHandler<Object>() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
+
+                Gson gson = new Gson();
+                try {
+                    JSONHatchery jsonBreeder = gson.fromJson(rawJsonResponse, JSONHatchery.class);
+                    ArrayList<Hatchery_Records> arrayList_brooder = jsonBreeder.getData();
+
+                    for (int i = 0; i < arrayList_brooder.size(); i++) {
+                        //check if generation to be inserted is already in the database
+                        Cursor cursor = myDb.getAllDataFromBreederHatcheryWhereID(arrayList_brooder.get(i).getId());
+                        cursor.moveToFirst();
+
+                        if (cursor.getCount() == 0) {
+
+
+                            boolean isInserted = myDb.insertHatcheryRecordsWithID(arrayList_brooder.get(i).getId(), arrayList_brooder.get(i).getBreeder_inv_id(),arrayList_brooder.get(i).getDate(), arrayList_brooder.get(i).getBatching_date(), arrayList_brooder.get(i).getEggs_set(), arrayList_brooder.get(i).getWeek_lay(), arrayList_brooder.get(i).getFertile(), arrayList_brooder.get(i).getHatched(), arrayList_brooder.get(i).getDate_hatched(), arrayList_brooder.get(i).getDeleted_at());
+                            //Toast.makeText(HatcheryRecords.this, "Hatchery Records Added", Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+
+                }catch (Exception e){}
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, String rawJsonResponse, Object response){
+
+                Toast.makeText(getApplicationContext(), "Failed to fetch Breeders from web database ", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -1281,259 +1515,6 @@ public class DashBoardActivity extends AppCompatActivity {
         });
     }
 
-
-
-    private void API_getBreeder(){
-        APIHelper.getBreeder("getBreeder/", new BaseJsonHttpResponseHandler<Object>() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
-
-                Gson gson = new Gson();
-                try{
-                    JSONBreeder jsonBreeder = gson.fromJson(rawJsonResponse, JSONBreeder.class);
-                    ArrayList<Breeders> arrayList_brooder = jsonBreeder.getData();
-
-                    for (int i = 0; i < arrayList_brooder.size(); i++) {
-                        //check if generation to be inserted is already in the database
-                        Cursor cursor = myDb.getAllDataFromBreedersWhereID(arrayList_brooder.get(i).getId());
-                        cursor.moveToFirst();
-
-                        if (cursor.getCount() == 0) {
-                            boolean isInserted = myDb.insertDataBreederWithID(arrayList_brooder.get(i).getId(),
-                                    arrayList_brooder.get(i).getFamily_number(),
-                                    arrayList_brooder.get(i).getFemale_family_number(),
-                                    arrayList_brooder.get(i).getDate_added(),
-                                    arrayList_brooder.get(i).getDeleted_at());
-                        }
-
-                    }
-
-                }catch (Exception e){
-                    Log.d("JSON", e.toString());
-                }
-
-
-
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, String rawJsonResponse, Object response){
-
-                Toast.makeText(getApplicationContext(), "Failed to fetch Breeders from web database ", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            protected Object parseResponse(String rawJsonData, boolean isFailure) throws Throwable{
-                return null;
-            }
-        });
-    }
-
-    private void API_getBreederInventory(){
-        APIHelper.getBreederInventory("getBreederInventory/", new BaseJsonHttpResponseHandler<Object>() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
-
-                Gson gson = new Gson();
-                try{
-                    JSONBreederInventory jsonBreederInventory = gson.fromJson(rawJsonResponse, JSONBreederInventory.class);
-                    ArrayList<Breeder_Inventory> arrayList_brooderInventory = jsonBreederInventory.getData();
-
-                    for (int i = 0; i < arrayList_brooderInventory.size(); i++) {
-                        //check if generation to be inserted is already in the database
-                        Cursor cursor = myDb.getAllDataFromBreederInventoryWhereID(arrayList_brooderInventory.get(i).getId());
-                        cursor.moveToFirst();
-
-                        if (cursor.getCount() == 0) {
-
-
-                            boolean isInserted = myDb.insertDataBreederInventoryWithID(arrayList_brooderInventory.get(i).getId(), arrayList_brooderInventory.get(i).getBrooder_inv_brooder_id(), arrayList_brooderInventory.get(i).getBrooder_inv_pen(), arrayList_brooderInventory.get(i).getBrooder_inv_brooder_tag(),arrayList_brooderInventory.get(i).getBrooder_inv_batching_date(),arrayList_brooderInventory.get(i).getBrooder_male_quantity(),arrayList_brooderInventory.get(i).getBrooder_female_quantity(),arrayList_brooderInventory.get(i).getBrooder_total_quantity(), arrayList_brooderInventory.get(i).getBrooder_inv_last_update(), arrayList_brooderInventory.get(i).getBrooder_inv_deleted_at(), arrayList_brooderInventory.get(i).getBreeder_code(), arrayList_brooderInventory.get(i).getMale_wingband(), arrayList_brooderInventory.get(i).getFemale_wingband());
-
-                        }
-
-                    }
-                }catch (Exception e){}
-
-
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, String rawJsonResponse, Object response){
-
-                Toast.makeText(getApplicationContext(), "Failed to fetch Brooders Inventory from web database ", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            protected Object parseResponse(String rawJsonData, boolean isFailure) throws Throwable{
-                return null;
-            }
-        });
-    }
-
-    private void API_getBreederFeeding(){
-        APIHelper.getBreederFeeding("getBreederFeeding/", new BaseJsonHttpResponseHandler<Object>() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
-
-                Gson gson = new Gson();
-                try{
-                    JSONBreederFeeding jsonBreederInventory = gson.fromJson(rawJsonResponse, JSONBreederFeeding.class);
-                    ArrayList<Breeder_FeedingRecords> arrayList_brooderInventory = jsonBreederInventory.getData();
-
-
-                    for (int i = 0; i < arrayList_brooderInventory.size(); i++) {
-                        //check if generation to be inserted is already in the database
-                        Cursor cursor = myDb.getAllDataFromBreederFeedingRecordsWhereFeedingID(arrayList_brooderInventory.get(i).getId());
-                        cursor.moveToFirst();
-
-                        if (cursor.getCount() == 0) {
-
-
-                            boolean isInserted = myDb.insertDataBreederFeedingRecordsWithID(arrayList_brooderInventory.get(i).getId(), arrayList_brooderInventory.get(i).getBrooder_feeding_inventory_id(), arrayList_brooderInventory.get(i).getBrooder_feeding_date_collected(), arrayList_brooderInventory.get(i).getBrooder_feeding_offered(),arrayList_brooderInventory.get(i).getBrooder_feeding_refused(),arrayList_brooderInventory.get(i).getBrooder_feeding_remarks(),arrayList_brooderInventory.get(i).getBrooder_feeding_deleted_at());
-
-                        }
-
-                    }
-                }catch (Exception e){
-
-                }
-
-
-
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, String rawJsonResponse, Object response){
-
-                Toast.makeText(getApplicationContext(), "Failed to fetch Brooders Inventory from web database ", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            protected Object parseResponse(String rawJsonData, boolean isFailure) throws Throwable{
-                return null;
-            }
-        });
-    }
-
-    private void API_getEggProduction(){
-        APIHelper.getEggProduction("getEggProduction/", new BaseJsonHttpResponseHandler<Object>() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
-
-                Gson gson = new Gson();
-                try{
-                    JSONEggProduction jsonBreeder = gson.fromJson(rawJsonResponse, JSONEggProduction.class);
-                    ArrayList<Egg_Production> arrayList_brooder = jsonBreeder.getData();
-
-                    for (int i = 0; i < arrayList_brooder.size(); i++) {
-                        //check if generation to be inserted is already in the database
-                        Cursor cursor = myDb.getAllDataFromEggProductionWhereID(arrayList_brooder.get(i).getId());
-                        cursor.moveToFirst();
-
-                        if (cursor.getCount() == 0) {
-                            boolean isInserted = myDb.insertEggProductionRecordsWithID(arrayList_brooder.get(i).getId(), arrayList_brooder.get(i).getEgg_breeder_inv_id(),arrayList_brooder.get(i).getDate(), arrayList_brooder.get(i).getIntact(), arrayList_brooder.get(i).getWeight(), arrayList_brooder.get(i).getBroken(), arrayList_brooder.get(i).getRejects(), arrayList_brooder.get(i).getRemarks(), arrayList_brooder.get(i).getDeleted_at(),arrayList_brooder.get(i).getFemale_inventory());
-                        }
-                    }
-                }catch (Exception e){}
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, String rawJsonResponse, Object response){
-
-                Toast.makeText(getApplicationContext(), "Failed to fetch Breeders from web database ", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            protected Object parseResponse(String rawJsonData, boolean isFailure) throws Throwable{
-                return null;
-            }
-        });
-    }
-
-    private void API_getEggQuality(){
-        APIHelper.getEggQuality("getEggQuality/", new BaseJsonHttpResponseHandler<Object>() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
-
-                Gson gson = new Gson();
-                try{
-                    JSONEggQuality jsonBreeder = gson.fromJson(rawJsonResponse, JSONEggQuality.class);
-                    ArrayList<Egg_Quality> arrayList_brooder = jsonBreeder.getData();
-
-                    for (int i = 0; i < arrayList_brooder.size(); i++) {
-                        //check if generation to be inserted is already in the database
-                        Cursor cursor = myDb.getAllDataFromBreederEggQualWhereID(arrayList_brooder.get(i).getId());
-                        cursor.moveToFirst();
-
-                        if (cursor.getCount() == 0) {
-
-
-
-                            boolean isInserted = myDb.insertEggQualityRecordsWithID(arrayList_brooder.get(i).getId(), arrayList_brooder.get(i).getEgg_breeder_inv_id(),arrayList_brooder.get(i).getDate(), arrayList_brooder.get(i).getWeek(), arrayList_brooder.get(i).getWeight(), arrayList_brooder.get(i).getColor(), arrayList_brooder.get(i).getShape(), arrayList_brooder.get(i).getLength(), arrayList_brooder.get(i).getWidth(), arrayList_brooder.get(i).getAlbument_height(), arrayList_brooder.get(i).getAlbument_weight(), arrayList_brooder.get(i).getYolk_weight(), arrayList_brooder.get(i).getYolk_color(), arrayList_brooder.get(i).getShell_weight(), arrayList_brooder.get(i).getShell_thickness_top(), arrayList_brooder.get(i).getShell_thickness_middle(), arrayList_brooder.get(i).getShell_thickness_bottom());
-                            //Toast.makeText(EggQualityRecords.this, "Egg Qualities Added", Toast.LENGTH_SHORT).show();
-                        }
-
-                    }
-                }catch (Exception e){}
-
-
-
-
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, String rawJsonResponse, Object response){
-
-                Toast.makeText(getApplicationContext(), "Failed to fetch Breeders from web database ", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            protected Object parseResponse(String rawJsonData, boolean isFailure) throws Throwable{
-                return null;
-            }
-        });
-    }
-
-    private void API_getHatcheryRecords(){
-        APIHelper.getHatcheryRecords("getHatcheryRecords/", new BaseJsonHttpResponseHandler<Object>() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
-
-                Gson gson = new Gson();
-                try {
-                    JSONHatchery jsonBreeder = gson.fromJson(rawJsonResponse, JSONHatchery.class);
-                    ArrayList<Hatchery_Records> arrayList_brooder = jsonBreeder.getData();
-
-                    for (int i = 0; i < arrayList_brooder.size(); i++) {
-                        //check if generation to be inserted is already in the database
-                        Cursor cursor = myDb.getAllDataFromBreederHatcheryWhereID(arrayList_brooder.get(i).getId());
-                        cursor.moveToFirst();
-
-                        if (cursor.getCount() == 0) {
-
-
-                            boolean isInserted = myDb.insertHatcheryRecordsWithID(arrayList_brooder.get(i).getId(), arrayList_brooder.get(i).getBreeder_inv_id(),arrayList_brooder.get(i).getDate(), arrayList_brooder.get(i).getBatching_date(), arrayList_brooder.get(i).getEggs_set(), arrayList_brooder.get(i).getWeek_lay(), arrayList_brooder.get(i).getFertile(), arrayList_brooder.get(i).getHatched(), arrayList_brooder.get(i).getDate_hatched(), arrayList_brooder.get(i).getDeleted_at());
-                            //Toast.makeText(HatcheryRecords.this, "Hatchery Records Added", Toast.LENGTH_SHORT).show();
-                        }
-
-                    }
-
-                }catch (Exception e){}
-
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, String rawJsonResponse, Object response){
-
-                Toast.makeText(getApplicationContext(), "Failed to fetch Breeders from web database ", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            protected Object parseResponse(String rawJsonData, boolean isFailure) throws Throwable{
-                return null;
-            }
-        });
-    }
 
 
     private boolean isNetworkAvailable() {
