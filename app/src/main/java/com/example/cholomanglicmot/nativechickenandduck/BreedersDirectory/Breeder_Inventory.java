@@ -6,23 +6,23 @@ public class Breeder_Inventory {
     @SerializedName("id")
     private Integer id;
     @SerializedName("breeder_id")
-    private Integer brooder_inv_brooder_id;
+    private Integer breeder_inv_breeder_id;
     @SerializedName("pen_id")
-    private Integer brooder_inv_pen;
+    private Integer breeder_inv_pen;
     @SerializedName("breeder_tag")
-    private String brooder_inv_brooder_tag;
+    private String breeder_inv_breeder_tag;
     @SerializedName("batching_date")
-    private String brooder_inv_batching_date;
+    private String breeder_inv_batching_date;
     @SerializedName("number_male")
-    private Integer brooder_male_quantity;
+    private Integer breeder_male_quantity;
     @SerializedName("number_female")
-    private Integer brooder_female_quantity;
+    private Integer breeder_female_quantity;
     @SerializedName("total")
-    private Integer brooder_total_quantity;
+    private Integer breeder_total_quantity;
     @SerializedName("last_update")
-    private String brooder_inv_last_update;
+    private String breeder_inv_last_update;
     @SerializedName("deleted_at")
-    private String brooder_inv_deleted_at;
+    private String breeder_inv_deleted_at;
     @SerializedName("breeder_code")
     private String breeder_code;
     @SerializedName("male_wingband")
@@ -33,17 +33,17 @@ public class Breeder_Inventory {
     public Breeder_Inventory(){
     }
 
-    public Breeder_Inventory(Integer id, Integer brooder_inv_brooder_id, Integer brooder_inv_pen, String brooder_inv_brooder_tag, String brooder_inv_batching_date, Integer brooder_male_quantity, Integer brooder_female_quantity, Integer brooder_total_quantity, String brooder_inv_last_update, String brooder_inv_deleted_at, String breeder_code, String male_wingband, String female_wingband) {
+    public Breeder_Inventory(Integer id, Integer breeder_inv_breeder_id, Integer breeder_inv_pen, String breeder_inv_breeder_tag, String breeder_inv_batching_date, Integer breeder_male_quantity, Integer breeder_female_quantity, Integer breeder_total_quantity, String breeder_inv_last_update, String breeder_inv_deleted_at, String breeder_code, String male_wingband, String female_wingband) {
         this.setId(id);
-        this.setBrooder_inv_brooder_id(brooder_inv_brooder_id);
-        this.setBrooder_inv_pen(brooder_inv_pen);
-        this.setBrooder_inv_brooder_tag(brooder_inv_brooder_tag);
-        this.setBrooder_inv_batching_date(brooder_inv_batching_date);
-        this.setBrooder_male_quantity(brooder_male_quantity);
-        this.setBrooder_female_quantity(brooder_female_quantity);
-        this.setBrooder_total_quantity(brooder_total_quantity);
-        this.setBrooder_inv_last_update(brooder_inv_last_update);
-        this.setBrooder_inv_deleted_at(brooder_inv_deleted_at);
+        this.setbreeder_inv_breeder_id(breeder_inv_breeder_id);
+        this.setbreeder_inv_pen(breeder_inv_pen);
+        this.setbreeder_inv_breeder_tag(breeder_inv_breeder_tag);
+        this.setbreeder_inv_batching_date(breeder_inv_batching_date);
+        this.setbreeder_male_quantity(breeder_male_quantity);
+        this.setbreeder_female_quantity(breeder_female_quantity);
+        this.setbreeder_total_quantity(breeder_total_quantity);
+        this.setbreeder_inv_last_update(breeder_inv_last_update);
+        this.setbreeder_inv_deleted_at(breeder_inv_deleted_at);
         this.setBreeder_code(breeder_code);
         this.setMale_wingband(male_wingband);
         this.setFemale_wingband(female_wingband);
@@ -85,75 +85,75 @@ public class Breeder_Inventory {
     }
 
 
-    public Integer getBrooder_inv_brooder_id() {
-        return brooder_inv_brooder_id;
+    public Integer getBreeder_inv_breeder_id() {
+        return breeder_inv_breeder_id;
     }
 
-    public void setBrooder_inv_brooder_id(Integer brooder_inv_brooder_id) {
-        this.brooder_inv_brooder_id = brooder_inv_brooder_id;
+    public void setbreeder_inv_breeder_id(Integer breeder_inv_breeder_id) {
+        this.breeder_inv_breeder_id = breeder_inv_breeder_id;
     }
 
-    public Integer getBrooder_inv_pen() {
-        return brooder_inv_pen;
+    public Integer getBreeder_inv_pen() {
+        return breeder_inv_pen;
     }
 
-    public void setBrooder_inv_pen(Integer brooder_inv_pen) {
-        this.brooder_inv_pen = brooder_inv_pen;
+    public void setbreeder_inv_pen(Integer breeder_inv_pen) {
+        this.breeder_inv_pen = breeder_inv_pen;
     }
 
-    public String getBrooder_inv_brooder_tag() {
-        return brooder_inv_brooder_tag;
+    public String getBreeder_inv_breeder_tag() {
+        return breeder_inv_breeder_tag;
     }
 
-    public void setBrooder_inv_brooder_tag(String brooder_inv_brooder_tag) {
-        this.brooder_inv_brooder_tag = brooder_inv_brooder_tag;
+    public void setbreeder_inv_breeder_tag(String breeder_inv_breeder_tag) {
+        this.breeder_inv_breeder_tag = breeder_inv_breeder_tag;
     }
 
-    public String getBrooder_inv_batching_date() {
-        return brooder_inv_batching_date;
+    public String getBreeder_inv_batching_date() {
+        return breeder_inv_batching_date;
     }
 
-    public void setBrooder_inv_batching_date(String brooder_inv_batching_date) {
-        this.brooder_inv_batching_date = brooder_inv_batching_date;
+    public void setbreeder_inv_batching_date(String breeder_inv_batching_date) {
+        this.breeder_inv_batching_date = breeder_inv_batching_date;
     }
 
-    public Integer getBrooder_male_quantity() {
-        return brooder_male_quantity;
+    public Integer getBreeder_male_quantity() {
+        return breeder_male_quantity;
     }
 
-    public void setBrooder_male_quantity(Integer brooder_male_quantity) {
-        this.brooder_male_quantity = brooder_male_quantity;
+    public void setbreeder_male_quantity(Integer breeder_male_quantity) {
+        this.breeder_male_quantity = breeder_male_quantity;
     }
 
-    public Integer getBrooder_female_quantity() {
-        return brooder_female_quantity;
+    public Integer getBreeder_female_quantity() {
+        return breeder_female_quantity;
     }
 
-    public void setBrooder_female_quantity(Integer brooder_female_quantity) {
-        this.brooder_female_quantity = brooder_female_quantity;
+    public void setbreeder_female_quantity(Integer breeder_female_quantity) {
+        this.breeder_female_quantity = breeder_female_quantity;
     }
 
-    public Integer getBrooder_total_quantity() {
-        return brooder_total_quantity;
+    public Integer getBreeder_total_quantity() {
+        return breeder_total_quantity;
     }
 
-    public void setBrooder_total_quantity(Integer brooder_total_quantity) {
-        this.brooder_total_quantity = brooder_total_quantity;
+    public void setbreeder_total_quantity(Integer breeder_total_quantity) {
+        this.breeder_total_quantity = breeder_total_quantity;
     }
 
-    public String getBrooder_inv_last_update() {
-        return brooder_inv_last_update;
+    public String getBreeder_inv_last_update() {
+        return breeder_inv_last_update;
     }
 
-    public void setBrooder_inv_last_update(String brooder_inv_last_update) {
-        this.brooder_inv_last_update = brooder_inv_last_update;
+    public void setbreeder_inv_last_update(String breeder_inv_last_update) {
+        this.breeder_inv_last_update = breeder_inv_last_update;
     }
 
-    public String getBrooder_inv_deleted_at() {
-        return brooder_inv_deleted_at;
+    public String getBreeder_inv_deleted_at() {
+        return breeder_inv_deleted_at;
     }
 
-    public void setBrooder_inv_deleted_at(String brooder_inv_deleted_at) {
-        this.brooder_inv_deleted_at = brooder_inv_deleted_at;
+    public void setbreeder_inv_deleted_at(String breeder_inv_deleted_at) {
+        this.breeder_inv_deleted_at = breeder_inv_deleted_at;
     }
 }

@@ -48,13 +48,13 @@ public class RecyclerAdapter_Breeder extends RecyclerView.Adapter<RecyclerAdapte
         final Breeder_Inventory breeders = arrayList.get(position);
 
         final Bundle args = new Bundle();
-        args.putString("Breeder Tag", breeders.getBrooder_inv_brooder_tag());
+        args.putString("Breeder Tag", breeders.getBreeder_inv_breeder_tag());
         args.putInt("Breeder ID", breeders.getId());
-        args.putInt("Breeder Pen ID", breeders.getBrooder_inv_pen());
+        args.putInt("Breeder Pen ID", breeders.getBreeder_inv_pen());
         DatabaseHelper myDb;
         myDb = new DatabaseHelper(context);
 
-        Integer brooder_id = arrayList.get(position).getBrooder_inv_brooder_id();
+        Integer brooder_id = arrayList.get(position).getBreeder_inv_breeder_id();
 
         Integer fam_id = myDb.getFamIDFromBreeders(brooder_id);
         String famLineGen = myDb.getFamLineGen(fam_id);
@@ -69,13 +69,13 @@ public class RecyclerAdapter_Breeder extends RecyclerView.Adapter<RecyclerAdapte
             holder.breeder_line.setText(line);
             holder.breeder_generation.setText(gen);
         }catch (Exception e){}
-            holder.breeder_number.setText(breeders.getBrooder_inv_brooder_tag());
+            holder.breeder_number.setText(breeders.getBreeder_inv_breeder_tag());
 
-            holder.breeder_male_count.setText(breeders.getBrooder_male_quantity().toString());
-            holder.breeder_female_count.setText(breeders.getBrooder_female_quantity().toString());
-            holder.breeder_total_count.setText(breeders.getBrooder_total_quantity().toString());
+            holder.breeder_male_count.setText(breeders.getBreeder_male_quantity().toString());
+            holder.breeder_female_count.setText(breeders.getBreeder_female_quantity().toString());
+            holder.breeder_total_count.setText(breeders.getBreeder_total_quantity().toString());
 
-            holder.breeder_batching_date.setText(breeders.getBrooder_inv_batching_date());
+            holder.breeder_batching_date.setText(breeders.getBreeder_inv_batching_date());
 
             holder.add_breeders.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -96,8 +96,8 @@ public class RecyclerAdapter_Breeder extends RecyclerView.Adapter<RecyclerAdapte
                 public void onClick(View view) {
                     //create
                     Intent intent_replacement_feeding_records = new Intent(context, BreederFeedingRecordsActivity.class);
-                    intent_replacement_feeding_records.putExtra("Breeder Pen",breeders.getBrooder_inv_pen());
-                    intent_replacement_feeding_records.putExtra("Breeder Tag",breeders.getBrooder_inv_brooder_tag());
+                    intent_replacement_feeding_records.putExtra("Breeder Pen",breeders.getBreeder_inv_pen());
+                    intent_replacement_feeding_records.putExtra("Breeder Tag",breeders.getBreeder_inv_breeder_tag());
                     intent_replacement_feeding_records.putExtra("Breeder Inventory ID",breeders.getId());
                     context.startActivity(intent_replacement_feeding_records);
                 }
@@ -107,8 +107,8 @@ public class RecyclerAdapter_Breeder extends RecyclerView.Adapter<RecyclerAdapte
                 public void onClick(View view) {
                     //create
                     Intent intent_replacement_pheno_morpho_records = new Intent(context, EggProductionRecords.class);
-                    intent_replacement_pheno_morpho_records.putExtra("Replacement Pen",breeders.getBrooder_inv_pen());
-                    intent_replacement_pheno_morpho_records.putExtra("Breeder Tag",breeders.getBrooder_inv_brooder_tag());
+                    intent_replacement_pheno_morpho_records.putExtra("Replacement Pen",breeders.getBreeder_inv_pen());
+                    intent_replacement_pheno_morpho_records.putExtra("Breeder Tag",breeders.getBreeder_inv_breeder_tag());
                     intent_replacement_pheno_morpho_records.putExtra("Breeder Inventory ID",breeders.getId());
                     context.startActivity(intent_replacement_pheno_morpho_records);
                 }
@@ -118,8 +118,8 @@ public class RecyclerAdapter_Breeder extends RecyclerView.Adapter<RecyclerAdapte
                 public void onClick(View view) {
                     //create
                     Intent intent_replacement_pheno_morpho_records = new Intent(context, HatcheryRecords.class);
-                    intent_replacement_pheno_morpho_records.putExtra("Replacement Pen",breeders.getBrooder_inv_pen());
-                    intent_replacement_pheno_morpho_records.putExtra("Breeder Tag",breeders.getBrooder_inv_brooder_tag());
+                    intent_replacement_pheno_morpho_records.putExtra("Replacement Pen",breeders.getBreeder_inv_pen());
+                    intent_replacement_pheno_morpho_records.putExtra("Breeder Tag",breeders.getBreeder_inv_breeder_tag());
                     context.startActivity(intent_replacement_pheno_morpho_records);
                 }
             });
@@ -128,8 +128,8 @@ public class RecyclerAdapter_Breeder extends RecyclerView.Adapter<RecyclerAdapte
                 public void onClick(View view) {
                     //create
                     Intent intent_replacement_pheno_morpho_records = new Intent(context, EggQualityRecords.class);
-                    intent_replacement_pheno_morpho_records.putExtra("Replacement Pen",breeders.getBrooder_inv_pen());
-                    intent_replacement_pheno_morpho_records.putExtra("Breeder Tag",breeders.getBrooder_inv_brooder_tag());
+                    intent_replacement_pheno_morpho_records.putExtra("Replacement Pen",breeders.getBreeder_inv_pen());
+                    intent_replacement_pheno_morpho_records.putExtra("Breeder Tag",breeders.getBreeder_inv_breeder_tag());
                     context.startActivity(intent_replacement_pheno_morpho_records);
                 }
             });
@@ -138,8 +138,8 @@ public class RecyclerAdapter_Breeder extends RecyclerView.Adapter<RecyclerAdapte
                 public void onClick(View view) {
                     //create
                     Intent intent_replacement_pheno_morpho_records = new Intent(context, BreederPhenoMorphoRecordsActivity.class);
-                    intent_replacement_pheno_morpho_records.putExtra("Replacement Pen",breeders.getBrooder_inv_pen());
-                    intent_replacement_pheno_morpho_records.putExtra("Breeder Tag",breeders.getBrooder_inv_brooder_tag());
+                    intent_replacement_pheno_morpho_records.putExtra("Replacement Pen",breeders.getBreeder_inv_pen());
+                    intent_replacement_pheno_morpho_records.putExtra("Breeder Tag",breeders.getBreeder_inv_breeder_tag());
                     context.startActivity(intent_replacement_pheno_morpho_records);
                 }
             });
@@ -147,9 +147,9 @@ public class RecyclerAdapter_Breeder extends RecyclerView.Adapter<RecyclerAdapte
                 @Override
                 public void onClick(View view) {
                     Intent intent_replacement_pheno_morpho_records = new Intent(context, MortalityAndSalesRecords.class);
-                    intent_replacement_pheno_morpho_records.putExtra("Replacement Pen",breeders.getBrooder_inv_pen());
-                    intent_replacement_pheno_morpho_records.putExtra("Breeder Tag",breeders.getBrooder_inv_brooder_tag());
-                    intent_replacement_pheno_morpho_records.putExtra("Breeder ID",breeders.getBrooder_inv_brooder_id());
+                    intent_replacement_pheno_morpho_records.putExtra("Replacement Pen",breeders.getBreeder_inv_pen());
+                    intent_replacement_pheno_morpho_records.putExtra("Breeder Tag",breeders.getBreeder_inv_breeder_tag());
+                    intent_replacement_pheno_morpho_records.putExtra("Breeder ID",breeders.getBreeder_inv_breeder_id());
                     context.startActivity(intent_replacement_pheno_morpho_records);
                 }
             });

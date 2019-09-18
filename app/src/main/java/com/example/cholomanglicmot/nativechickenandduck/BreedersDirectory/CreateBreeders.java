@@ -282,19 +282,16 @@ public class CreateBreeders extends AppCompatActivity {
 
         ///////////////////////-----DATABASE
 
-        if (isNetworkAvailable()) {
-            //if internet is available, load data from web database
-
-
-            //HARDCODED KASI WALA KA PANG DATABASE NA NANDUN EMAIL MO
-            ;
-            API_updateBreederInventory();
-            API_updateBreeder();
-            API_getBreeder();
-            API_getBreederInventory();
-
-
-        }
+//        if (isNetworkAvailable()) {
+//            //if internet is available, load data from web database
+//
+//            API_updateBreederInventory();
+//            API_updateBreeder();
+//            API_getBreeder();
+//            API_getBreederInventory();
+//
+//
+//        }
 
         Cursor cursor_code = myDb.getAllDataFromFarms(farm_id);
         cursor_code.moveToFirst();
@@ -303,6 +300,7 @@ public class CreateBreeders extends AppCompatActivity {
         }
         Cursor cursorBreederInv = myDb.getAllDataFromBreederInventory();
         cursorBreederInv.moveToFirst();
+
         if(cursorBreederInv.getCount()==0){
             Toast.makeText(this, "No breeder inventory data", Toast.LENGTH_SHORT).show();
 
@@ -318,53 +316,6 @@ public class CreateBreeders extends AppCompatActivity {
                     arrayListBreederInventory2.add(breeder_inventory);
                 }
             }while (cursorBreederInv.moveToNext());
-
-
-
-            ////////////START
-       /*     Cursor cursor = myDb.getAllDataFromBreeders();
-            cursor.moveToFirst();
-
-            if(cursor.getCount() == 0){
-                //show message
-
-            }else{
-
-                do {
-
-                    Breeders breeders = new Breeders(cursor.getInt(0), cursor.getInt(1), cursor.getInt(2), cursor.getString(3), cursor.getString(4));
-                    arrayListBreeders.add(breeders);
-                }while (cursor.moveToNext());
-
-                do{
-                    for(int i=0;i<arrayListBreeders.size();i++){
-
-                        //getFamLineGen
-                        //boolean isExists = "iPhone".indexOf("i");
-                        if(arrayListBreeders.get(i).getId() == cursorBreederInv.getInt(1) && arrayListBreeders.get(i).getDeleted_at() == null){
-                        //kunin yung breeder inventory tag tapos para madd sa arraylist, dapat it contains yung given na farm code.
-                            Integer brooder_id = arrayListBreeders.get(i).getId();
-                            Cursor cursor_fam_id = myDb.getAllDataFromBreedersWhereID(brooder_id);
-                            cursor_fam_id.moveToFirst();
-                            if(cursor_fam_id.getCount() != 0){
-                                fam_id = cursor_fam_id.getInt(1);
-                            }
-                            String checker = myDb.getFamLineGen(fam_id);
-                            if(checker != null){
-                                Breeder_Inventory breeder_inventory = new Breeder_Inventory(cursorBreederInv.getInt(0), cursorBreederInv.getInt(1), cursorBreederInv.getInt(2), cursorBreederInv.getString(3), cursorBreederInv.getString(4), cursorBreederInv.getInt(5), cursorBreederInv.getInt(6), cursorBreederInv.getInt(7),cursorBreederInv.getString(8), cursorBreederInv.getString(9),cursorBreederInv.getString(10),cursorBreederInv.getString(11),cursorBreederInv.getString(12));
-
-                                arrayListBreederInventory2.add(breeder_inventory);
-                            }
-
-                            //String deleted_at = cursorBreederInv.getString(9);
-
-
-                        }
-                    }
-
-                }while(cursorBreederInv.moveToNext());
-            }*/
-            ///////// END
 
         }
 
@@ -455,7 +406,7 @@ public class CreateBreeders extends AppCompatActivity {
                         if (cursor.getCount() == 0) {
 
 
-                            boolean isInserted = myDb.insertDataBreederInventoryWithID(arrayList_brooderInventory.get(i).getId(), arrayList_brooderInventory.get(i).getBrooder_inv_brooder_id(), arrayList_brooderInventory.get(i).getBrooder_inv_pen(), arrayList_brooderInventory.get(i).getBrooder_inv_brooder_tag(),arrayList_brooderInventory.get(i).getBrooder_inv_batching_date(),arrayList_brooderInventory.get(i).getBrooder_male_quantity(),arrayList_brooderInventory.get(i).getBrooder_female_quantity(),arrayList_brooderInventory.get(i).getBrooder_total_quantity(), arrayList_brooderInventory.get(i).getBrooder_inv_last_update(), arrayList_brooderInventory.get(i).getBrooder_inv_deleted_at(), arrayList_brooderInventory.get(i).getBreeder_code(), arrayList_brooderInventory.get(i).getMale_wingband(), arrayList_brooderInventory.get(i).getFemale_wingband());
+                            boolean isInserted = myDb.insertDataBreederInventoryWithID(arrayList_brooderInventory.get(i).getId(), arrayList_brooderInventory.get(i).getBreeder_inv_breeder_id(), arrayList_brooderInventory.get(i).getBreeder_inv_pen(), arrayList_brooderInventory.get(i).getBreeder_inv_breeder_tag(),arrayList_brooderInventory.get(i).getBreeder_inv_batching_date(),arrayList_brooderInventory.get(i).getBreeder_male_quantity(),arrayList_brooderInventory.get(i).getBreeder_female_quantity(),arrayList_brooderInventory.get(i).getBreeder_total_quantity(), arrayList_brooderInventory.get(i).getBreeder_inv_last_update(), arrayList_brooderInventory.get(i).getBreeder_inv_deleted_at(), arrayList_brooderInventory.get(i).getBreeder_code(), arrayList_brooderInventory.get(i).getMale_wingband(), arrayList_brooderInventory.get(i).getFemale_wingband());
 
                         }
 

@@ -123,7 +123,7 @@ public class CreateMorphoDialogBreeder extends DialogFragment{
                     }
                     //get inventory given the tag
                     for (int i = 0; i<arrayListReplacementInventory.size();i++){
-                        if (arrayListReplacementInventory.get(i).getBrooder_inv_brooder_tag().equals(replacement_inv_tag)){
+                        if (arrayListReplacementInventory.get(i).getBreeder_inv_breeder_tag().equals(replacement_inv_tag)){
                             arrayListReplacementInventory1.add(arrayListReplacementInventory.get(i));
 
                         }

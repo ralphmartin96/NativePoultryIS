@@ -96,9 +96,9 @@ public class CreateBreederFeedingRecordDialog extends DialogFragment {
 
 ////////////////////////
 
-                    Cursor cursor_brooder_inventory = myDb.getAllDataFromBreederInventory(); //para sa pagstore ng data sa arraylist
-                    cursor_brooder_inventory.moveToFirst();
-                    if(cursor_brooder_inventory.getCount() == 0){
+                    Cursor cursor_breeder_inventory = myDb.getAllDataFromBreederInventory(); //para sa pagstore ng data sa arraylist
+                    cursor_breeder_inventory.moveToFirst();
+                    if(cursor_breeder_inventory.getCount() == 0){
                         //show message
 
                       //  Toast.makeText(getActivity(),"Add Brooders first", Toast.LENGTH_LONG).show();
@@ -106,15 +106,15 @@ public class CreateBreederFeedingRecordDialog extends DialogFragment {
                     }else {
                         do {
 
-                            Breeder_Inventory brooder_inventory = new Breeder_Inventory(cursor_brooder_inventory.getInt(0),cursor_brooder_inventory.getInt(1), cursor_brooder_inventory.getInt(2), cursor_brooder_inventory.getString(3),cursor_brooder_inventory.getString(4), cursor_brooder_inventory.getInt(5), cursor_brooder_inventory.getInt(6),cursor_brooder_inventory.getInt(7), cursor_brooder_inventory.getString(8), cursor_brooder_inventory.getString(9), cursor_brooder_inventory.getString(10), cursor_brooder_inventory.getString(11), cursor_brooder_inventory.getString(12));
+                            Breeder_Inventory brooder_inventory = new Breeder_Inventory(cursor_breeder_inventory.getInt(0),cursor_breeder_inventory.getInt(1), cursor_breeder_inventory.getInt(2), cursor_breeder_inventory.getString(3),cursor_breeder_inventory.getString(4), cursor_breeder_inventory.getInt(5), cursor_breeder_inventory.getInt(6),cursor_breeder_inventory.getInt(7), cursor_breeder_inventory.getString(8), cursor_breeder_inventory.getString(9), cursor_breeder_inventory.getString(10), cursor_breeder_inventory.getString(11), cursor_breeder_inventory.getString(12));
                             arrayListBrooderInventory.add(brooder_inventory);
 
 
-                        } while (cursor_brooder_inventory.moveToNext());
+                        } while (cursor_breeder_inventory.moveToNext());
                     }
 
                      for (int i=0;i<arrayListBrooderInventory.size();i++){
-                            if(arrayListBrooderInventory.get(i).getBrooder_inv_pen() == breeder_pen ){
+                            if(arrayListBrooderInventory.get(i).getBreeder_inv_pen() == breeder_pen ){
 
                                 arrayList_temp.add(arrayListBrooderInventory.get(i)); //ito na yung list ng inventory na nasa pen
 
@@ -125,17 +125,17 @@ public class CreateBreederFeedingRecordDialog extends DialogFragment {
                     int count_inventory = 0;
 
                     for(int i=0;i<arrayList_temp.size();i++){
-                        count_inventory = count_inventory+arrayList_temp.get(i).getBrooder_total_quantity();
+                        count_inventory = count_inventory+arrayList_temp.get(i).getBreeder_total_quantity();
                     }
 
 
 
                     ArrayList<Integer> arrayListBrooder = new ArrayList<>();
                     for(int i = 0;i<arrayList_temp.size();i++){
-                        if(arrayListBrooder.contains(arrayList_temp.get(i).getBrooder_inv_brooder_id())){
+                        if(arrayListBrooder.contains(arrayList_temp.get(i).getBreeder_inv_breeder_id())){
                             //do nothing
                         }else{
-                            arrayListBrooder.add(arrayList_temp.get(i).getBrooder_inv_brooder_id());
+                            arrayListBrooder.add(arrayList_temp.get(i).getBreeder_inv_breeder_id());
                         }
                     }
 
@@ -153,21 +153,21 @@ public class CreateBreederFeedingRecordDialog extends DialogFragment {
                     ArrayList<Integer> arrayList = new ArrayList<>();
 
                     for (int i=0;i<arrayList_temp.size();i++){
-                        if(inventory_dictionary.get(arrayList_temp.get(i).getBrooder_inv_brooder_id()) != null && !arrayList.contains(arrayList_temp.get(i).getBrooder_inv_brooder_id())){
+                        if(inventory_dictionary.get(arrayList_temp.get(i).getBreeder_inv_breeder_id()) != null && !arrayList.contains(arrayList_temp.get(i).getBreeder_inv_breeder_id())){
                             ArrayList<Float> arrayList2 = new ArrayList<>();
-                            arrayList2.add((float)arrayList_temp.get(i).getBrooder_total_quantity());
-                            arrayList2.add((float)arrayList_temp.get(i).getBrooder_total_quantity());
-                            inventory_dictionary.put(arrayList_temp.get(i).getBrooder_inv_brooder_id(),arrayList2);
-                            arrayList.add(arrayList_temp.get(i).getBrooder_inv_brooder_id());
-                        }else if(arrayList.contains(arrayList_temp.get(i).getBrooder_inv_brooder_id())){
+                            arrayList2.add((float)arrayList_temp.get(i).getBreeder_total_quantity());
+                            arrayList2.add((float)arrayList_temp.get(i).getBreeder_total_quantity());
+                            inventory_dictionary.put(arrayList_temp.get(i).getBreeder_inv_breeder_id(),arrayList2);
+                            arrayList.add(arrayList_temp.get(i).getBreeder_inv_breeder_id());
+                        }else if(arrayList.contains(arrayList_temp.get(i).getBreeder_inv_breeder_id())){
 
 
                             ArrayList<Float> arrayList3 = new ArrayList<>();
-                            arrayList3.add(inventory_dictionary.get(arrayList_temp.get(i).getBrooder_inv_brooder_id()).get(0)+arrayList_temp.get(i).getBrooder_total_quantity());
-                            arrayList3.add(inventory_dictionary.get(arrayList_temp.get(i).getBrooder_inv_brooder_id()).get(1)+arrayList_temp.get(i).getBrooder_total_quantity());
+                            arrayList3.add(inventory_dictionary.get(arrayList_temp.get(i).getBreeder_inv_breeder_id()).get(0)+arrayList_temp.get(i).getBreeder_total_quantity());
+                            arrayList3.add(inventory_dictionary.get(arrayList_temp.get(i).getBreeder_inv_breeder_id()).get(1)+arrayList_temp.get(i).getBreeder_total_quantity());
 
 
-                            inventory_dictionary.put(arrayList_temp.get(i).getBrooder_inv_brooder_id(),arrayList3);
+                            inventory_dictionary.put(arrayList_temp.get(i).getBreeder_inv_breeder_id(),arrayList3);
                         }
                     }
                    //buffer.append("inventory_dictionary  "+inventory_dictionary.toString()+"\n\n");
@@ -191,15 +191,15 @@ public class CreateBreederFeedingRecordDialog extends DialogFragment {
 
                     ArrayList<Integer> arrayList1 = new ArrayList<>();
                     for (int i=0;i<arrayList_temp.size();i++){
-                        if(arrayList1.contains(arrayList_temp.get(i).getBrooder_inv_brooder_id())){
+                        if(arrayList1.contains(arrayList_temp.get(i).getBreeder_inv_breeder_id())){
                             //skip
                         }else{
 
                             ArrayList<Float> multiplier = new ArrayList<>();
-                            multiplier.add(inventory_dictionary.get(arrayList_temp.get(i).getBrooder_inv_brooder_id()).get(0)*multiplierOffered);
-                            multiplier.add(inventory_dictionary.get(arrayList_temp.get(i).getBrooder_inv_brooder_id()).get(1)*mutiplierRefused);
-                            inventory_dictionary.put(arrayList_temp.get(i).getBrooder_inv_brooder_id(),multiplier);
-                            arrayList1.add(arrayList_temp.get(i).getBrooder_inv_brooder_id());
+                            multiplier.add(inventory_dictionary.get(arrayList_temp.get(i).getBreeder_inv_breeder_id()).get(0)*multiplierOffered);
+                            multiplier.add(inventory_dictionary.get(arrayList_temp.get(i).getBreeder_inv_breeder_id()).get(1)*mutiplierRefused);
+                            inventory_dictionary.put(arrayList_temp.get(i).getBreeder_inv_breeder_id(),multiplier);
+                            arrayList1.add(arrayList_temp.get(i).getBreeder_inv_breeder_id());
                         }
                     }
 

@@ -175,7 +175,7 @@ public class CreateEggQualityDialog extends DialogFragment{
 
 
                     for(int i=0;i<arrayListBrooderInventory.size();i++){
-                        if(arrayListBrooderInventory.get(i).getBrooder_inv_brooder_tag().equals(breeder_tag)){
+                        if(arrayListBrooderInventory.get(i).getBreeder_inv_breeder_tag().equals(breeder_tag)){
                             arrayList_temp.add(arrayListBrooderInventory.get(i));
                         }
                     }

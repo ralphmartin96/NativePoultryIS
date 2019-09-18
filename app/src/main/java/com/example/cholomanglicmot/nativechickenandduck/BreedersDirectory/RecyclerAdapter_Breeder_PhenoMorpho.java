@@ -71,23 +71,23 @@ public class RecyclerAdapter_Breeder_PhenoMorpho extends RecyclerView.Adapter<Re
 
         ///pass replacement tag to args
         final Bundle args = new Bundle();
-        args.putInt("Replacement Pen", replacement_inventory.getBrooder_inv_pen());
+        args.putInt("Replacement Pen", replacement_inventory.getBreeder_inv_pen());
 
-        args.putString("Replacement Tag", replacement_inventory.getBrooder_inv_brooder_tag());
+        args.putString("Replacement Tag", replacement_inventory.getBreeder_inv_breeder_tag());
 
 
-        holder.replacement_inventory_code.setText(replacement_inventory.getBrooder_inv_brooder_tag());
+        holder.replacement_inventory_code.setText(replacement_inventory.getBreeder_inv_breeder_tag());
 
-        holder.replacement_inventory_number_male.setText(replacement_inventory.getBrooder_male_quantity().toString());
-        holder.replacement_inventory_number_female.setText(replacement_inventory.getBrooder_female_quantity().toString());
+        holder.replacement_inventory_number_male.setText(replacement_inventory.getBreeder_male_quantity().toString());
+        holder.replacement_inventory_number_female.setText(replacement_inventory.getBreeder_female_quantity().toString());
 
         holder.replacement_inventory_view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent_replacement_inventory_pheno_morpho = new Intent(context, BreederPhenoMorphoViewActivity.class);
-                intent_replacement_inventory_pheno_morpho.putExtra("Replacement Tag",replacement_inventory.getBrooder_inv_brooder_tag());
-                intent_replacement_inventory_pheno_morpho.putExtra("Breeder Inv ID",replacement_inventory.getBrooder_inv_brooder_id());
-                intent_replacement_inventory_pheno_morpho.putExtra("Replacement Pen",replacement_inventory.getBrooder_inv_pen());
+                intent_replacement_inventory_pheno_morpho.putExtra("Replacement Tag",replacement_inventory.getBreeder_inv_breeder_tag());
+                intent_replacement_inventory_pheno_morpho.putExtra("Breeder Inv ID",replacement_inventory.getBreeder_inv_breeder_id());
+                intent_replacement_inventory_pheno_morpho.putExtra("Replacement Pen",replacement_inventory.getBreeder_inv_pen());
                 context.startActivity(intent_replacement_inventory_pheno_morpho);
 
             }
