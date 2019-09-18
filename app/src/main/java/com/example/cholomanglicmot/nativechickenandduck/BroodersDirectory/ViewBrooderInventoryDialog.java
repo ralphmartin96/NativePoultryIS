@@ -104,10 +104,7 @@ public class ViewBrooderInventoryDialog extends DialogFragment {
         cursor.moveToFirst();
 
         if(cursor.getCount() != 0){
-            //textView.setText(cursor.getString(3));
             batching_date.setText(cursor.getString(4));
-
-
             brooder_male_count.setText(cursor.getString(5));
             brooder_female_count.setText(cursor.getString(6));
             brooder_total.setText(cursor.getString(7));

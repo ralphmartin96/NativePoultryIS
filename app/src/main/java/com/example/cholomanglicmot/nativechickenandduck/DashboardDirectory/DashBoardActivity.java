@@ -185,25 +185,22 @@ public class DashBoardActivity extends AppCompatActivity {
             //if internet is available, load data from web database
 
             API_getFarmID(email);
-//                        API_getBrooderInventory();
-//                        API_getBrooderFeeding();
-//                        API_getBrooderGrowth();
 //
-//                        API_getPhenoMorphoValues();
-//                        API_getPhenoMorphos();
-//                        API_getMortalityAndSales();
+//            API_getPhenoMorphoValues();
+//            API_getPhenoMorphos();
+//            API_getMortalityAndSales();
 //
-//                        API_getReplacement();
-//                        API_getReplacementInventory();
-//                        API_getReplacementFeeding();
-//                        API_getReplacementGrowth();
+//            API_getReplacement();
+//            API_getReplacementInventory();
+//            API_getReplacementFeeding();
+//            API_getReplacementGrowth();
 //
-//                        API_getBreeder();
-//                        API_getBreederInventory();
-//                        API_getBreederFeeding();
-//                        API_getEggQuality();
-//                        API_getEggProduction();
-//                        API_getHatcheryRecords();
+//            API_getBreeder();
+//            API_getBreederInventory();
+//            API_getBreederFeeding();
+//            API_getEggQuality();
+//            API_getEggProduction();
+//            API_getHatcheryRecords();
         }
 
         Cursor cursor = myDb.getFarmIDFromUsers(email);
@@ -703,134 +700,6 @@ public class DashBoardActivity extends AppCompatActivity {
 
 
 
-    private void API_getPhenoMorphos(){
-        APIHelper.getPhenoMorphos("getPhenoMorphos/", new BaseJsonHttpResponseHandler<Object>() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
-
-                Gson gson = new Gson();
-                try{
-                    JSONPhenoMorphos jsonReplacement = gson.fromJson(rawJsonResponse, JSONPhenoMorphos.class);
-                    ArrayList <Pheno_Morphos> arrayList_brooder = jsonReplacement.getData();
-
-                    for (int i = 0; i < arrayList_brooder.size(); i++) {
-                        //check if generation to be inserted is already in the database
-                        Cursor cursor = myDb.getDataFromReplacementPhenoMorphosWhereID(arrayList_brooder.get(i).getId());
-                        cursor.moveToFirst();
-
-                        if (cursor.getCount() == 0) {
-
-
-                            boolean isInserted = myDb.insertPhenoMorphosWithID(arrayList_brooder.get(i).getId(), arrayList_brooder.get(i).getReplacement_inventory(), arrayList_brooder.get(i).getBreeder_inventory(), arrayList_brooder.get(i).getValues_id(), arrayList_brooder.get(i).getDeleted_at());
-                            // Toast.makeText(ReplacementPhenoMorphoViewActivity.this, "Pheno and Morphos Added", Toast.LENGTH_SHORT).show();
-                        }
-
-                    }
-                }catch (Exception e){}
-
-
-
-
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, String rawJsonResponse, Object response){
-
-                Toast.makeText(getApplicationContext(), "Failed to fetch pheno and morphos web database ", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            protected Object parseResponse(String rawJsonData, boolean isFailure) throws Throwable{
-                return null;
-            }
-        });
-    }
-
-    private void API_getPhenoMorphoValues(){
-        APIHelper.getPhenoMorphoValues("getPhenoMorphoValues/", new BaseJsonHttpResponseHandler<Object>() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
-
-                Gson gson = new Gson();
-                try{
-                    JSONPhenoMorphoValues jsonReplacement = gson.fromJson(rawJsonResponse, JSONPhenoMorphoValues.class);
-                    ArrayList <Breeder_PhenoMorphoView> arrayList_brooder = jsonReplacement.getData();
-
-                    for (int i = 0; i < arrayList_brooder.size(); i++) {
-                        //check if generation to be inserted is already in the database
-                        Cursor cursor = myDb.getAllDataFromPhenoMorphoRecordsWithID(arrayList_brooder.get(i).getId());
-                        cursor.moveToFirst();
-
-                        if (cursor.getCount() == 0) {
-
-
-                            boolean isInserted = myDb.insertPhenoMorphoRecordsWithID(arrayList_brooder.get(i).getId(), arrayList_brooder.get(i).getGender(), arrayList_brooder.get(i).getTag(), arrayList_brooder.get(i).getPheno_record(), arrayList_brooder.get(i).getMorpho_record(), arrayList_brooder.get(i).getDate(), arrayList_brooder.get(i).getDeleted_at());
-                            // Toast.makeText(ReplacementPhenoMorphoViewActivity.this, "Pheno and Morphos Values Added", Toast.LENGTH_SHORT).show();
-                        }
-
-                    }
-                }catch (Exception e){}
-
-
-
-
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, String rawJsonResponse, Object response){
-
-                Toast.makeText(getApplicationContext(), "Failed to fetch pheno and morphos values web database ", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            protected Object parseResponse(String rawJsonData, boolean isFailure) throws Throwable{
-                return null;
-            }
-        });
-    }
-
-    private void API_getMortalityAndSales(){
-        APIHelper.getMortalityAndSales("getMortalityAndSales/", new BaseJsonHttpResponseHandler<Object>() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
-
-                Gson gson = new Gson();
-                try{
-                    JSONMortalityAndSales jsonBrooder = gson.fromJson(rawJsonResponse, JSONMortalityAndSales.class);
-                    ArrayList<Mortality_Sales> arrayList_brooder = jsonBrooder.getData();
-
-                    for (int i = 0; i < arrayList_brooder.size(); i++) {
-                        //check if generation to be inserted is already in the database
-                        Cursor cursor = myDb.getAllDataFromMortandSalesRecordsWithID(arrayList_brooder.get(i).getId());
-                        cursor.moveToFirst();
-
-                        if (cursor.getCount() == 0) {
-
-
-                            boolean isInserted = myDb.insertDataMortalityAndSalesWithID(arrayList_brooder.get(i).getId(), arrayList_brooder.get(i).getDate(), arrayList_brooder.get(i).getBreeder_id(), arrayList_brooder.get(i).getReplaement_id(), arrayList_brooder.get(i).getBrooder_id(), arrayList_brooder.get(i).getType(), arrayList_brooder.get(i).getCategory(), arrayList_brooder.get(i).getPrice(), arrayList_brooder.get(i).getMale_count(), arrayList_brooder.get(i).getFemale_count(), arrayList_brooder.get(i).getTotal(), arrayList_brooder.get(i).getReason(), arrayList_brooder.get(i).getRemarks(), arrayList_brooder.get(i).getDeleted_at());
-
-                        }
-
-                    }
-                }catch (Exception e){}
-
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, String rawJsonResponse, Object response){
-
-                Toast.makeText(getApplicationContext(), "Failed to fetch Mortality and Sales from web ", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            protected Object parseResponse(String rawJsonData, boolean isFailure) throws Throwable{
-                return null;
-            }
-        });
-    }
-
-
-
     private void API_getBrooder(ArrayList<Integer> arrayList_family_id){
         APIHelper.getBrooder("getBrooder/", new BaseJsonHttpResponseHandler<Object>() {
             @Override
@@ -1096,6 +965,134 @@ public class DashBoardActivity extends AppCompatActivity {
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, String rawJsonResponse, Object response){
 
                 Toast.makeText(getApplicationContext(), "Failed to fetch Brooders Inventory from web database ", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            protected Object parseResponse(String rawJsonData, boolean isFailure) throws Throwable{
+                return null;
+            }
+        });
+    }
+
+
+
+    private void API_getPhenoMorphos(){
+        APIHelper.getPhenoMorphos("getPhenoMorphos/", new BaseJsonHttpResponseHandler<Object>() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
+
+                Gson gson = new Gson();
+                try{
+                    JSONPhenoMorphos jsonReplacement = gson.fromJson(rawJsonResponse, JSONPhenoMorphos.class);
+                    ArrayList <Pheno_Morphos> arrayList_brooder = jsonReplacement.getData();
+
+                    for (int i = 0; i < arrayList_brooder.size(); i++) {
+                        //check if generation to be inserted is already in the database
+                        Cursor cursor = myDb.getDataFromReplacementPhenoMorphosWhereID(arrayList_brooder.get(i).getId());
+                        cursor.moveToFirst();
+
+                        if (cursor.getCount() == 0) {
+
+
+                            boolean isInserted = myDb.insertPhenoMorphosWithID(arrayList_brooder.get(i).getId(), arrayList_brooder.get(i).getReplacement_inventory(), arrayList_brooder.get(i).getBreeder_inventory(), arrayList_brooder.get(i).getValues_id(), arrayList_brooder.get(i).getDeleted_at());
+                            // Toast.makeText(ReplacementPhenoMorphoViewActivity.this, "Pheno and Morphos Added", Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                }catch (Exception e){}
+
+
+
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, String rawJsonResponse, Object response){
+
+                Toast.makeText(getApplicationContext(), "Failed to fetch pheno and morphos web database ", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            protected Object parseResponse(String rawJsonData, boolean isFailure) throws Throwable{
+                return null;
+            }
+        });
+    }
+
+    private void API_getPhenoMorphoValues(){
+        APIHelper.getPhenoMorphoValues("getPhenoMorphoValues/", new BaseJsonHttpResponseHandler<Object>() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
+
+                Gson gson = new Gson();
+                try{
+                    JSONPhenoMorphoValues jsonReplacement = gson.fromJson(rawJsonResponse, JSONPhenoMorphoValues.class);
+                    ArrayList <Breeder_PhenoMorphoView> arrayList_brooder = jsonReplacement.getData();
+
+                    for (int i = 0; i < arrayList_brooder.size(); i++) {
+                        //check if generation to be inserted is already in the database
+                        Cursor cursor = myDb.getAllDataFromPhenoMorphoRecordsWithID(arrayList_brooder.get(i).getId());
+                        cursor.moveToFirst();
+
+                        if (cursor.getCount() == 0) {
+
+
+                            boolean isInserted = myDb.insertPhenoMorphoRecordsWithID(arrayList_brooder.get(i).getId(), arrayList_brooder.get(i).getGender(), arrayList_brooder.get(i).getTag(), arrayList_brooder.get(i).getPheno_record(), arrayList_brooder.get(i).getMorpho_record(), arrayList_brooder.get(i).getDate(), arrayList_brooder.get(i).getDeleted_at());
+                            // Toast.makeText(ReplacementPhenoMorphoViewActivity.this, "Pheno and Morphos Values Added", Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                }catch (Exception e){}
+
+
+
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, String rawJsonResponse, Object response){
+
+                Toast.makeText(getApplicationContext(), "Failed to fetch pheno and morphos values web database ", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            protected Object parseResponse(String rawJsonData, boolean isFailure) throws Throwable{
+                return null;
+            }
+        });
+    }
+
+    private void API_getMortalityAndSales(){
+        APIHelper.getMortalityAndSales("getMortalityAndSales/", new BaseJsonHttpResponseHandler<Object>() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
+
+                Gson gson = new Gson();
+                try{
+                    JSONMortalityAndSales jsonBrooder = gson.fromJson(rawJsonResponse, JSONMortalityAndSales.class);
+                    ArrayList<Mortality_Sales> arrayList_brooder = jsonBrooder.getData();
+
+                    for (int i = 0; i < arrayList_brooder.size(); i++) {
+                        //check if generation to be inserted is already in the database
+                        Cursor cursor = myDb.getAllDataFromMortandSalesRecordsWithID(arrayList_brooder.get(i).getId());
+                        cursor.moveToFirst();
+
+                        if (cursor.getCount() == 0) {
+
+
+                            boolean isInserted = myDb.insertDataMortalityAndSalesWithID(arrayList_brooder.get(i).getId(), arrayList_brooder.get(i).getDate(), arrayList_brooder.get(i).getBreeder_id(), arrayList_brooder.get(i).getReplaement_id(), arrayList_brooder.get(i).getBrooder_id(), arrayList_brooder.get(i).getType(), arrayList_brooder.get(i).getCategory(), arrayList_brooder.get(i).getPrice(), arrayList_brooder.get(i).getMale_count(), arrayList_brooder.get(i).getFemale_count(), arrayList_brooder.get(i).getTotal(), arrayList_brooder.get(i).getReason(), arrayList_brooder.get(i).getRemarks(), arrayList_brooder.get(i).getDeleted_at());
+
+                        }
+
+                    }
+                }catch (Exception e){}
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, String rawJsonResponse, Object response){
+
+                Toast.makeText(getApplicationContext(), "Failed to fetch Mortality and Sales from web ", Toast.LENGTH_SHORT).show();
             }
 
             @Override
