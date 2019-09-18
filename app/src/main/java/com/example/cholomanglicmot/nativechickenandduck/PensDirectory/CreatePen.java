@@ -227,17 +227,6 @@ public class CreatePen extends AppCompatActivity {
 
         farm_id = farm_id2.toString();
 
-//        boolean isNetworkAvailable = isNetworkAvailable();
-//        if(isNetworkAvailable){
-//            API_getPen(farm_id); //get data from web
-//            API_updatePen(farm_id);
-//            TEST_updatePen(farm_id);
-//
-//            Toast.makeText(this, arrayList_pen.size()+"", Toast.LENGTH_SHORT).show();
-//        }else{
-//            Toast.makeText(this,"Check your internet connection", Toast.LENGTH_SHORT).show();
-//        }
-
         local_getPen();
 
         recycler_adapter = new RecyclerAdapter_Pen(arrayList);

@@ -429,38 +429,38 @@ public class DashBoardActivity extends AppCompatActivity {
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
 
                 Gson gson = new Gson();
-                ArrayList<Pen> arrayList = new ArrayList<>();
+                ArrayList<Pen> arrayList_pen = new ArrayList<>();
+                ArrayList<Integer> arrayList_pen_id = new ArrayList<>();
 
                 try{
 
                     JSONPen jsonPen = gson.fromJson(rawJsonResponse, JSONPen.class);
-                    arrayList = jsonPen.getData();
+                    arrayList_pen = jsonPen.getData();
 
-                    for (int i = 0; i < arrayList.size(); i++) {
+                    for (int i = 0; i < arrayList_pen.size(); i++) {
 
-                        Cursor cursor1 = myDb.getAllDataFromPenWhereID(arrayList.get(i).getId());
+                        Cursor cursor1 = myDb.getAllDataFromPenWhereID(arrayList_pen.get(i).getId());
                         cursor1.moveToFirst();
 
                         if (cursor1.getCount() == 0) {
 
                             boolean isInserted = myDb.insertDataPenWithID(
-                                    arrayList.get(i).getId(),
-                                    arrayList.get(i).getFarm_id(),
-                                    arrayList.get(i).getPen_number(),
-                                    arrayList.get(i).getPen_type(),
-                                    arrayList.get(i).getPen_inventory(),
-                                    arrayList.get(i).getPen_capacity(),
-                                    arrayList.get(i).getIs_active()
+                                    arrayList_pen.get(i).getId(),
+                                    arrayList_pen.get(i).getFarm_id(),
+                                    arrayList_pen.get(i).getPen_number(),
+                                    arrayList_pen.get(i).getPen_type(),
+                                    arrayList_pen.get(i).getPen_inventory(),
+                                    arrayList_pen.get(i).getPen_capacity(),
+                                    arrayList_pen.get(i).getIs_active()
                             );
 
-//                            if(isInserted) Log.d(debugTag, "Inserted pen "+arrayList.get(i).getId());
-                            if(arrayList.get(i).getPen_type().equals("brooder")){
-                                API_getBrooderInventory(arrayList.get(i).getId());
+                            if(arrayList_pen.get(i).getPen_type().equals("brooder")){
+                                arrayList_pen_id.add(arrayList_pen.get(i).getId());
                             }
-
                         }
-
                     }
+
+                    API_getBrooderInventory(arrayList_pen_id);
 
                 }catch (Exception e){
                     Log.d(debugTag, "Exception in Pen API caught");
@@ -489,8 +489,6 @@ public class DashBoardActivity extends AppCompatActivity {
                 try{
                     JSONGeneration jsonGeneration = gson.fromJson(rawJsonResponse, JSONGeneration.class);
                     ArrayList<Generation> arrayList_gen = jsonGeneration.getData();
-
-//                    Log.d(debugTag, "GEN: "+arrayList_gen.size());
 
                     for (int i = 0; i < arrayList_gen.size(); i++) {
 
@@ -809,9 +807,6 @@ public class DashBoardActivity extends AppCompatActivity {
                     }
                 }catch (Exception e){}
 
-
-
-
             }
 
             @Override
@@ -877,7 +872,7 @@ public class DashBoardActivity extends AppCompatActivity {
         });
     }
 
-    private void API_getBrooderInventory(int pen_id){
+    private void API_getBrooderInventory(ArrayList<Integer> arrayList_pen_id){
         APIHelper.getBrooderInventory("getBrooderInventory/", new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
@@ -889,7 +884,7 @@ public class DashBoardActivity extends AppCompatActivity {
 
                     for(Brooder_Inventory brooder_inventory : arrayList_brooderInventory){
 
-                        if(brooder_inventory.getBrooder_inv_pen()==pen_id){
+                        if(arrayList_pen_id.contains(brooder_inventory.getBrooder_inv_pen())){
                             Cursor cursor = myDb.getAllDataFromBrooderInventoryWhereID(brooder_inventory.getId());
                             cursor.moveToFirst();
 
