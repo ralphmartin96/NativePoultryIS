@@ -4692,4 +4692,28 @@ public Integer getAllMaleFromBrooders(Integer farm_id){
         return size;
     }
 
+    public int getBreederSize(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        int size=0;
+
+        Cursor res = db.rawQuery("SELECT COUNT(*) FROM "+TABLE_BREEDER, new String[]{});
+        res.moveToFirst();
+
+        if(res.getCount() != 0) size = res.getInt(0);
+
+        return size;
+    }
+
+    public int getBreederInventorySize(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        int size=0;
+
+        Cursor res = db.rawQuery("SELECT COUNT(*) FROM "+TABLE_BREEDER_INVENTORIES, new String[]{});
+        res.moveToFirst();
+
+        if(res.getCount() != 0) size = res.getInt(0);
+
+        return size;
+    }
+
 }
