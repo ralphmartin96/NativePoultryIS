@@ -544,22 +544,23 @@ public class DashBoardActivity extends AppCompatActivity {
                     ArrayList<Line> arrayList_line = jsonLine.getData();
                     ArrayList<Integer> arrayList_line_id = new ArrayList<>();
 
-                    for(int i=0;i<arrayList_line.size();i++){
-                        Cursor cursor = myDb.getAllDataFromLineWhereID(arrayList_line.get(i).getId());
+                    for(Line line : arrayList_line){
+                        Cursor cursor = myDb.getAllDataFromLineWhereID(line.getId());
 
                         if(cursor.getCount() == 0){
-                            API_getFamily(arrayList_line.get(i).getId());
 
                             boolean isInserted = myDb.insertDataLineWithID(
-                                    arrayList_line.get(i).getId(),
-                                    arrayList_line.get(i).getLine_number(),
+                                    line.getId(),
+                                    line.getLine_number(),
                                     1,
                                     Integer.parseInt(generation_id)
                             );
 
-                            arrayList_line_id.add(arrayList_line.get(i).getId());
+                            arrayList_line_id.add(line.getId());
                         }
                     }
+
+                    API_getFamily(arrayList_line_id);
 
                 }catch (Exception e){
                     Log.d(debugTag, "Exception in Lines API caught");
@@ -580,7 +581,7 @@ public class DashBoardActivity extends AppCompatActivity {
         });
     }
 
-    private void API_getFamily(Integer line_id){
+    private void API_getFamily(ArrayList<Integer> arrayList_line_id){
         APIHelper.getFamily("getFamily/", new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
@@ -594,26 +595,26 @@ public class DashBoardActivity extends AppCompatActivity {
                     JSONFamily1 jsonFamily1 = gson.fromJson(rawJsonResponse, JSONFamily1.class);
                     ArrayList<Family1> arrayList_family1 = jsonFamily1.getData();
 
-                    for (int i = 0; i < arrayList_family1.size(); i++) {
+                    for (Family1 family : arrayList_family1) {
 
-                        if(arrayList_family1.get(i).getLine_id() == line_id) {
+                        if(arrayList_line_id.contains(family.getLine_id())) {
 
                             DatabaseHelper myDb = new DatabaseHelper(getApplicationContext());
-                            Cursor cursor = myDb.getAllDataFromFamilyWhereID(arrayList_family1.get(i).getId());
+                            Cursor cursor = myDb.getAllDataFromFamilyWhereID(family.getId());
                             cursor.moveToFirst();
 
                             if (cursor.getCount() == 0) {
                                 boolean isInserted = myDb.insertDataFamilyWithID(
-                                        arrayList_family1.get(i).getId(),
-                                        arrayList_family1.get(i).getNumber(),
-                                        arrayList_family1.get(i).getIs_active(),
-                                        arrayList_family1.get(i).getLine_id(),
-                                        arrayList_family1.get(i).getDeleted_at()
+                                        family.getId(),
+                                        family.getNumber(),
+                                        family.getIs_active(),
+                                        family.getLine_id(),
+                                        family.getDeleted_at()
                                 );
 
 
                                 if(isInserted){
-                                    API_getBrooder(arrayList_family1.get(i).getId());
+                                    API_getBrooder(family.getId());
                                 }
 
                             }
