@@ -58,10 +58,7 @@ public class CreateBreeders extends AppCompatActivity {
     private ActionBarDrawerToggle mToggle;
     private Toolbar mToolbar;
     private FloatingActionButton create_pen;
-    private Button show_data_button;
-    private Button delete_pen_table;
     Integer farm_id;
-    Integer fam_id=0;
     String farm_code=null;
 
     LinkedHashMap<String, List<String>> Project_category;
@@ -73,9 +70,7 @@ public class CreateBreeders extends AppCompatActivity {
     RecyclerView recyclerView;
     RecyclerView.Adapter recycler_adapter;
     RecyclerView.LayoutManager layoutManager;
-    ArrayList<Breeders> arrayListBreeders = new ArrayList<>();
     ArrayList<Breeder_Inventory> arrayListBreederInventory = new ArrayList<>();
-    ArrayList<Breeder_Inventory> arrayListBreederInventory2 = new ArrayList<>();
 
 
     @Override
@@ -123,9 +118,6 @@ public class CreateBreeders extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
 
-
-
-
         create_pen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -153,68 +145,6 @@ public class CreateBreeders extends AppCompatActivity {
             }
         });
 
-        Cursor cursor_farm_id = myDb.getFarmIDFromUsers(email);
-        cursor_farm_id.moveToFirst();
-        if(cursor_farm_id.getCount() != 0){
-            farm_id = cursor_farm_id.getInt(0);
-        }
-
-
-
-      /*  Exp_list.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-            @Override
-            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                //  Toast.makeText(getBaseContext(),Project_category.get(Project_list.get(groupPosition)).get(childPosition) + " from category" + Project_list.get(groupPosition) + "is selected", Toast.LENGTH_SHORT).show();
-
-                String string = Project_category.get(Project_list.get(groupPosition)).get(childPosition);
-                switch (string){
-                    case "Generation":
-                        Intent intent_breeder_generation = new Intent(CreateBreeders.this, BreederGeneration.class);
-                        startActivity(intent_breeder_generation);
-                        break;
-                    case "Family Records":
-                        Intent intent_breeder_family_records = new Intent(CreateBreeders.this, BreederFamilyRecords.class);
-                        startActivity(intent_breeder_family_records);
-                        break;
-                    case "Daily Records":
-                        Intent intent_breeder_daily_records = new Intent(CreateBreeders.this, BreederDailyRecords.class);
-                        startActivity(intent_breeder_daily_records);
-                        break;
-                    case "Hatchery Records":
-                        Intent intent_breeder_hatchery_records = new Intent(CreateBreeders.this, BreederHatcheryRecords.class);
-                        startActivity(intent_breeder_hatchery_records);
-                        break;
-                    case "Egg Quality Records":
-                        Intent intent_breeder_egg_quality_records = new Intent(CreateBreeders.this, BreederEggQualityRecords.class);
-                        startActivity(intent_breeder_egg_quality_records);
-                        break;
-                    case "Add Replacement Stocks":
-                        Intent intent_replacement_individual_record_add = new Intent(CreateBreeders.this, ReplacementIndividualRecordAdd.class);
-                        startActivity(intent_replacement_individual_record_add);
-                        break;
-                    case "Phenotypic and Morphometric":
-                        Intent intent_replacement_phenotypic_morphometric = new Intent(CreateBreeders.this, ReplacementPhenotypicMorphometric.class);
-                        startActivity(intent_replacement_phenotypic_morphometric);
-                        break;
-                    case "Feeding Record":
-                        Intent intent_replacement_feeding_record = new Intent(CreateBreeders.this, ReplacementFeedingRecord.class);
-                        startActivity(intent_replacement_feeding_record);
-                        break;
-                    case "Growth Performance":
-                        Intent intent_brooder_growth_performance = new Intent(CreateBreeders.this, BroodersGrowthPerformance.class);
-                        startActivity(intent_brooder_growth_performance);
-                        break;
-                    case "Feeding Records":
-                        Intent intent_brooder_feeding_records = new Intent(CreateBreeders.this, BrooderFeedingRecords.class);
-                        startActivity(intent_brooder_feeding_records);
-                        break;
-                }
-                return false;
-            }
-
-
-        });
-*/
         Exp_list.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             @Override
             public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
@@ -277,76 +207,51 @@ public class CreateBreeders extends AppCompatActivity {
         getSupportActionBar().setTitle("Create Breeders");
 
 
+        local_getBreederInventory();
 
+        recycler_adapter = new RecyclerAdapter_Breeder(arrayListBreederInventory);
+        recyclerView.setAdapter(recycler_adapter);
+        recycler_adapter.notifyDataSetChanged();
+    }
 
+    private void local_getBreederInventory(){
 
-        ///////////////////////-----DATABASE
-
-//        if (isNetworkAvailable()) {
-//            //if internet is available, load data from web database
-//
-//            API_updateBreederInventory();
-//            API_updateBreeder();
-//            API_getBreeder();
-//            API_getBreederInventory();
-//
-//
-//        }
-
-        Cursor cursor_code = myDb.getAllDataFromFarms(farm_id);
-        cursor_code.moveToFirst();
-        if(cursor_code.getCount() != 0){
-            farm_code = cursor_code.getString(2);
-        }
         Cursor cursorBreederInv = myDb.getAllDataFromBreederInventory();
         cursorBreederInv.moveToFirst();
 
         if(cursorBreederInv.getCount()==0){
             Toast.makeText(this, "No breeder inventory data", Toast.LENGTH_SHORT).show();
-
         }else{
-            //for getting breeders
             do{
-                String breeder_tag = cursorBreederInv.getString(3);
-                String is_deleted = cursorBreederInv.getString(12);
 
-                if(breeder_tag.contains(farm_code) && is_deleted == null){
-                    Breeder_Inventory breeder_inventory = new Breeder_Inventory(cursorBreederInv.getInt(0), cursorBreederInv.getInt(1), cursorBreederInv.getInt(2), cursorBreederInv.getString(3), cursorBreederInv.getString(4), cursorBreederInv.getInt(5), cursorBreederInv.getInt(6), cursorBreederInv.getInt(7),cursorBreederInv.getString(8), cursorBreederInv.getString(9),cursorBreederInv.getString(10),cursorBreederInv.getString(11),cursorBreederInv.getString(12));
+                if(cursorBreederInv.getString(12) == null) {
 
-                    arrayListBreederInventory2.add(breeder_inventory);
+                    Breeder_Inventory breeder_inventory = new Breeder_Inventory(
+                            cursorBreederInv.getInt(0),
+                            cursorBreederInv.getInt(1),
+                            cursorBreederInv.getInt(2),
+                            cursorBreederInv.getString(3),
+                            cursorBreederInv.getString(4),
+                            cursorBreederInv.getInt(5),
+                            cursorBreederInv.getInt(6),
+                            cursorBreederInv.getInt(7),
+                            cursorBreederInv.getString(8),
+                            cursorBreederInv.getString(9),
+                            cursorBreederInv.getString(10),
+                            cursorBreederInv.getString(11),
+                            cursorBreederInv.getString(12)
+                    );
+
+                    arrayListBreederInventory.add(breeder_inventory);
+
                 }
+
             }while (cursorBreederInv.moveToNext());
 
         }
 
-
-        recycler_adapter = new RecyclerAdapter_Breeder(arrayListBreederInventory2);
-        recyclerView.setAdapter(recycler_adapter);
-        recycler_adapter.notifyDataSetChanged();
-    }
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        if(mToggle.onOptionsItemSelected(item)){
-            return true;
-
-        }
-        return super.onOptionsItemSelected(item);
-    }
-    public void showMessage(String title, String message){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setCancelable(true);
-        builder.setTitle(title);
-        builder.setMessage(message);
-        builder.show();
     }
 
-    private boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-    }
     private void API_getBreeder(){
         APIHelper.getBreeder("getBreeder/", new BaseJsonHttpResponseHandler<Object>() {
             @Override
@@ -448,6 +353,7 @@ public class CreateBreeders extends AppCompatActivity {
             }
         });
     }
+
     private void API_updateBreederInventory(){
 
         APIHelper.getBreederInventory("getBreederInventory/", new BaseJsonHttpResponseHandler<Object>() {
@@ -569,6 +475,7 @@ public class CreateBreeders extends AppCompatActivity {
             }
         });
     }
+
     private void API_updateBreeder(){
 
         APIHelper.getBreeder("getBreeder/", new BaseJsonHttpResponseHandler<Object>() {
@@ -663,5 +570,30 @@ public class CreateBreeders extends AppCompatActivity {
                 return null;
             }
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if(mToggle.onOptionsItemSelected(item)){
+            return true;
+
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    public void showMessage(String title, String message){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(true);
+        builder.setTitle(title);
+        builder.setMessage(message);
+        builder.show();
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 }
