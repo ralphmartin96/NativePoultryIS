@@ -902,7 +902,6 @@ public class DashBoardActivity extends AppCompatActivity {
 
                     }
 
-                    Log.d(debugTag, "GROWTH: "+myDb.getBroodersGrowthSize());
                 }catch (Exception e){}
 
             }

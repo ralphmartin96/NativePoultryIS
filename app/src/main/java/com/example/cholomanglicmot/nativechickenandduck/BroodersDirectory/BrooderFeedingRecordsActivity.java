@@ -43,38 +43,26 @@ public class BrooderFeedingRecordsActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     RecyclerView.Adapter recycler_adapter;
     RecyclerView.LayoutManager layoutManager;
-    ArrayList<Brooder_FeedingRecords> arrayListBrooderFeedingRecords = new ArrayList<>();//create constructor first for brooder feeding records
-    ArrayList<Brooder_Inventory> arrayListBrooderInventory = new ArrayList<>();
-    //ArrayList<Brooder_Inventory>arrayList_temp = new ArrayList<>();
-    ArrayList<Brooder_Inventory>arrayList_temp2 = new ArrayList<>();
+    ArrayList<Brooder_FeedingRecords> arrayListBrooderFeedingRecords = new ArrayList<>();
     FloatingActionButton create_brooder_feeding_records;
     Integer pen_id;
     String brooder_pen;
-    Integer farm_id;
-    Integer fam_id=0;
-    String farm_code=null;
-    Map<Integer, Integer> inventory_dictionary = new HashMap<Integer, Integer>();
     ArrayList<Integer> inventories_list = new ArrayList<>();
-    ArrayList<Integer> feeding_list = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_brooder_feeding_records);
 
-        final Integer brooder_inv_id;
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
             if(extras == null) {
                 brooder_pen= null;
-                brooder_inv_id = null;
             } else {
                 brooder_pen= extras.getString("Brooder Pen");
-                brooder_inv_id = extras.getInt("Brooder Inventory ID");
             }
         } else {
             brooder_pen= (String) savedInstanceState.getSerializable("Brooder Pen");
-            brooder_inv_id =(Integer) savedInstanceState.getSerializable("Brooder Inventory ID");
         }
 
         final Bundle args = new Bundle();
@@ -171,7 +159,7 @@ public class BrooderFeedingRecordsActivity extends AppCompatActivity {
                                 cursor_feeding.getString(6)
                         );
                         arrayListBrooderFeedingRecords.add(brooderFeedingRecords);
-                        Log.d("POULTRYDEBUGGER", "Feed id: "+ cursor_feeding.getInt(0));
+//                        Log.d("POULTRYDEBUGGER", "Feed id: "+ cursor_feeding.getInt(0));
                     }
                 }
 
