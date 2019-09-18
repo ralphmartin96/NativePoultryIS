@@ -164,6 +164,8 @@ public class BrooderFeedingRecordsActivity extends AppCompatActivity {
                 }
 
             }while(cursor_feeding.moveToNext());
+        }else{
+            Toast.makeText(this, "No brooder feeding data", Toast.LENGTH_SHORT).show();
         }
 
     }

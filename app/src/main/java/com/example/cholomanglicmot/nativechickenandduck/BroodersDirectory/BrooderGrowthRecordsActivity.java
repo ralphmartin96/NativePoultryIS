@@ -148,12 +148,13 @@ public class BrooderGrowthRecordsActivity extends AppCompatActivity {
 
                         arrayListBrooderGrowthRecords.add(brooderGrowthRecords);
 
-//                        Log.d("POULTRYDEBUGGER", "Growth id: "+ cursor_growth.getInt(0));
                     }
 
                 }
 
             }while(cursor_growth.moveToNext());
+        }else{
+            Toast.makeText(this, "No brooder growth data", Toast.LENGTH_SHORT).show();
         }
 
     }
