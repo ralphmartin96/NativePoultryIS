@@ -790,7 +790,7 @@ public class DashBoardActivity extends AppCompatActivity {
                     }
 
                     API_getBrooderFeeding(arrayList_brooderInventory_id);
-
+                    API_getBrooderGrowth(arrayList_brooderInventory_id);
 
                 }catch (Exception e){}
 
@@ -864,7 +864,7 @@ public class DashBoardActivity extends AppCompatActivity {
         });
     }
 
-    private void API_getBrooderGrowth(){
+    private void API_getBrooderGrowth(ArrayList<Integer> arrayList_brooderInventory_id){
         APIHelper.getBrooderGrowth("getBrooderGrowth/", new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
@@ -872,34 +872,38 @@ public class DashBoardActivity extends AppCompatActivity {
                 Gson gson = new Gson();
                 try{
                     JSONBrooderGrowth jsonBrooderGrowth = gson.fromJson(rawJsonResponse, JSONBrooderGrowth.class);
-                    ArrayList<Brooder_GrowthRecords> arrayList_brooderInventory = jsonBrooderGrowth.getData();
+                    ArrayList<Brooder_GrowthRecords> arrayList_brooderGrowthRecords = jsonBrooderGrowth.getData();
 
 
-                    for (int i = 0; i < arrayList_brooderInventory.size(); i++) {
+                    for(Brooder_GrowthRecords brooder_growthRecords : arrayList_brooderGrowthRecords) {
 
-                        Cursor cursor = myDb.getAllDataFromBrooderGrowthRecordsWhereGrowthID(arrayList_brooderInventory.get(i).getId());
+                        Cursor cursor = myDb.getAllDataFromBrooderGrowthRecordsWhereGrowthID(brooder_growthRecords.getId());
                         cursor.moveToFirst();
 
-                        if (cursor.getCount() == 0) {
-                            boolean isInserted = myDb.insertDataBrooderGrowthRecordsWithID(
-                                    arrayList_brooderInventory.get(i).getId(),
-                                    arrayList_brooderInventory.get(i).getBrooder_growth_inventory_id(),
-                                    arrayList_brooderInventory.get(i).getBrooder_growth_collection_day(),
-                                    arrayList_brooderInventory.get(i).getBrooder_growth_date_collected(),
-                                    arrayList_brooderInventory.get(i).getBrooder_growth_male_quantity(),
-                                    arrayList_brooderInventory.get(i).getBrooder_growth_male_weight(),
-                                    arrayList_brooderInventory.get(i).getBrooder_growth_female_quantity(),
-                                    arrayList_brooderInventory.get(i).getBrooder_growth_female_weight(),
-                                    arrayList_brooderInventory.get(i).getBrooder_growth_total_quantity(),
-                                    arrayList_brooderInventory.get(i).getBrooder_growth_total_weight(),
-                                    arrayList_brooderInventory.get(i).getBrooder_growth_deleted_at()
-                            );
+                        if(arrayList_brooderInventory_id.contains(brooder_growthRecords.getBrooder_growth_inventory_id())) {
+
+                            if (cursor.getCount() == 0) {
+                                boolean isInserted = myDb.insertDataBrooderGrowthRecordsWithID(
+                                        brooder_growthRecords.getId(),
+                                        brooder_growthRecords.getBrooder_growth_inventory_id(),
+                                        brooder_growthRecords.getBrooder_growth_collection_day(),
+                                        brooder_growthRecords.getBrooder_growth_date_collected(),
+                                        brooder_growthRecords.getBrooder_growth_male_quantity(),
+                                        brooder_growthRecords.getBrooder_growth_male_weight(),
+                                        brooder_growthRecords.getBrooder_growth_female_quantity(),
+                                        brooder_growthRecords.getBrooder_growth_female_weight(),
+                                        brooder_growthRecords.getBrooder_growth_total_quantity(),
+                                        brooder_growthRecords.getBrooder_growth_total_weight(),
+                                        brooder_growthRecords.getBrooder_growth_deleted_at()
+                                );
+                            }
+
                         }
 
                     }
+
+                    Log.d(debugTag, "GROWTH: "+myDb.getBroodersGrowthSize());
                 }catch (Exception e){}
-
-
 
             }
 
