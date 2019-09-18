@@ -437,25 +437,25 @@ public class DashBoardActivity extends AppCompatActivity {
                     JSONPen jsonPen = gson.fromJson(rawJsonResponse, JSONPen.class);
                     arrayList_pen = jsonPen.getData();
 
-                    for (int i = 0; i < arrayList_pen.size(); i++) {
+                    for (Pen pen : arrayList_pen) {
 
-                        Cursor cursor1 = myDb.getAllDataFromPenWhereID(arrayList_pen.get(i).getId());
+                        Cursor cursor1 = myDb.getAllDataFromPenWhereID(pen.getId());
                         cursor1.moveToFirst();
 
                         if (cursor1.getCount() == 0) {
 
                             boolean isInserted = myDb.insertDataPenWithID(
-                                    arrayList_pen.get(i).getId(),
-                                    arrayList_pen.get(i).getFarm_id(),
-                                    arrayList_pen.get(i).getPen_number(),
-                                    arrayList_pen.get(i).getPen_type(),
-                                    arrayList_pen.get(i).getPen_inventory(),
-                                    arrayList_pen.get(i).getPen_capacity(),
-                                    arrayList_pen.get(i).getIs_active()
+                                    pen.getId(),
+                                    pen.getFarm_id(),
+                                    pen.getPen_number(),
+                                    pen.getPen_type(),
+                                    pen.getPen_inventory(),
+                                    pen.getPen_capacity(),
+                                    pen.getIs_active()
                             );
 
-                            if(arrayList_pen.get(i).getPen_type().equals("brooder")){
-                                arrayList_pen_id.add(arrayList_pen.get(i).getId());
+                            if(pen.getPen_type().equals("brooder")){
+                                arrayList_pen_id.add(pen.getId());
                             }
                         }
                     }
@@ -490,23 +490,23 @@ public class DashBoardActivity extends AppCompatActivity {
                     JSONGeneration jsonGeneration = gson.fromJson(rawJsonResponse, JSONGeneration.class);
                     ArrayList<Generation> arrayList_gen = jsonGeneration.getData();
 
-                    for (int i = 0; i < arrayList_gen.size(); i++) {
+                    for (Generation generation : arrayList_gen) {
 
-                        Cursor cursor = myDb.getDataFromGenerationWhereID(arrayList_gen.get(i).getId());
+                        Cursor cursor = myDb.getDataFromGenerationWhereID(generation.getId());
                         cursor.moveToFirst();
 
                         if (cursor.getCount() == 0) {
-                            API_getLine(arrayList_gen.get(i).getId().toString());
+                            API_getLine(generation.getId().toString());
 
                             boolean isInserted = myDb.insertDataGenerationWithID(
-                                    arrayList_gen.get(i).getId(),
-                                    arrayList_gen.get(i).getFarm_id(),
-                                    arrayList_gen.get(i).getGeneration_number(),
-                                    arrayList_gen.get(i).getNumerical_generation(),
-                                    arrayList_gen.get(i).getGeneration_status()
+                                    generation.getId(),
+                                    generation.getFarm_id(),
+                                    generation.getGeneration_number(),
+                                    generation.getNumerical_generation(),
+                                    generation.getGeneration_status()
                             );
 
-//                            if(isInserted) Log.d(debugTag, "Inserted generation "+arrayList_gen.get(i).getId());
+//                            if(isInserted) Log.d(debugTag, "Inserted generation "+generation.getId());
                         }
 
                     }
@@ -541,20 +541,23 @@ public class DashBoardActivity extends AppCompatActivity {
                 try{
 
                     JSONLine jsonLine = gson.fromJson(rawJsonResponse, JSONLine.class);
-                    ArrayList<Line> arrayList = jsonLine.getData();
+                    ArrayList<Line> arrayList_line = jsonLine.getData();
+                    ArrayList<Integer> arrayList_line_id = new ArrayList<>();
 
-                    for(int i=0;i<arrayList.size();i++){
-                        Cursor cursor = myDb.getAllDataFromLineWhereID(arrayList.get(i).getId());
+                    for(int i=0;i<arrayList_line.size();i++){
+                        Cursor cursor = myDb.getAllDataFromLineWhereID(arrayList_line.get(i).getId());
 
                         if(cursor.getCount() == 0){
-                            API_getFamily(arrayList.get(i).getId());
+                            API_getFamily(arrayList_line.get(i).getId());
 
                             boolean isInserted = myDb.insertDataLineWithID(
-                                    arrayList.get(i).getId(),
-                                    arrayList.get(i).getLine_number(),
+                                    arrayList_line.get(i).getId(),
+                                    arrayList_line.get(i).getLine_number(),
                                     1,
                                     Integer.parseInt(generation_id)
                             );
+
+                            arrayList_line_id.add(arrayList_line.get(i).getId());
                         }
                     }
 
