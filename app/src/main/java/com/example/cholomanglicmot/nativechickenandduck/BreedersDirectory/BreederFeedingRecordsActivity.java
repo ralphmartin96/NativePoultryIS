@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,22 +33,20 @@ import cz.msebera.android.httpclient.Header;
 
 public class BreederFeedingRecordsActivity extends AppCompatActivity {
     private Toolbar mToolbar;
-    private TextView brooder_pen_textView;
+    private TextView breeder_pen_textView;
 
 
     DatabaseHelper myDb;
     RecyclerView recyclerView;
     RecyclerView.Adapter recycler_adapter;
     RecyclerView.LayoutManager layoutManager;
-    ArrayList<Breeder_FeedingRecords> arrayListBrooderFeedingRecords = new ArrayList<>();//create constructor first for brooder feeding records
-    ArrayList<Breeder_Inventory>arrayListBrooderInventory = new ArrayList<>();
+    ArrayList<Breeder_FeedingRecords> arrayListBreederFeedingRecords = new ArrayList<>();
     ArrayList<Breeder_Inventory>arrayList_temp = new ArrayList<>();
     FloatingActionButton create_brooder_feeding_records;
-    Integer brooder_pen,breeder_inv_id;
+    Integer breeder_pen,breeder_inv_id;
     String breeder_tag;
 
     ArrayList<Integer> list = new ArrayList<>();
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,26 +56,25 @@ public class BreederFeedingRecordsActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
             if(extras == null) {
-                brooder_pen= null;
+                breeder_pen= null;
                 breeder_tag = null;
                 breeder_inv_id = null;
             } else {
-                brooder_pen= extras.getInt("Breeder Pen");
+                breeder_pen= extras.getInt("Breeder Pen");
                 breeder_tag= extras.getString("Breeder Tag");
                 breeder_inv_id= extras.getInt("Breeder Inventory ID");
-
             }
         } else {
-            brooder_pen= (Integer) savedInstanceState.getSerializable("Breeder Pen");
+            breeder_pen= (Integer) savedInstanceState.getSerializable("Breeder Pen");
             breeder_tag= (String) savedInstanceState.getSerializable("Breeder Tag");
             breeder_inv_id= (Integer) savedInstanceState.getSerializable("Breeder Inventory ID");
         }
 
         final Bundle args = new Bundle();
-        args.putInt("breeder pen number",brooder_pen);
+        args.putInt("breeder pen number",breeder_pen);
         args.putString("Breeder Tag", breeder_tag);
-        brooder_pen_textView = findViewById(R.id.brooder_pen);
-        brooder_pen_textView.setText("Breeder Tag | " +breeder_tag);
+        breeder_pen_textView = findViewById(R.id.breeder_pen);
+        breeder_pen_textView.setText(String.format("Breeder Tag | %s", breeder_tag));
         mToolbar = findViewById(R.id.nav_action);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -114,26 +112,60 @@ public class BreederFeedingRecordsActivity extends AppCompatActivity {
                 } else if (dy > 0) {
                     create_brooder_feeding_records.hide();
                 }
+
             }
         });
-        ///////////////////////////////DATABASE
-        if(isNetworkAvailable()){
-            API_getBreederFeeding();
-        }
 
-        String breeder_pen_number = null;
-        Cursor cursor_pen = myDb.getAllDataFromPenWhereID(brooder_pen);
-        cursor_pen.moveToFirst();
-        if(cursor_pen.getCount() != 0 ){
-            breeder_pen_number = cursor_pen.getString(2);
-        }
+        local_getBreederFeeding();
+//        Cursor cur = myDb.getDataFromBreederInvWhereTag(breeder_tag);
+//        cur.moveToFirst();
+//        Integer inventory_id = cur.getInt(0);
+//        cur.close();
+//
+//        Log.d("POULTRYDEBUGGER", breeder_tag);
+//
+//        Cursor cursor_feeding = myDb.getAllDataFromBreederFeedingRecords();
+//        cursor_feeding.moveToFirst();
+//
+//        if(cursor_feeding.getCount() != 0){
+//            do{
+//                String deleted_at = cursor_feeding.getString(6);
+//                Integer breeder_inv_id1 = cursor_feeding.getInt(1);
+//
+//                if(breeder_inv_id1.equals(inventory_id) && deleted_at == null){
+//                    Breeder_FeedingRecords breeder_feedingRecords = new
+//                            Breeder_FeedingRecords(
+//                                    cursor_feeding.getInt(0),
+//                            cursor_feeding.getInt(1),
+//                            cursor_feeding.getString(2),
+//                            breeder_tag,
+//                            cursor_feeding.getFloat(3),
+//                            cursor_feeding.getFloat(4),
+//                            cursor_feeding.getString(5),
+//                            cursor_feeding.getString(6)
+//                    );
+//
+//                    arrayList_breeder_feeding.add(breeder_feedingRecords);
+//                }
+//
+//            }while(cursor_feeding.moveToNext());
+//        }
+//
+//        cursor_feeding.close();
+        recycler_adapter = new RecyclerAdapter_Breeder_Feeding(arrayListBreederFeedingRecords);
+        recyclerView.setAdapter(recycler_adapter);
+        recycler_adapter.notifyDataSetChanged();
 
+    }
 
+    private void local_getBreederFeeding() {
         Cursor cur = myDb.getDataFromBreederInvWhereTag(breeder_tag);
         cur.moveToFirst();
-        Integer bred = cur.getInt(0);
+        Integer inventory_id = cur.getInt(0);
         cur.close();
-        ArrayList<Breeder_FeedingRecords> arrayList_breeder_feeding = new ArrayList<>();
+
+        Log.d("POULTRYDEBUGGER", breeder_tag);
+
         Cursor cursor_feeding = myDb.getAllDataFromBreederFeedingRecords();
         cursor_feeding.moveToFirst();
 
@@ -141,20 +173,29 @@ public class BreederFeedingRecordsActivity extends AppCompatActivity {
             do{
                 String deleted_at = cursor_feeding.getString(6);
                 Integer breeder_inv_id1 = cursor_feeding.getInt(1);
-                if(breeder_inv_id1 == bred && deleted_at == null){
-                    Breeder_FeedingRecords breeder_feedingRecords = new Breeder_FeedingRecords(cursor_feeding.getInt(0), cursor_feeding.getInt(1), cursor_feeding.getString(2),breeder_tag,cursor_feeding.getFloat(3), cursor_feeding.getFloat(4),cursor_feeding.getString(5), cursor_feeding.getString(6)) ;
-                    arrayList_breeder_feeding.add(breeder_feedingRecords);
+
+                if(breeder_inv_id1.equals(inventory_id) && deleted_at == null){
+                    Breeder_FeedingRecords breeder_feedingRecords = new
+                            Breeder_FeedingRecords(
+                            cursor_feeding.getInt(0),
+                            cursor_feeding.getInt(1),
+                            cursor_feeding.getString(2),
+                            breeder_tag,
+                            cursor_feeding.getFloat(3),
+                            cursor_feeding.getFloat(4),
+                            cursor_feeding.getString(5),
+                            cursor_feeding.getString(6)
+                    );
+
+                    arrayListBreederFeedingRecords.add(breeder_feedingRecords);
                 }
+
             }while(cursor_feeding.moveToNext());
         }
+
         cursor_feeding.close();
-        recycler_adapter = new RecyclerAdapter_Breeder_Feeding(arrayList_breeder_feeding);
-        recyclerView.setAdapter(recycler_adapter);
-        recycler_adapter.notifyDataSetChanged();
-
-
-
     }
+
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -292,18 +333,27 @@ public class BreederFeedingRecordsActivity extends AppCompatActivity {
 
 
                 for (int i = 0; i < arrayList_brooderInventory.size(); i++) {
-                    //check if generation to be inserted is already in the database
+
                     Cursor cursor = myDb.getAllDataFromBreederFeedingRecordsWhereFeedingID(arrayList_brooderInventory.get(i).getId());
                     cursor.moveToFirst();
 
                     if (cursor.getCount() == 0) {
 
-
-                        boolean isInserted = myDb.insertDataBreederFeedingRecordsWithID(arrayList_brooderInventory.get(i).getId(), arrayList_brooderInventory.get(i).getBreeder_feeding_inventory_id(), arrayList_brooderInventory.get(i).getBreeder_feeding_date_collected(), arrayList_brooderInventory.get(i).getBreeder_feeding_offered(),arrayList_brooderInventory.get(i).getBreeder_feeding_refused(),arrayList_brooderInventory.get(i).getBreeder_feeding_remarks(),arrayList_brooderInventory.get(i).getBreeder_feeding_deleted_at());
+                        boolean isInserted = myDb.insertDataBreederFeedingRecordsWithID(
+                                arrayList_brooderInventory.get(i).getId(),
+                                arrayList_brooderInventory.get(i).getBreeder_feeding_inventory_id(),
+                                arrayList_brooderInventory.get(i).getBreeder_feeding_date_collected(),
+                                arrayList_brooderInventory.get(i).getBreeder_feeding_offered(),
+                                arrayList_brooderInventory.get(i).getBreeder_feeding_refused(),
+                                arrayList_brooderInventory.get(i).getBreeder_feeding_remarks(),
+                                arrayList_brooderInventory.get(i).getBreeder_feeding_deleted_at()
+                        );
 
                     }
 
                 }
+
+
 
 
             }

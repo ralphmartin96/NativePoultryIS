@@ -28,7 +28,7 @@
 
 
             <TextView
-                android:id="@+id/brooder_pen"
+                android:id="@+id/breeder_pen"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
