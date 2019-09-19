@@ -46,8 +46,6 @@ public class BreederFeedingRecordsActivity extends AppCompatActivity {
     Integer brooder_pen,breeder_inv_id;
     String breeder_tag;
 
-
-    Map<Integer, Integer> inventory_dictionary = new HashMap<Integer, Integer>();
     ArrayList<Integer> list = new ArrayList<>();
 
 
@@ -163,6 +161,7 @@ public class BreederFeedingRecordsActivity extends AppCompatActivity {
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
+
     private void API_addBreederFeeding(RequestParams requestParams){
 
         APIHelper.addBreederFeeding("addBreederFeeding", requestParams, new BaseJsonHttpResponseHandler<Object>() {
@@ -186,6 +185,7 @@ public class BreederFeedingRecordsActivity extends AppCompatActivity {
         });
 
     }
+
     private void API_updateBreederFeeding(){
         APIHelper.getBreederFeeding("getBreederFeeding/", new BaseJsonHttpResponseHandler<Object>() {
             @Override
@@ -280,6 +280,7 @@ public class BreederFeedingRecordsActivity extends AppCompatActivity {
             }
         });
     }
+
     private void API_getBreederFeeding(){
         APIHelper.getBreederFeeding("getBreederFeeding/", new BaseJsonHttpResponseHandler<Object>() {
             @Override
@@ -298,7 +299,7 @@ public class BreederFeedingRecordsActivity extends AppCompatActivity {
                     if (cursor.getCount() == 0) {
 
 
-                        boolean isInserted = myDb.insertDataBreederFeedingRecordsWithID(arrayList_brooderInventory.get(i).getId(), arrayList_brooderInventory.get(i).getBrooder_feeding_inventory_id(), arrayList_brooderInventory.get(i).getBrooder_feeding_date_collected(), arrayList_brooderInventory.get(i).getBrooder_feeding_offered(),arrayList_brooderInventory.get(i).getBrooder_feeding_refused(),arrayList_brooderInventory.get(i).getBrooder_feeding_remarks(),arrayList_brooderInventory.get(i).getBrooder_feeding_deleted_at());
+                        boolean isInserted = myDb.insertDataBreederFeedingRecordsWithID(arrayList_brooderInventory.get(i).getId(), arrayList_brooderInventory.get(i).getBreeder_feeding_inventory_id(), arrayList_brooderInventory.get(i).getBreeder_feeding_date_collected(), arrayList_brooderInventory.get(i).getBreeder_feeding_offered(),arrayList_brooderInventory.get(i).getBreeder_feeding_refused(),arrayList_brooderInventory.get(i).getBreeder_feeding_remarks(),arrayList_brooderInventory.get(i).getBreeder_feeding_deleted_at());
 
                     }
 
@@ -319,6 +320,7 @@ public class BreederFeedingRecordsActivity extends AppCompatActivity {
             }
         });
     }
+
     public void showMessage(String title, String message){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setCancelable(true);
@@ -326,6 +328,7 @@ public class BreederFeedingRecordsActivity extends AppCompatActivity {
         builder.setMessage(message);
         builder.show();
     }
+
     @Override
     public boolean onSupportNavigateUp() {
         Intent intent_brooders = new Intent(BreederFeedingRecordsActivity.this, CreateBreeders.class);

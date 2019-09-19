@@ -47,12 +47,12 @@ public class RecyclerAdapter_Breeder_Feeding extends RecyclerView.Adapter<Recycl
 
         final Breeder_FeedingRecords breeder_feedingRecords = arrayListBrooderFeedingRecords.get(position);
         final Bundle args = new Bundle();
-        args.putInt("Breeder Inventory ID", breeder_feedingRecords.getBrooder_feeding_inventory_id());
-        args.putString("Breeder Tag", breeder_feedingRecords.getBrooder_feeding_tag());
+        args.putInt("Breeder Inventory ID", breeder_feedingRecords.getBreeder_feeding_inventory_id());
+        args.putString("Breeder Tag", breeder_feedingRecords.getBreeder_feeding_tag());
         args.putInt("Breeder Feeding ID", breeder_feedingRecords.getId());
 
 
-        holder.brooder_feeding_date.setText(breeder_feedingRecords.getBrooder_feeding_date_collected());
+        holder.brooder_feeding_date.setText(breeder_feedingRecords.getBreeder_feeding_date_collected());
 
         holder.brooder_feeding_view.setOnClickListener(new View.OnClickListener() {
             @Override
