@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -43,8 +44,7 @@ public class HatcheryRecords extends AppCompatActivity {
     RecyclerView recyclerView;
     RecyclerView.Adapter recycler_adapter;
     RecyclerView.LayoutManager layoutManager;
-    ArrayList<Hatchery_Records> arrayListBrooderGrowthRecords = new ArrayList<>();
-    ArrayList<Breeder_Inventory>arrayListBrooderInventory = new ArrayList<>();
+    ArrayList<Hatchery_Records> arrayListHatcheryRecords = new ArrayList<>();
     ArrayList<Breeder_Inventory>arrayList_temp = new ArrayList<>();
     FloatingActionButton create_egg_prod;
     TextView replacement_pheno_inv_id;
@@ -110,56 +110,58 @@ public class HatcheryRecords extends AppCompatActivity {
             }
         });
 
-        if(isNetworkAvailable()){
-            API_getHatcheryRecords();
-            API_updateHatchery();
-        }
-        Cursor cur = myDb.getDataFromBreederInvWhereTag(breeder_tag);
-        cur.moveToFirst();
-        Integer bred = cur.getInt(0);
+        local_getHatcheryRecords();
 
-
-        Cursor cursor_brooder_feeding_records = myDb.getAllDataFromHatcheryRecords();
-        cursor_brooder_feeding_records.moveToFirst();
-        if(cursor_brooder_feeding_records.getCount() == 0){
-            //show message
-            Toast.makeText(this,"No data.", Toast.LENGTH_LONG).show();
-
-        }else {
-            do {
-                Integer breeder_inv_id1 = cursor_brooder_feeding_records.getInt(1);
-                String deleted_at = cursor_brooder_feeding_records.getString(9);
-                if(breeder_inv_id1 == bred && deleted_at == null) {
-                    Hatchery_Records hatcheryRecords = new Hatchery_Records(cursor_brooder_feeding_records.getInt(0), cursor_brooder_feeding_records.getInt(1), cursor_brooder_feeding_records.getString(2), breeder_tag, cursor_brooder_feeding_records.getString(3), cursor_brooder_feeding_records.getInt(4), cursor_brooder_feeding_records.getInt(5), cursor_brooder_feeding_records.getInt(6), cursor_brooder_feeding_records.getInt(7), cursor_brooder_feeding_records.getString(8), cursor_brooder_feeding_records.getString(9));
-
-                    arrayListBrooderGrowthRecords.add(hatcheryRecords);
-                }
-            } while (cursor_brooder_feeding_records.moveToNext());
-        }
-
-
-
-        recycler_adapter = new RecyclerAdapter_Hatchery_Record(arrayListBrooderGrowthRecords);
+        recycler_adapter = new RecyclerAdapter_Hatchery_Record(arrayListHatcheryRecords);
         recyclerView.setAdapter(recycler_adapter);
         recycler_adapter.notifyDataSetChanged();
 
+    }
 
+    private void local_getHatcheryRecords(){
 
+        Cursor cur = myDb.getDataFromBreederInvWhereTag(breeder_tag);
+        cur.moveToFirst();
+        Integer inventory_id = cur.getInt(0);
 
+        Cursor cursor_breeder_hatchery_records = myDb.getAllDataFromHatcheryRecords();
+        cursor_breeder_hatchery_records.moveToFirst();
 
+        if(cursor_breeder_hatchery_records.getCount() != 0){
 
+            do {
+                String deleted_at = cursor_breeder_hatchery_records.getString(9);
 
+                if(inventory_id.equals(cursor_breeder_hatchery_records.getInt(1)) && deleted_at == null) {
 
+                    Hatchery_Records hatcheryRecords = new Hatchery_Records(
+                            cursor_breeder_hatchery_records.getInt(0),
+                            cursor_breeder_hatchery_records.getInt(1),
+                            cursor_breeder_hatchery_records.getString(2),
+                            breeder_tag,
+                            cursor_breeder_hatchery_records.getString(3),
+                            cursor_breeder_hatchery_records.getInt(4),
+                            cursor_breeder_hatchery_records.getInt(5),
+                            cursor_breeder_hatchery_records.getInt(6),
+                            cursor_breeder_hatchery_records.getInt(7),
+                            cursor_breeder_hatchery_records.getString(8),
+                            cursor_breeder_hatchery_records.getString(9)
+                    );
 
+                    Log.d("POULTRYDEBUGGER", "Hatchery ID: "+hatcheryRecords.getId());
+                    arrayListHatcheryRecords.add(hatcheryRecords);
+                }
 
+            } while (cursor_breeder_hatchery_records.moveToNext());
+
+            if(arrayListHatcheryRecords.isEmpty()) {
+                Toast.makeText(this,"No data.", Toast.LENGTH_LONG).show();
+            }
+
+        }
 
     }
-    private boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-    }
+
     private void API_getHatcheryRecords(){
         APIHelper.getHatcheryRecords("getHatcheryRecords/", new BaseJsonHttpResponseHandler<Object>() {
             @Override
@@ -199,6 +201,7 @@ public class HatcheryRecords extends AppCompatActivity {
             }
         });
     }
+
     private void API_addHatcheryRecords(RequestParams requestParams){
         APIHelper.addHatcheryRecords("addHatcheryRecords", requestParams, new BaseJsonHttpResponseHandler<Object>() {
             @Override
@@ -218,6 +221,7 @@ public class HatcheryRecords extends AppCompatActivity {
             }
         });
     }
+
     private void API_updateHatchery(){
         APIHelper.getHatcheryRecords("getHatcheryRecords/", new BaseJsonHttpResponseHandler<Object>() {
             @Override
@@ -318,6 +322,14 @@ public class HatcheryRecords extends AppCompatActivity {
             }
         });
     }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
     @Override
     public boolean onSupportNavigateUp() {
         Intent intent_brooders = new Intent(HatcheryRecords.this, CreateBreeders.class);
@@ -327,7 +339,6 @@ public class HatcheryRecords extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-
 
         Intent intent_brooders = new Intent(HatcheryRecords.this, CreateBreeders.class);
         startActivity(intent_brooders);
