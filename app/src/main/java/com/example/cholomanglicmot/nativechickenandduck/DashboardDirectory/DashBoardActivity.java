@@ -1030,6 +1030,7 @@ public class DashBoardActivity extends AppCompatActivity {
 
                     API_getBreederFeeding(arrayList_breederInventory_id);
                     API_getEggProduction(arrayList_breederInventory_id);
+                    API_getHatcheryRecords(arrayList_breederInventory_id);
 
                 }catch (Exception e){}
 
@@ -1134,19 +1135,74 @@ public class DashBoardActivity extends AppCompatActivity {
                                         egg_production.getFemale_inventory()
                                 );
 
-                                if(isInserted) {
-                                    Log.d(debugTag, "EP ID: " + egg_production.getId());
-                                    Log.d(debugTag, "INV ID: " + egg_production.getEgg_breeder_inv_id());
-                                }
+//                                if(isInserted)
+//                                    Log.d(debugTag, "EP ID: " + egg_production.getId());
                             }
 
                         }
 
                     }
 
-                    Log.d(debugTag, "EP SIZE: "+myDb.getEggProductionSize());
+                }catch (Exception e){}
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, String rawJsonResponse, Object response){
+
+                Toast.makeText(getApplicationContext(), "Failed to fetch Breeders from web database ", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            protected Object parseResponse(String rawJsonData, boolean isFailure) throws Throwable{
+                return null;
+            }
+        });
+    }
+
+    private void API_getHatcheryRecords(ArrayList<Integer> arrayList_breederInventory_id){
+        APIHelper.getHatcheryRecords("getHatcheryRecords/", new BaseJsonHttpResponseHandler<Object>() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
+
+                Gson gson = new Gson();
+                try {
+                    JSONHatchery jsonBreeder = gson.fromJson(rawJsonResponse, JSONHatchery.class);
+                    ArrayList<Hatchery_Records> arrayList_hatchery_records = jsonBreeder.getData();
+
+                    for (Hatchery_Records hatchery_records : arrayList_hatchery_records) {
+
+                        if(arrayList_breederInventory_id.contains(hatchery_records.getBreeder_inv_id())) {
+
+                            Cursor cursor = myDb.getAllDataFromBreederHatcheryWhereID(hatchery_records.getId());
+                            cursor.moveToFirst();
+
+                            if (cursor.getCount() == 0) {
+
+                                boolean isInserted = myDb.insertHatcheryRecordsWithID(
+                                        hatchery_records.getId(),
+                                        hatchery_records.getBreeder_inv_id(),
+                                        hatchery_records.getDate(),
+                                        hatchery_records.getBatching_date(),
+                                        hatchery_records.getEggs_set(),
+                                        hatchery_records.getWeek_lay(),
+                                        hatchery_records.getFertile(),
+                                        hatchery_records.getHatched(),
+                                        hatchery_records.getDate_hatched(),
+                                        hatchery_records.getDeleted_at()
+                                );
+
+                                if(isInserted)
+                                    Log.d(debugTag, "Hatchery ID: "+hatchery_records.getId());
+
+                            }
+                        }
+
+                    }
+
+                    Log.d(debugTag, "Hatchery size: "+myDb.getHatcherySize());
 
                 }catch (Exception e){}
+
             }
 
             @Override
@@ -1179,10 +1235,25 @@ public class DashBoardActivity extends AppCompatActivity {
 
                         if (cursor.getCount() == 0) {
 
-
-
-                            boolean isInserted = myDb.insertEggQualityRecordsWithID(arrayList_brooder.get(i).getId(), arrayList_brooder.get(i).getEgg_breeder_inv_id(),arrayList_brooder.get(i).getDate(), arrayList_brooder.get(i).getWeek(), arrayList_brooder.get(i).getWeight(), arrayList_brooder.get(i).getColor(), arrayList_brooder.get(i).getShape(), arrayList_brooder.get(i).getLength(), arrayList_brooder.get(i).getWidth(), arrayList_brooder.get(i).getAlbument_height(), arrayList_brooder.get(i).getAlbument_weight(), arrayList_brooder.get(i).getYolk_weight(), arrayList_brooder.get(i).getYolk_color(), arrayList_brooder.get(i).getShell_weight(), arrayList_brooder.get(i).getShell_thickness_top(), arrayList_brooder.get(i).getShell_thickness_middle(), arrayList_brooder.get(i).getShell_thickness_bottom());
-                            //Toast.makeText(EggQualityRecords.this, "Egg Qualities Added", Toast.LENGTH_SHORT).show();
+                            boolean isInserted = myDb.insertEggQualityRecordsWithID(
+                                    arrayList_brooder.get(i).getId(),
+                                    arrayList_brooder.get(i).getEgg_breeder_inv_id(),
+                                    arrayList_brooder.get(i).getDate(),
+                                    arrayList_brooder.get(i).getWeek(),
+                                    arrayList_brooder.get(i).getWeight(),
+                                    arrayList_brooder.get(i).getColor(),
+                                    arrayList_brooder.get(i).getShape(),
+                                    arrayList_brooder.get(i).getLength(),
+                                    arrayList_brooder.get(i).getWidth(),
+                                    arrayList_brooder.get(i).getAlbument_height(),
+                                    arrayList_brooder.get(i).getAlbument_weight(),
+                                    arrayList_brooder.get(i).getYolk_weight(),
+                                    arrayList_brooder.get(i).getYolk_color(),
+                                    arrayList_brooder.get(i).getShell_weight(),
+                                    arrayList_brooder.get(i).getShell_thickness_top(),
+                                    arrayList_brooder.get(i).getShell_thickness_middle(),
+                                    arrayList_brooder.get(i).getShell_thickness_bottom()
+                            );
                         }
 
                     }
@@ -1190,47 +1261,6 @@ public class DashBoardActivity extends AppCompatActivity {
 
 
 
-
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, String rawJsonResponse, Object response){
-
-                Toast.makeText(getApplicationContext(), "Failed to fetch Breeders from web database ", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            protected Object parseResponse(String rawJsonData, boolean isFailure) throws Throwable{
-                return null;
-            }
-        });
-    }
-
-    private void API_getHatcheryRecords(){
-        APIHelper.getHatcheryRecords("getHatcheryRecords/", new BaseJsonHttpResponseHandler<Object>() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
-
-                Gson gson = new Gson();
-                try {
-                    JSONHatchery jsonBreeder = gson.fromJson(rawJsonResponse, JSONHatchery.class);
-                    ArrayList<Hatchery_Records> arrayList_brooder = jsonBreeder.getData();
-
-                    for (int i = 0; i < arrayList_brooder.size(); i++) {
-                        //check if generation to be inserted is already in the database
-                        Cursor cursor = myDb.getAllDataFromBreederHatcheryWhereID(arrayList_brooder.get(i).getId());
-                        cursor.moveToFirst();
-
-                        if (cursor.getCount() == 0) {
-
-
-                            boolean isInserted = myDb.insertHatcheryRecordsWithID(arrayList_brooder.get(i).getId(), arrayList_brooder.get(i).getBreeder_inv_id(),arrayList_brooder.get(i).getDate(), arrayList_brooder.get(i).getBatching_date(), arrayList_brooder.get(i).getEggs_set(), arrayList_brooder.get(i).getWeek_lay(), arrayList_brooder.get(i).getFertile(), arrayList_brooder.get(i).getHatched(), arrayList_brooder.get(i).getDate_hatched(), arrayList_brooder.get(i).getDeleted_at());
-                            //Toast.makeText(HatcheryRecords.this, "Hatchery Records Added", Toast.LENGTH_SHORT).show();
-                        }
-
-                    }
-
-                }catch (Exception e){}
 
             }
 
