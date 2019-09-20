@@ -85,9 +85,9 @@ public class BreederPhenoMorphoRecordsActivity extends AppCompatActivity {
         //////DATABASE
         ///////////////////////////////DATABASE
 
-        if(isNetworkAvailable()){
-            API_updatePhenoMorphoValues();
-        }
+//        if(isNetworkAvailable()){
+//            API_updatePhenoMorphoValues();
+//        }
 
         ////inventory
         Cursor cursor_inventory = myDb.getDataFromBreederInvWhereTag(breeder_tag);

@@ -87,10 +87,10 @@ StringBuffer buffer = new StringBuffer();
 
 
         //////////////////////////DATABASE
-        if(isNetworkAvailable()){
-            API_getPhenoMorphos();
-            API_getPhenoMorphoValues();
-        }
+//        if(isNetworkAvailable()){
+//            API_getPhenoMorphos();
+//            API_getPhenoMorphoValues();
+//        }
 
         Cursor cursor_inv = myDb.getIDFromBreederInventoyWhereTag(replacement_inv_tag);
         cursor_inv.moveToFirst();
