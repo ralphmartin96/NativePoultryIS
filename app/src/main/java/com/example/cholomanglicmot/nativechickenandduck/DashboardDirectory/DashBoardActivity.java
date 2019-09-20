@@ -1444,15 +1444,33 @@ public class DashBoardActivity extends AppCompatActivity {
 
                     for (Replacement_Inventory replacement_inventory : arrayList_replacementInventory) {
 
-                        Cursor cursor = myDb.getAllDataFromBrooderInventoryWhereID(replacement_inventory.getId());
-                        cursor.moveToFirst();
+                        if (arrayList_replacement_id.contains(replacement_inventory.getReplacement_inv_replacement_id())) {
 
-                        if (cursor.getCount() == 0) {
+                            Cursor cursor = myDb.getAllDataFromBrooderInventoryWhereID(replacement_inventory.getId());
+                            cursor.moveToFirst();
 
-                            try {
-                                boolean isInserted = myDb.insertDataReplacementInventoryWithID(replacement_inventory.getId(), replacement_inventory.getReplacement_inv_replacement_id(), replacement_inventory.getReplacement_inv_pen(), replacement_inventory.getReplacement_inv_replacement_tag(), replacement_inventory.getReplacement_inv_batching_date(), replacement_inventory.getReplacement_male_quantity(), replacement_inventory.getReplacement_female_quantity(), replacement_inventory.getReplacement_total_quantity(), replacement_inventory.getReplacement_inv_last_update(), replacement_inventory.getReplacement_inv_deleted_at());
+                            if (cursor.getCount() == 0) {
 
-                            } catch (Exception e) {
+                                try {
+                                    boolean isInserted = myDb.insertDataReplacementInventoryWithID(
+                                            replacement_inventory.getId(),
+                                            replacement_inventory.getReplacement_inv_replacement_id(),
+                                            replacement_inventory.getReplacement_inv_pen(),
+                                            replacement_inventory.getReplacement_inv_replacement_tag(),
+                                            replacement_inventory.getReplacement_inv_batching_date(),
+                                            replacement_inventory.getReplacement_male_quantity(),
+                                            replacement_inventory.getReplacement_female_quantity(),
+                                            replacement_inventory.getReplacement_total_quantity(),
+                                            replacement_inventory.getReplacement_inv_last_update(),
+                                            replacement_inventory.getReplacement_inv_deleted_at()
+                                    );
+
+//                                    if(isInserted)
+//                                        Log.d(debugTag, "REP INV ID: "+ replacement_inventory.getId());
+
+                                } catch (Exception e) {
+                                }
+
                             }
 
                         }
