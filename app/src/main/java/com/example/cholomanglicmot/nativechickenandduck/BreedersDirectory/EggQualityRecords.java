@@ -42,18 +42,17 @@ public class EggQualityRecords extends AppCompatActivity {
     RecyclerView recyclerView;
     RecyclerView.Adapter recycler_adapter;
     RecyclerView.LayoutManager layoutManager;
-    ArrayList<Egg_Quality> arrayListBrooderGrowthRecords = new ArrayList<>();
-    ArrayList<Breeder_Inventory>arrayListBrooderInventory = new ArrayList<>();
+    ArrayList<Egg_Quality> arrayListEggQualityRecords = new ArrayList<>();
     ArrayList<Breeder_Inventory>arrayList_temp = new ArrayList<>();
     ImageButton create_egg_prod;
     TextView replacement_pheno_inv_id;
-
+    String breeder_tag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_egg_quality_records);
-        final String breeder_tag;
+
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
             if(extras == null) {
@@ -75,8 +74,6 @@ public class EggQualityRecords extends AppCompatActivity {
         getSupportActionBar().setTitle("Breeder Egg Quality");
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-
-
         create_egg_prod.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -92,55 +89,61 @@ public class EggQualityRecords extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
 
-        ///////////////////////////////DATABASE
+        local_getEggQuality();
 
-        if(isNetworkAvailable()){
-            API_updateEggQuality();
-            API_getEggQuality();
-        }
-
-        Cursor cur = myDb.getDataFromBreederInvWhereTag(breeder_tag);
-        cur.moveToFirst();
-        Integer bred = cur.getInt(0);
-
-
-
-        ////feeding records
-        Cursor cursor = myDb.getAllDataFromEggQuality();
-        cursor.moveToFirst();
-        if(cursor.getCount() == 0){
-            //show message
-            Toast.makeText(this,"No data.", Toast.LENGTH_LONG).show();
-
-        }else {
-            do {
-                Integer breeder_inv_id1 = cursor.getInt(1);
-                String deleted_at = cursor.getString(17);
-                if(breeder_inv_id1 == bred && deleted_at == null) {
-                    /*Integer id,Integer egg_breeder_inv_id,  String date,          Float weight,           String color,       String shape,                Float length,          Float width,    Float albument_height,  Float albument_weight,   Float yolk_weight,        String yolk_color, Float shell_weight,   Float shell_thickness_top, Float shell_thickness_middle,  Float shell_thickness_bottom*/
-                    Egg_Quality egg_quality = new Egg_Quality(cursor.getInt(0), breeder_tag, cursor.getInt(1), cursor.getString(2), cursor.getInt(3), cursor.getFloat(4), cursor.getString(5), cursor.getString(6), cursor.getFloat(7), cursor.getFloat(8), cursor.getFloat(9), cursor.getFloat(10), cursor.getFloat(11), cursor.getString(12), cursor.getFloat(13), cursor.getFloat(14), cursor.getFloat(15), cursor.getFloat(16));
-
-                    arrayListBrooderGrowthRecords.add(egg_quality);
-                }
-            } while (cursor.moveToNext());
-        }
-
-
-
-        recycler_adapter = new RecyclerAdapter_Egg_Quality(arrayListBrooderGrowthRecords);
+        recycler_adapter = new RecyclerAdapter_Egg_Quality(arrayListEggQualityRecords);
         recyclerView.setAdapter(recycler_adapter);
         recycler_adapter.notifyDataSetChanged();
 
+    }
 
+    private void local_getEggQuality() {
 
+        Cursor cur = myDb.getDataFromBreederInvWhereTag(breeder_tag);
+        cur.moveToFirst();
+        Integer inventory_id = cur.getInt(0);
+
+        Cursor cursor_egg_quality = myDb.getAllDataFromEggQuality();
+        cursor_egg_quality.moveToFirst();
+
+        if (cursor_egg_quality.getCount() != 0) {
+
+            do {
+                String deleted_at = cursor_egg_quality.getString(17);
+
+                if (inventory_id.equals(cursor_egg_quality.getInt(1)) && deleted_at == null) {
+                    Egg_Quality egg_quality = new Egg_Quality(
+                            cursor_egg_quality.getInt(0),
+                            breeder_tag,
+                            cursor_egg_quality.getInt(1),
+                            cursor_egg_quality.getString(2),
+                            cursor_egg_quality.getInt(3),
+                            cursor_egg_quality.getFloat(4),
+                            cursor_egg_quality.getString(5),
+                            cursor_egg_quality.getString(6),
+                            cursor_egg_quality.getFloat(7),
+                            cursor_egg_quality.getFloat(8),
+                            cursor_egg_quality.getFloat(9),
+                            cursor_egg_quality.getFloat(10),
+                            cursor_egg_quality.getFloat(11),
+                            cursor_egg_quality.getString(12),
+                            cursor_egg_quality.getFloat(13),
+                            cursor_egg_quality.getFloat(14),
+                            cursor_egg_quality.getFloat(15),
+                            cursor_egg_quality.getFloat(16)
+                    );
+
+                    arrayListEggQualityRecords.add(egg_quality);
+                }
+            } while (cursor_egg_quality.moveToNext());
+
+            if (arrayListEggQualityRecords.isEmpty())
+                Toast.makeText(this, "No data.", Toast.LENGTH_LONG).show();
+
+        }
 
     }
-    private boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-    }
+
     private void API_addEggQuality(RequestParams requestParams){
         APIHelper.addEggQuality("addEggQuality", requestParams, new BaseJsonHttpResponseHandler<Object>() {
             @Override
@@ -183,11 +186,6 @@ public class EggQualityRecords extends AppCompatActivity {
 
                     } while (cursor_brooder_feeding.moveToNext());
                 }
-
-
-
-                //arrayListBrooderInventoryLocal contains all data from local database
-                //arrayListBrooderInventoryWeb   contains all data from web database
 
                 //put the ID of each brooder inventory to another arraylist
                 ArrayList<Integer> id_local = new ArrayList<>();
@@ -277,6 +275,7 @@ public class EggQualityRecords extends AppCompatActivity {
             }
         });
     }
+
     private void API_getEggQuality(){
         APIHelper.getEggQuality("getEggQuality/", new BaseJsonHttpResponseHandler<Object>() {
             @Override
@@ -317,6 +316,14 @@ public class EggQualityRecords extends AppCompatActivity {
             }
         });
     }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
     @Override
     public boolean onSupportNavigateUp() {
         Intent intent_brooders = new Intent(EggQualityRecords.this, CreateBreeders.class);
