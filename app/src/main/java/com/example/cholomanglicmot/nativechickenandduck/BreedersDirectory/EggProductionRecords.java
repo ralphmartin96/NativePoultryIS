@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -42,7 +43,7 @@ public class EggProductionRecords extends AppCompatActivity {
     RecyclerView recyclerView;
     RecyclerView.Adapter recycler_adapter;
     RecyclerView.LayoutManager layoutManager;
-    ArrayList<Egg_Production> arrayListBrooderGrowthRecords = new ArrayList<>();
+    ArrayList<Egg_Production> arrayListEggProductionRecords = new ArrayList<>();
     ArrayList<Breeder_Inventory>arrayListBrooderInventory = new ArrayList<>();
     ArrayList<Breeder_Inventory>arrayList_temp = new ArrayList<>();
     FloatingActionButton create_egg_prod;
@@ -78,10 +79,6 @@ public class EggProductionRecords extends AppCompatActivity {
         getSupportActionBar().setTitle("Breeder Egg Productions");
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-
-
-
-
         create_egg_prod.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -90,7 +87,6 @@ public class EggProductionRecords extends AppCompatActivity {
                 newFragment.show(getSupportFragmentManager(), "CreateEggProductionDialog");
             }
         });
-
 
         myDb = new DatabaseHelper(this);
         recyclerView = (RecyclerView)findViewById(R.id.recyclerViewReplacementEggProductionRecords);
@@ -114,59 +110,68 @@ public class EggProductionRecords extends AppCompatActivity {
                     create_egg_prod.hide();
                 }
             }
+
         });
 
-        ///////////////////////////////DATABASE
+        local_getEggProduction();
 
-        if(isNetworkAvailable()){
-            API_getEggProduction();
-            API_updateEggProduction();
-        }
+        recycler_adapter = new RecyclerAdapter_Egg_Production(arrayListEggProductionRecords);
+        recyclerView.setAdapter(recycler_adapter);
+        recycler_adapter.notifyDataSetChanged();
+
+    }
+
+    private void local_getEggProduction(){
         Cursor cur = myDb.getDataFromBreederInvWhereTag(breeder_tag);
         cur.moveToFirst();
-        Integer bred = cur.getInt(0);
+        Integer inventory_id = cur.getInt(0);
 
-
-        ////feeding records
         Cursor cursor_brooder_feeding_records = myDb.getAllDataFromEggProduction();
         cursor_brooder_feeding_records.moveToFirst();
-        if(cursor_brooder_feeding_records.getCount() == 0){
-            //show message
-            Toast.makeText(this,"No data.", Toast.LENGTH_LONG).show();
 
-        }else {
+        if(cursor_brooder_feeding_records.getCount() != 0){
+
             do {
-
                 Float total_weight = cursor_brooder_feeding_records.getFloat(4);
                 Integer total_intact = cursor_brooder_feeding_records.getInt(3);
                 Float average_weight = total_weight/total_intact;
                 Integer breeder_inv_id1 = cursor_brooder_feeding_records.getInt(1);
                 String deleted_at = cursor_brooder_feeding_records.getString(8);
-                if(breeder_inv_id1 == bred && deleted_at == null) {
-                    Egg_Production egg_production = new Egg_Production(cursor_brooder_feeding_records.getInt(0), cursor_brooder_feeding_records.getInt(1), cursor_brooder_feeding_records.getString(2), breeder_tag, cursor_brooder_feeding_records.getInt(3), cursor_brooder_feeding_records.getFloat(4), average_weight, cursor_brooder_feeding_records.getInt(5), cursor_brooder_feeding_records.getInt(6), cursor_brooder_feeding_records.getString(7), cursor_brooder_feeding_records.getString(8),cursor_brooder_feeding_records.getString(9));
 
-                    arrayListBrooderGrowthRecords.add(egg_production);
+                if(breeder_inv_id1.equals(inventory_id) && deleted_at == null) {
+
+                    Egg_Production egg_production = new Egg_Production(
+                            cursor_brooder_feeding_records.getInt(0),
+                            cursor_brooder_feeding_records.getInt(1),
+                            cursor_brooder_feeding_records.getString(2),
+                            breeder_tag,
+                            cursor_brooder_feeding_records.getInt(3),
+                            cursor_brooder_feeding_records.getFloat(4),
+                            average_weight,
+                            cursor_brooder_feeding_records.getInt(5),
+                            cursor_brooder_feeding_records.getInt(6),
+                            cursor_brooder_feeding_records.getString(7),
+                            cursor_brooder_feeding_records.getString(8),
+                            cursor_brooder_feeding_records.getString(9)
+                    );
+
+                    arrayListEggProductionRecords.add(egg_production);
                 }
-            } while (cursor_brooder_feeding_records.moveToNext());
+            }while (cursor_brooder_feeding_records.moveToNext());
+
+            if(arrayListEggProductionRecords.isEmpty())
+                Toast.makeText(this,"No data.", Toast.LENGTH_LONG).show();
+
         }
-
-
-
-        recycler_adapter = new RecyclerAdapter_Egg_Production(arrayListBrooderGrowthRecords);
-        recyclerView.setAdapter(recycler_adapter);
-        recycler_adapter.notifyDataSetChanged();
-
-
-
-
-
     }
+
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
+
     private void API_getEggProduction(){
         APIHelper.getEggProduction("getEggProduction/", new BaseJsonHttpResponseHandler<Object>() {
             @Override
@@ -209,6 +214,7 @@ public class EggProductionRecords extends AppCompatActivity {
             }
         });
     }
+
     private void API_addEggProduction(RequestParams requestParams){
         APIHelper.addEggProduction("addEggProduction", requestParams, new BaseJsonHttpResponseHandler<Object>() {
             @Override
@@ -228,6 +234,7 @@ public class EggProductionRecords extends AppCompatActivity {
             }
         });
     }
+
     private void API_updateEggProduction(){
         APIHelper.getEggProduction("getEggProduction/", new BaseJsonHttpResponseHandler<Object>() {
             @Override
@@ -332,6 +339,7 @@ public class EggProductionRecords extends AppCompatActivity {
             }
         });
     }
+
     @Override
     public boolean onSupportNavigateUp() {
         Intent intent_brooders = new Intent(EggProductionRecords.this, CreateBreeders.class);
@@ -341,7 +349,6 @@ public class EggProductionRecords extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-
 
         Intent intent_brooders = new Intent(EggProductionRecords.this, CreateBreeders.class);
         startActivity(intent_brooders);
