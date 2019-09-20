@@ -617,6 +617,7 @@ public class DashBoardActivity extends AppCompatActivity {
 
                     API_getBrooder(arrayList_family1_id);
                     API_getBreeder(arrayList_family1_id);
+                    API_getReplacement(arrayList_family1_id);
 
                 }catch (Exception e){
                     Log.d(debugTag, "Exception in Family API caught");
@@ -1377,7 +1378,7 @@ public class DashBoardActivity extends AppCompatActivity {
     }
 
 
-    private void API_getReplacement() {
+    private void API_getReplacement(ArrayList<Integer> arrayList_family_id) {
         APIHelper.getReplacement("getReplacement/", new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
@@ -1385,18 +1386,32 @@ public class DashBoardActivity extends AppCompatActivity {
                 Gson gson = new Gson();
                 try{
                     JSONReplacement jsonReplacement = gson.fromJson(rawJsonResponse, JSONReplacement.class);
-                    ArrayList<Replacements> arrayList_brooder = jsonReplacement.getData();
+                    ArrayList<Replacements> arrayList_replacement = jsonReplacement.getData();
+                    ArrayList<Integer> arrayList_replacement_id = new ArrayList<>();
 
-                    for (int i = 0; i < arrayList_brooder.size(); i++) {
-                        //check if generation to be inserted is already in the database
-                        Cursor cursor = myDb.getAllDataFromReplacementsWhereID(arrayList_brooder.get(i).getId());
-                        cursor.moveToFirst();
+                    for (Replacements replacements : arrayList_replacement) {
 
-                        if (cursor.getCount() == 0) {
+                        if (arrayList_family_id.contains(replacements.getReplacement_family_number())) {
 
-                            boolean isInserted = myDb.insertDataReplacementWithID(arrayList_brooder.get(i).getId(), arrayList_brooder.get(i).getReplacement_family_number(), arrayList_brooder.get(i).getReplacement_date_added(), arrayList_brooder.get(i).getReplacement_deleted_at());
-                            //Toast.makeText(CreateReplacements.this, "Replacements Added", Toast.LENGTH_SHORT).show();
+                            Cursor cursor = myDb.getAllDataFromReplacementsWhereID(replacements.getId());
+                            cursor.moveToFirst();
+
+                            if (cursor.getCount() == 0) {
+
+                                boolean isInserted = myDb.insertDataReplacementWithID(
+                                        replacements.getId(),
+                                        replacements.getReplacement_family_number(),
+                                        replacements.getReplacement_date_added(),
+                                        replacements.getReplacement_deleted_at()
+                                );
+
+                                if (isInserted)
+                                    arrayList_replacement_id.add(replacements.getId());
+//                                    Log.d(debugTag, "REPLACEMENT ID: " + replacements.getId() +" "+ replacements.getReplacement_family_number());
+                            }
                         }
+
+                        API_getReplacementInventory(arrayList_replacement_id);
 
                     }
                 }catch (Exception e){}
@@ -1417,7 +1432,7 @@ public class DashBoardActivity extends AppCompatActivity {
         });
     }
 
-    private void API_getReplacementInventory() {
+    private void API_getReplacementInventory(ArrayList<Integer> arrayList_replacement_id) {
         APIHelper.getReplacementInventory("getReplacementInventory/", new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
@@ -1425,17 +1440,17 @@ public class DashBoardActivity extends AppCompatActivity {
                 Gson gson = new Gson();
                 try{
                     JSONReplacementInventory jsonReplacementInventory = gson.fromJson(rawJsonResponse, JSONReplacementInventory.class);
-                    ArrayList<Replacement_Inventory> arrayList_brooderInventory = jsonReplacementInventory.getData();
+                    ArrayList<Replacement_Inventory> arrayList_replacementInventory = jsonReplacementInventory.getData();
 
-                    for (int i = 0; i < arrayList_brooderInventory.size(); i++) {
-                        //check if generation to be inserted is already in the database
-                        Cursor cursor = myDb.getAllDataFromBrooderInventoryWhereID(arrayList_brooderInventory.get(i).getId());
+                    for (Replacement_Inventory replacement_inventory : arrayList_replacementInventory) {
+
+                        Cursor cursor = myDb.getAllDataFromBrooderInventoryWhereID(replacement_inventory.getId());
                         cursor.moveToFirst();
 
                         if (cursor.getCount() == 0) {
 
                             try {
-                                boolean isInserted = myDb.insertDataReplacementInventoryWithID(arrayList_brooderInventory.get(i).getId(), arrayList_brooderInventory.get(i).getReplacement_inv_replacement_id(), arrayList_brooderInventory.get(i).getReplacement_inv_pen(), arrayList_brooderInventory.get(i).getReplacement_inv_replacement_tag(), arrayList_brooderInventory.get(i).getReplacement_inv_batching_date(), arrayList_brooderInventory.get(i).getReplacement_male_quantity(), arrayList_brooderInventory.get(i).getReplacement_female_quantity(), arrayList_brooderInventory.get(i).getReplacement_total_quantity(), arrayList_brooderInventory.get(i).getReplacement_inv_last_update(), arrayList_brooderInventory.get(i).getReplacement_inv_deleted_at());
+                                boolean isInserted = myDb.insertDataReplacementInventoryWithID(replacement_inventory.getId(), replacement_inventory.getReplacement_inv_replacement_id(), replacement_inventory.getReplacement_inv_pen(), replacement_inventory.getReplacement_inv_replacement_tag(), replacement_inventory.getReplacement_inv_batching_date(), replacement_inventory.getReplacement_male_quantity(), replacement_inventory.getReplacement_female_quantity(), replacement_inventory.getReplacement_total_quantity(), replacement_inventory.getReplacement_inv_last_update(), replacement_inventory.getReplacement_inv_deleted_at());
 
                             } catch (Exception e) {
                             }
