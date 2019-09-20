@@ -126,38 +126,37 @@ public class EggProductionRecords extends AppCompatActivity {
         cur.moveToFirst();
         Integer inventory_id = cur.getInt(0);
 
-        Cursor cursor_brooder_feeding_records = myDb.getAllDataFromEggProduction();
-        cursor_brooder_feeding_records.moveToFirst();
+        Cursor cursor_egg_production_records = myDb.getAllDataFromEggProduction();
+        cursor_egg_production_records.moveToFirst();
 
-        if(cursor_brooder_feeding_records.getCount() != 0){
+        if(cursor_egg_production_records.getCount() != 0){
 
             do {
-                Float total_weight = cursor_brooder_feeding_records.getFloat(4);
-                Integer total_intact = cursor_brooder_feeding_records.getInt(3);
+                Float total_weight = cursor_egg_production_records.getFloat(4);
+                Integer total_intact = cursor_egg_production_records.getInt(3);
                 Float average_weight = total_weight/total_intact;
-                Integer breeder_inv_id1 = cursor_brooder_feeding_records.getInt(1);
-                String deleted_at = cursor_brooder_feeding_records.getString(8);
+                String deleted_at = cursor_egg_production_records.getString(8);
 
-                if(breeder_inv_id1.equals(inventory_id) && deleted_at == null) {
+                if(inventory_id.equals(cursor_egg_production_records.getInt(1)) && deleted_at == null) {
 
                     Egg_Production egg_production = new Egg_Production(
-                            cursor_brooder_feeding_records.getInt(0),
-                            cursor_brooder_feeding_records.getInt(1),
-                            cursor_brooder_feeding_records.getString(2),
+                            cursor_egg_production_records.getInt(0),
+                            cursor_egg_production_records.getInt(1),
+                            cursor_egg_production_records.getString(2),
                             breeder_tag,
-                            cursor_brooder_feeding_records.getInt(3),
-                            cursor_brooder_feeding_records.getFloat(4),
+                            cursor_egg_production_records.getInt(3),
+                            cursor_egg_production_records.getFloat(4),
                             average_weight,
-                            cursor_brooder_feeding_records.getInt(5),
-                            cursor_brooder_feeding_records.getInt(6),
-                            cursor_brooder_feeding_records.getString(7),
-                            cursor_brooder_feeding_records.getString(8),
-                            cursor_brooder_feeding_records.getString(9)
+                            cursor_egg_production_records.getInt(5),
+                            cursor_egg_production_records.getInt(6),
+                            cursor_egg_production_records.getString(7),
+                            cursor_egg_production_records.getString(8),
+                            cursor_egg_production_records.getString(9)
                     );
 
                     arrayListEggProductionRecords.add(egg_production);
                 }
-            }while (cursor_brooder_feeding_records.moveToNext());
+            }while (cursor_egg_production_records.moveToNext());
 
             if(arrayListEggProductionRecords.isEmpty())
                 Toast.makeText(this,"No data.", Toast.LENGTH_LONG).show();

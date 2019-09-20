@@ -117,41 +117,7 @@ public class BreederFeedingRecordsActivity extends AppCompatActivity {
         });
 
         local_getBreederFeeding();
-//        Cursor cur = myDb.getDataFromBreederInvWhereTag(breeder_tag);
-//        cur.moveToFirst();
-//        Integer inventory_id = cur.getInt(0);
-//        cur.close();
-//
-//        Log.d("POULTRYDEBUGGER", breeder_tag);
-//
-//        Cursor cursor_feeding = myDb.getAllDataFromBreederFeedingRecords();
-//        cursor_feeding.moveToFirst();
-//
-//        if(cursor_feeding.getCount() != 0){
-//            do{
-//                String deleted_at = cursor_feeding.getString(6);
-//                Integer breeder_inv_id1 = cursor_feeding.getInt(1);
-//
-//                if(breeder_inv_id1.equals(inventory_id) && deleted_at == null){
-//                    Breeder_FeedingRecords breeder_feedingRecords = new
-//                            Breeder_FeedingRecords(
-//                                    cursor_feeding.getInt(0),
-//                            cursor_feeding.getInt(1),
-//                            cursor_feeding.getString(2),
-//                            breeder_tag,
-//                            cursor_feeding.getFloat(3),
-//                            cursor_feeding.getFloat(4),
-//                            cursor_feeding.getString(5),
-//                            cursor_feeding.getString(6)
-//                    );
-//
-//                    arrayList_breeder_feeding.add(breeder_feedingRecords);
-//                }
-//
-//            }while(cursor_feeding.moveToNext());
-//        }
-//
-//        cursor_feeding.close();
+
         recycler_adapter = new RecyclerAdapter_Breeder_Feeding(arrayListBreederFeedingRecords);
         recyclerView.setAdapter(recycler_adapter);
         recycler_adapter.notifyDataSetChanged();
