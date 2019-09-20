@@ -194,13 +194,6 @@ public class DashBoardActivity extends AppCompatActivity {
 //            API_getReplacementInventory();
 //            API_getReplacementFeeding();
 //            API_getReplacementGrowth();
-//
-//            API_getBreeder();
-//            API_getBreederInventory();
-//            API_getBreederFeeding();
-//            API_getEggQuality();
-//            API_getEggProduction();
-//            API_getHatcheryRecords();
         }
 
         Cursor cursor = myDb.getFarmIDFromUsers(email);
@@ -1031,6 +1024,7 @@ public class DashBoardActivity extends AppCompatActivity {
                     API_getBreederFeeding(arrayList_breederInventory_id);
                     API_getEggProduction(arrayList_breederInventory_id);
                     API_getHatcheryRecords(arrayList_breederInventory_id);
+                    API_getEggQuality(arrayList_breederInventory_id);
 
                 }catch (Exception e){}
 
@@ -1191,15 +1185,13 @@ public class DashBoardActivity extends AppCompatActivity {
                                         hatchery_records.getDeleted_at()
                                 );
 
-                                if(isInserted)
-                                    Log.d(debugTag, "Hatchery ID: "+hatchery_records.getId());
+//                                if(isInserted)
+//                                    Log.d(debugTag, "Hatchery ID: "+hatchery_records.getId());
 
                             }
                         }
 
                     }
-
-                    Log.d(debugTag, "Hatchery size: "+myDb.getHatcherySize());
 
                 }catch (Exception e){}
 
@@ -1218,7 +1210,7 @@ public class DashBoardActivity extends AppCompatActivity {
         });
     }
 
-    private void API_getEggQuality(){
+    private void API_getEggQuality(ArrayList<Integer> arrayList_breederInventory_id){
         APIHelper.getEggQuality("getEggQuality/", new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
@@ -1226,41 +1218,47 @@ public class DashBoardActivity extends AppCompatActivity {
                 Gson gson = new Gson();
                 try{
                     JSONEggQuality jsonBreeder = gson.fromJson(rawJsonResponse, JSONEggQuality.class);
-                    ArrayList<Egg_Quality> arrayList_brooder = jsonBreeder.getData();
+                    ArrayList<Egg_Quality> arrayList_eggQuality = jsonBreeder.getData();
 
-                    for (int i = 0; i < arrayList_brooder.size(); i++) {
-                        //check if generation to be inserted is already in the database
-                        Cursor cursor = myDb.getAllDataFromBreederEggQualWhereID(arrayList_brooder.get(i).getId());
-                        cursor.moveToFirst();
 
-                        if (cursor.getCount() == 0) {
+                    for (Egg_Quality egg_quality : arrayList_eggQuality) {
 
-                            boolean isInserted = myDb.insertEggQualityRecordsWithID(
-                                    arrayList_brooder.get(i).getId(),
-                                    arrayList_brooder.get(i).getEgg_breeder_inv_id(),
-                                    arrayList_brooder.get(i).getDate(),
-                                    arrayList_brooder.get(i).getWeek(),
-                                    arrayList_brooder.get(i).getWeight(),
-                                    arrayList_brooder.get(i).getColor(),
-                                    arrayList_brooder.get(i).getShape(),
-                                    arrayList_brooder.get(i).getLength(),
-                                    arrayList_brooder.get(i).getWidth(),
-                                    arrayList_brooder.get(i).getAlbument_height(),
-                                    arrayList_brooder.get(i).getAlbument_weight(),
-                                    arrayList_brooder.get(i).getYolk_weight(),
-                                    arrayList_brooder.get(i).getYolk_color(),
-                                    arrayList_brooder.get(i).getShell_weight(),
-                                    arrayList_brooder.get(i).getShell_thickness_top(),
-                                    arrayList_brooder.get(i).getShell_thickness_middle(),
-                                    arrayList_brooder.get(i).getShell_thickness_bottom()
-                            );
+                        if(arrayList_breederInventory_id.contains(egg_quality.getEgg_breeder_inv_id())) {
+
+                            Cursor cursor = myDb.getAllDataFromBreederEggQualWhereID(egg_quality.getId());
+                            cursor.moveToFirst();
+
+                            if (cursor.getCount() == 0) {
+
+                                boolean isInserted = myDb.insertEggQualityRecordsWithID(
+                                        egg_quality.getId(),
+                                        egg_quality.getEgg_breeder_inv_id(),
+                                        egg_quality.getDate(),
+                                        egg_quality.getWeek(),
+                                        egg_quality.getWeight(),
+                                        egg_quality.getColor(),
+                                        egg_quality.getShape(),
+                                        egg_quality.getLength(),
+                                        egg_quality.getWidth(),
+                                        egg_quality.getAlbument_height(),
+                                        egg_quality.getAlbument_weight(),
+                                        egg_quality.getYolk_weight(),
+                                        egg_quality.getYolk_color(),
+                                        egg_quality.getShell_weight(),
+                                        egg_quality.getShell_thickness_top(),
+                                        egg_quality.getShell_thickness_middle(),
+                                        egg_quality.getShell_thickness_bottom()
+                                );
+
+//                                if(isInserted)
+//                                    Log.d(debugTag, "EQ id: "+ egg_quality.getId());
+                            }
+
                         }
 
                     }
+
                 }catch (Exception e){}
-
-
-
 
             }
 
@@ -1276,7 +1274,6 @@ public class DashBoardActivity extends AppCompatActivity {
             }
         });
     }
-
 
 
     private void API_getPhenoMorphos(){

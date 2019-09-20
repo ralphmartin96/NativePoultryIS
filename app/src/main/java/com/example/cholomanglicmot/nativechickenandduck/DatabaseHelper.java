@@ -4752,4 +4752,16 @@ public Integer getAllMaleFromBrooders(Integer farm_id){
         return size;
     }
 
+    public int getEggQualitySize(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        int size=0;
+
+        Cursor res = db.rawQuery("SELECT COUNT(*) FROM "+TABLE_EGG_QUALITY, new String[]{});
+        res.moveToFirst();
+
+        if(res.getCount() != 0) size = res.getInt(0);
+
+        return size;
+    }
+
 }
