@@ -1029,6 +1029,7 @@ public class DashBoardActivity extends AppCompatActivity {
                     }
 
                     API_getBreederFeeding(arrayList_breederInventory_id);
+                    API_getEggProduction(arrayList_breederInventory_id);
 
                 }catch (Exception e){}
 
@@ -1038,7 +1039,7 @@ public class DashBoardActivity extends AppCompatActivity {
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, String rawJsonResponse, Object response){
 
-                Toast.makeText(getApplicationContext(), "Failed to fetch Brooders Inventory from web database ", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Failed to fetch Breeder Inventory from web database ", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -1059,8 +1060,6 @@ public class DashBoardActivity extends AppCompatActivity {
                 try{
                     JSONBreederFeeding jsonBreederFeeding = gson.fromJson(rawJsonResponse, JSONBreederFeeding.class);
                     ArrayList<Breeder_FeedingRecords> arrayList_breederFeeding = jsonBreederFeeding.getData();
-
-                    Log.d(debugTag, "API Feeding: "+ arrayList_breederFeeding.size());
 
                     for (Breeder_FeedingRecords feedingRecords : arrayList_breederFeeding) {
 
@@ -1086,8 +1085,6 @@ public class DashBoardActivity extends AppCompatActivity {
                         }
                     }
 
-                    Log.d(debugTag, "FEEDING: "+ myDb.getBreederFeedingSize());
-
                 }catch (Exception e){
 
                 }
@@ -1096,7 +1093,7 @@ public class DashBoardActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, String rawJsonResponse, Object response){
-                Toast.makeText(getApplicationContext(), "Failed to fetch Brooders Feeding from web database ", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Failed to fetch Breeder Feeding from web database ", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -1106,7 +1103,7 @@ public class DashBoardActivity extends AppCompatActivity {
         });
     }
 
-    private void API_getEggProduction(){
+    private void API_getEggProduction(ArrayList<Integer> arrayList_breederInventory_id){
         APIHelper.getEggProduction("getEggProduction/", new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
@@ -1114,17 +1111,41 @@ public class DashBoardActivity extends AppCompatActivity {
                 Gson gson = new Gson();
                 try{
                     JSONEggProduction jsonBreeder = gson.fromJson(rawJsonResponse, JSONEggProduction.class);
-                    ArrayList<Egg_Production> arrayList_brooder = jsonBreeder.getData();
+                    ArrayList<Egg_Production> arrayList_eggProduction = jsonBreeder.getData();
 
-                    for (int i = 0; i < arrayList_brooder.size(); i++) {
-                        //check if generation to be inserted is already in the database
-                        Cursor cursor = myDb.getAllDataFromEggProductionWhereID(arrayList_brooder.get(i).getId());
-                        cursor.moveToFirst();
+                    for (Egg_Production egg_production : arrayList_eggProduction) {
 
-                        if (cursor.getCount() == 0) {
-                            boolean isInserted = myDb.insertEggProductionRecordsWithID(arrayList_brooder.get(i).getId(), arrayList_brooder.get(i).getEgg_breeder_inv_id(),arrayList_brooder.get(i).getDate(), arrayList_brooder.get(i).getIntact(), arrayList_brooder.get(i).getWeight(), arrayList_brooder.get(i).getBroken(), arrayList_brooder.get(i).getRejects(), arrayList_brooder.get(i).getRemarks(), arrayList_brooder.get(i).getDeleted_at(),arrayList_brooder.get(i).getFemale_inventory());
+                        if(arrayList_breederInventory_id.contains(egg_production.getEgg_breeder_inv_id())) {
+
+                            Cursor cursor = myDb.getAllDataFromEggProductionWhereID(egg_production.getId());
+                            cursor.moveToFirst();
+
+                            if (cursor.getCount() == 0) {
+                                boolean isInserted = myDb.insertEggProductionRecordsWithID(
+                                        egg_production.getId(),
+                                        egg_production.getEgg_breeder_inv_id(),
+                                        egg_production.getDate(),
+                                        egg_production.getIntact(),
+                                        egg_production.getWeight(),
+                                        egg_production.getBroken(),
+                                        egg_production.getRejects(),
+                                        egg_production.getRemarks(),
+                                        egg_production.getDeleted_at(),
+                                        egg_production.getFemale_inventory()
+                                );
+
+                                if(isInserted) {
+                                    Log.d(debugTag, "EP ID: " + egg_production.getId());
+                                    Log.d(debugTag, "INV ID: " + egg_production.getEgg_breeder_inv_id());
+                                }
+                            }
+
                         }
+
                     }
+
+                    Log.d(debugTag, "EP SIZE: "+myDb.getEggProductionSize());
+
                 }catch (Exception e){}
             }
 
