@@ -1292,6 +1292,7 @@ public class DashBoardActivity extends AppCompatActivity {
                 try{
                     JSONPhenoMorphos jsonReplacement = gson.fromJson(rawJsonResponse, JSONPhenoMorphos.class);
                     ArrayList<Pheno_Morphos> arrayList_phenoMorphos = jsonReplacement.getData();
+                    ArrayList<Integer> arrayList_phenoMorphos_values_id = new ArrayList<>();
 
                     for (Pheno_Morphos pheno_morphos : arrayList_phenoMorphos) {
 
@@ -1320,12 +1321,19 @@ public class DashBoardActivity extends AppCompatActivity {
                                         Log.d(debugTag, "Breeder PM: " + pheno_morphos.getId() + " " + pheno_morphos.getBreeder_inventory());
                                     else
                                         Log.d(debugTag, "Replacement PM: " + pheno_morphos.getId() + " " + pheno_morphos.getReplacement_inventory());
+
+                                    arrayList_phenoMorphos_values_id.add(pheno_morphos.getValues_id());
                                 }
                             }
 
                         }
 
                     }
+
+                    if (!arrayList_phenoMorphos_values_id.isEmpty())
+                        API_getPhenoMorphoValues(arrayList_phenoMorphos_values_id);
+
+//                    Log.d(debugTag, "Values: "+ arrayList_phenoMorphos_values_id.size() + " " + arrayList_phenoMorphos_values_id);
                 }catch (Exception e){}
 
             }
@@ -1343,7 +1351,7 @@ public class DashBoardActivity extends AppCompatActivity {
         });
     }
 
-    private void API_getPhenoMorphoValues(){
+    private void API_getPhenoMorphoValues(ArrayList<Integer> arrayList_values_Id) {
         APIHelper.getPhenoMorphoValues("getPhenoMorphoValues/", new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
@@ -1351,18 +1359,31 @@ public class DashBoardActivity extends AppCompatActivity {
                 Gson gson = new Gson();
                 try{
                     JSONPhenoMorphoValues jsonReplacement = gson.fromJson(rawJsonResponse, JSONPhenoMorphoValues.class);
-                    ArrayList <Breeder_PhenoMorphoView> arrayList_brooder = jsonReplacement.getData();
+                    ArrayList<Breeder_PhenoMorphoView> arrayList_breeder_phenoMorphoView = jsonReplacement.getData();
 
-                    for (int i = 0; i < arrayList_brooder.size(); i++) {
-                        //check if generation to be inserted is already in the database
-                        Cursor cursor = myDb.getAllDataFromPhenoMorphoRecordsWithID(arrayList_brooder.get(i).getId());
-                        cursor.moveToFirst();
+                    for (Breeder_PhenoMorphoView phenoMorphoValues : arrayList_breeder_phenoMorphoView) {
 
-                        if (cursor.getCount() == 0) {
+                        if (arrayList_values_Id.contains(phenoMorphoValues.getId())) {
 
+                            Cursor cursor = myDb.getAllDataFromPhenoMorphoRecordsWithID(phenoMorphoValues.getId());
+                            cursor.moveToFirst();
 
-                            boolean isInserted = myDb.insertPhenoMorphoRecordsWithID(arrayList_brooder.get(i).getId(), arrayList_brooder.get(i).getGender(), arrayList_brooder.get(i).getTag(), arrayList_brooder.get(i).getPheno_record(), arrayList_brooder.get(i).getMorpho_record(), arrayList_brooder.get(i).getDate(), arrayList_brooder.get(i).getDeleted_at());
-                            // Toast.makeText(ReplacementPhenoMorphoViewActivity.this, "Pheno and Morphos Values Added", Toast.LENGTH_SHORT).show();
+                            if (cursor.getCount() == 0) {
+                                boolean isInserted = myDb.insertPhenoMorphoRecordsWithID(
+                                        phenoMorphoValues.getId(),
+                                        phenoMorphoValues.getGender(),
+                                        phenoMorphoValues.getTag(),
+                                        phenoMorphoValues.getPheno_record(),
+                                        phenoMorphoValues.getMorpho_record(),
+                                        phenoMorphoValues.getDate(),
+                                        phenoMorphoValues.getDeleted_at()
+                                );
+
+//                                if(isInserted)
+//                                    Log.d(debugTag, "Values: "+ phenoMorphoValues.getId());
+
+                            }
+
                         }
 
                     }
