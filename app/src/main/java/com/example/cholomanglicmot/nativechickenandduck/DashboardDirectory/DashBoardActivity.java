@@ -190,8 +190,6 @@ public class DashBoardActivity extends AppCompatActivity {
 //            API_getPhenoMorphos();
 //            API_getMortalityAndSales();
 //
-//            API_getReplacement();
-//            API_getReplacementInventory();
 //            API_getReplacementFeeding();
 //            API_getReplacementGrowth();
         }
@@ -451,7 +449,8 @@ public class DashBoardActivity extends AppCompatActivity {
                         }
                     }
 
-                    API_getBrooderInventory(arrayList_brooder_pen_id);
+                    if (!arrayList_brooder_pen_id.isEmpty())
+                        API_getBrooderInventory(arrayList_brooder_pen_id);
 
                 }catch (Exception e){
                     Log.d(debugTag, "Exception in Pen API caught");
@@ -551,7 +550,8 @@ public class DashBoardActivity extends AppCompatActivity {
                         }
                     }
 
-                    API_getFamily(arrayList_line_id);
+                    if (!arrayList_line_id.isEmpty())
+                        API_getFamily(arrayList_line_id);
 
                 }catch (Exception e){
                     Log.d(debugTag, "Exception in Lines API caught");
@@ -615,9 +615,11 @@ public class DashBoardActivity extends AppCompatActivity {
 
                     }
 
-                    API_getBrooder(arrayList_family1_id);
-                    API_getBreeder(arrayList_family1_id);
-                    API_getReplacement(arrayList_family1_id);
+                    if (!arrayList_family1_id.isEmpty()) {
+                        API_getBrooder(arrayList_family1_id);
+                        API_getBreeder(arrayList_family1_id);
+                        API_getReplacement(arrayList_family1_id);
+                    }
 
                 }catch (Exception e){
                     Log.d(debugTag, "Exception in Family API caught");
@@ -669,8 +671,6 @@ public class DashBoardActivity extends AppCompatActivity {
                                         1,
                                         family.getGeneration_number()
                                 );
-
-//                                if(isInserted) Log.d(debugTag, "Inserted family "+family.getFamily_number());
                             }
 
                     }
@@ -785,8 +785,10 @@ public class DashBoardActivity extends AppCompatActivity {
 
                     }
 
-                    API_getBrooderFeeding(arrayList_brooderInventory_id);
-                    API_getBrooderGrowth(arrayList_brooderInventory_id);
+                    if (!arrayList_brooderInventory_id.isEmpty()) {
+                        API_getBrooderFeeding(arrayList_brooderInventory_id);
+                        API_getBrooderGrowth(arrayList_brooderInventory_id);
+                    }
 
                 }catch (Exception e){}
 
@@ -955,7 +957,8 @@ public class DashBoardActivity extends AppCompatActivity {
                         }
                     }
 
-                    API_getBreederInventory(arrayList_breeder_id);
+                    if (!arrayList_breeder_id.isEmpty())
+                        API_getBreederInventory(arrayList_breeder_id);
 
                 }catch (Exception e){
                     Log.d("JSON", e.toString());
@@ -1022,11 +1025,13 @@ public class DashBoardActivity extends AppCompatActivity {
 
                     }
 
-                    API_getBreederFeeding(arrayList_breederInventory_id);
-                    API_getEggProduction(arrayList_breederInventory_id);
-                    API_getHatcheryRecords(arrayList_breederInventory_id);
-                    API_getEggQuality(arrayList_breederInventory_id);
-                    API_getPhenoMorphos(arrayList_breederInventory_id);
+                    if (!arrayList_breederInventory_id.isEmpty()) {
+                        API_getBreederFeeding(arrayList_breederInventory_id);
+                        API_getEggProduction(arrayList_breederInventory_id);
+                        API_getHatcheryRecords(arrayList_breederInventory_id);
+                        API_getEggQuality(arrayList_breederInventory_id);
+                        API_getPhenoMorphos(arrayList_breederInventory_id);
+                    }
 
                 }catch (Exception e){}
 
@@ -1278,7 +1283,7 @@ public class DashBoardActivity extends AppCompatActivity {
     }
 
 
-    private void API_getPhenoMorphos(ArrayList<Integer> inventory_id) {
+    private void API_getPhenoMorphos(ArrayList<Integer> arrayList_inventory_id) {
         APIHelper.getPhenoMorphos("getPhenoMorphos/", new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
@@ -1290,8 +1295,12 @@ public class DashBoardActivity extends AppCompatActivity {
 
                     for (Pheno_Morphos pheno_morphos : arrayList_phenoMorphos) {
 
-                        if (inventory_id.contains(pheno_morphos.getBreeder_inventory()) ||
-                                inventory_id.contains(pheno_morphos.getReplacement_inventory())) {
+                        Integer inventory_id;
+
+                        inventory_id = pheno_morphos.getBreeder_inventory() != null ?
+                                pheno_morphos.getBreeder_inventory() : pheno_morphos.getReplacement_inventory();
+
+                        if (arrayList_inventory_id.contains(inventory_id)) {
 
                             Cursor cursor = myDb.getDataFromReplacementPhenoMorphosWhereID(pheno_morphos.getId());
                             cursor.moveToFirst();
@@ -1411,7 +1420,8 @@ public class DashBoardActivity extends AppCompatActivity {
                             }
                         }
 
-                        API_getReplacementInventory(arrayList_replacement_id);
+                        if (!arrayList_replacement_id.isEmpty())
+                            API_getReplacementInventory(arrayList_replacement_id);
 
                     }
                 }catch (Exception e){}
@@ -1441,6 +1451,7 @@ public class DashBoardActivity extends AppCompatActivity {
                 try{
                     JSONReplacementInventory jsonReplacementInventory = gson.fromJson(rawJsonResponse, JSONReplacementInventory.class);
                     ArrayList<Replacement_Inventory> arrayList_replacementInventory = jsonReplacementInventory.getData();
+                    ArrayList<Integer> arrayList_replacementInventory_id = new ArrayList<>();
 
                     for (Replacement_Inventory replacement_inventory : arrayList_replacementInventory) {
 
@@ -1465,8 +1476,8 @@ public class DashBoardActivity extends AppCompatActivity {
                                             replacement_inventory.getReplacement_inv_deleted_at()
                                     );
 
-//                                    if(isInserted)
-//                                        Log.d(debugTag, "REP INV ID: "+ replacement_inventory.getId());
+                                    if (isInserted)
+                                        arrayList_replacementInventory_id.add(replacement_inventory.getId());
 
                                 } catch (Exception e) {
                                 }
@@ -1477,6 +1488,9 @@ public class DashBoardActivity extends AppCompatActivity {
 
 
                     }
+
+                    API_getReplacementFeeding(arrayList_replacementInventory_id);
+                    API_getPhenoMorphos(arrayList_replacementInventory_id);
                 }catch (Exception e){}
 
 
@@ -1484,7 +1498,6 @@ public class DashBoardActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, String rawJsonResponse, Object response){
-
                 Toast.makeText(getApplicationContext(), "Failed to fetch Replacement Inventory from web database ", Toast.LENGTH_SHORT).show();
             }
 
@@ -1495,7 +1508,7 @@ public class DashBoardActivity extends AppCompatActivity {
         });
     }
 
-    private void API_getReplacementFeeding() {
+    private void API_getReplacementFeeding(ArrayList<Integer> replacementInventory_id) {
         APIHelper.getReplacementFeeding("getReplacementFeeding/", new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
@@ -1504,18 +1517,32 @@ public class DashBoardActivity extends AppCompatActivity {
                 Gson gson = new Gson();
                 try{
                     JSONReplacementFeeding jsonBrooderInventory = gson.fromJson(rawJsonResponse, JSONReplacementFeeding.class);
-                    ArrayList<Replacement_FeedingRecords> arrayList_brooderInventory = jsonBrooderInventory.getData();
+                    ArrayList<Replacement_FeedingRecords> arrayList_replacementFeeding = jsonBrooderInventory.getData();
 
 
-                    for (int i = 0; i < arrayList_brooderInventory.size(); i++) {
-                        //check if generation to be inserted is already in the database
-                        Cursor cursor = myDb.getAllDataFromReplacementFeedingRecordsWhereFeedingID(arrayList_brooderInventory.get(i).getId());
-                        cursor.moveToFirst();
+                    for (Replacement_FeedingRecords replacement_feedingRecords : arrayList_replacementFeeding) {
 
-                        if (cursor.getCount() == 0) {
+                        if (replacementInventory_id.contains(replacement_feedingRecords.getReplacement_feeding_inventory_id())) {
 
+                            Cursor cursor = myDb.getAllDataFromReplacementFeedingRecordsWhereFeedingID(replacement_feedingRecords.getId());
+                            cursor.moveToFirst();
 
-                            boolean isInserted = myDb.insertDataReplacementFeedingRecordsWithID(arrayList_brooderInventory.get(i).getId(), arrayList_brooderInventory.get(i).getReplacement_feeding_inventory_id(), arrayList_brooderInventory.get(i).getReplacement_feeding_date_collected(), arrayList_brooderInventory.get(i).getReplacement_feeding_offered(), arrayList_brooderInventory.get(i).getReplacement_feeding_refused(), arrayList_brooderInventory.get(i).getReplacement_feeding_remarks(), arrayList_brooderInventory.get(i).getReplacement_feeding_deleted_at());
+                            if (cursor.getCount() == 0) {
+
+                                boolean isInserted = myDb.insertDataReplacementFeedingRecordsWithID(
+                                        replacement_feedingRecords.getId(),
+                                        replacement_feedingRecords.getReplacement_feeding_inventory_id(),
+                                        replacement_feedingRecords.getReplacement_feeding_date_collected(),
+                                        replacement_feedingRecords.getReplacement_feeding_offered(),
+                                        replacement_feedingRecords.getReplacement_feeding_refused(),
+                                        replacement_feedingRecords.getReplacement_feeding_remarks(),
+                                        replacement_feedingRecords.getReplacement_feeding_deleted_at()
+                                );
+
+                                if (isInserted)
+                                    Log.d(debugTag, "REP FEED ID: " + replacement_feedingRecords.getId());
+
+                            }
 
                         }
 
