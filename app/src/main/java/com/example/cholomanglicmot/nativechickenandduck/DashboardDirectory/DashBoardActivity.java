@@ -1489,8 +1489,12 @@ public class DashBoardActivity extends AppCompatActivity {
 
                     }
 
-                    API_getReplacementFeeding(arrayList_replacementInventory_id);
-                    API_getPhenoMorphos(arrayList_replacementInventory_id);
+                    if (!arrayList_replacementInventory_id.isEmpty()) {
+                        API_getReplacementFeeding(arrayList_replacementInventory_id);
+                        API_getReplacementGrowth(arrayList_replacementInventory_id);
+                        API_getPhenoMorphos(arrayList_replacementInventory_id);
+                    }
+
                 }catch (Exception e){}
 
 
@@ -1508,7 +1512,7 @@ public class DashBoardActivity extends AppCompatActivity {
         });
     }
 
-    private void API_getReplacementFeeding(ArrayList<Integer> replacementInventory_id) {
+    private void API_getReplacementFeeding(ArrayList<Integer> arrayList_replacementInventory_id) {
         APIHelper.getReplacementFeeding("getReplacementFeeding/", new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
@@ -1522,7 +1526,7 @@ public class DashBoardActivity extends AppCompatActivity {
 
                     for (Replacement_FeedingRecords replacement_feedingRecords : arrayList_replacementFeeding) {
 
-                        if (replacementInventory_id.contains(replacement_feedingRecords.getReplacement_feeding_inventory_id())) {
+                        if (arrayList_replacementInventory_id.contains(replacement_feedingRecords.getReplacement_feeding_inventory_id())) {
 
                             Cursor cursor = myDb.getAllDataFromReplacementFeedingRecordsWhereFeedingID(replacement_feedingRecords.getId());
                             cursor.moveToFirst();
@@ -1566,7 +1570,7 @@ public class DashBoardActivity extends AppCompatActivity {
         });
     }
 
-    private void API_getReplacementGrowth() {
+    private void API_getReplacementGrowth(ArrayList<Integer> arrayList_replacementInventory_id) {
         APIHelper.getReplacementGrowth("getReplacementGrowth/", new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
@@ -1575,19 +1579,36 @@ public class DashBoardActivity extends AppCompatActivity {
                 Gson gson = new Gson();
                 try{
                     JSONReplacementGrowth jsonBrooderInventory = gson.fromJson(rawJsonResponse, JSONReplacementGrowth.class);
-                    ArrayList<Replacement_GrowthRecords> arrayList_brooderInventory = jsonBrooderInventory.getData();
+                    ArrayList<Replacement_GrowthRecords> arrayList_replacementGrowth = jsonBrooderInventory.getData();
 
 
-                    for (int i = 0; i < arrayList_brooderInventory.size(); i++) {
-                        //check if generation to be inserted is already in the database
-                        Cursor cursor = myDb.getAllDataFromReplacementGrowthRecordsWhereGrowthID(arrayList_brooderInventory.get(i).getId());
-                        cursor.moveToFirst();
+                    for (Replacement_GrowthRecords replacement_growthRecords : arrayList_replacementGrowth) {
 
-                        if (cursor.getCount() == 0) {
+                        if (arrayList_replacementInventory_id.contains(replacement_growthRecords.getId())) {
 
+                            Cursor cursor = myDb.getAllDataFromReplacementGrowthRecordsWhereGrowthID(replacement_growthRecords.getId());
+                            cursor.moveToFirst();
 
-                            boolean isInserted = myDb.insertDataBrooderGrowthRecordsWithID(arrayList_brooderInventory.get(i).getId(), arrayList_brooderInventory.get(i).getReplacement_growth_inventory_id(), arrayList_brooderInventory.get(i).getReplacement_growth_collection_day(), arrayList_brooderInventory.get(i).getReplacement_growth_date_collected(), arrayList_brooderInventory.get(i).getReplacement_growth_male_quantity(), arrayList_brooderInventory.get(i).getReplacement_growth_male_weight(), arrayList_brooderInventory.get(i).getReplacement_growth_female_quantity(), arrayList_brooderInventory.get(i).getReplacement_growth_female_weight(), arrayList_brooderInventory.get(i).getReplacement_growth_total_quantity(), arrayList_brooderInventory.get(i).getReplacement_growth_total_weight(), arrayList_brooderInventory.get(i).getReplacement_growth_deleted_at());
-                            //Toast.makeText(BrooderInventoryActivity.this, "oyoyooyoy", Toast.LENGTH_SHORT).show();
+                            if (cursor.getCount() == 0) {
+
+                                boolean isInserted = myDb.insertDataBrooderGrowthRecordsWithID(
+                                        replacement_growthRecords.getId(),
+                                        replacement_growthRecords.getReplacement_growth_inventory_id(),
+                                        replacement_growthRecords.getReplacement_growth_collection_day(),
+                                        replacement_growthRecords.getReplacement_growth_date_collected(),
+                                        replacement_growthRecords.getReplacement_growth_male_quantity(),
+                                        replacement_growthRecords.getReplacement_growth_male_weight(),
+                                        replacement_growthRecords.getReplacement_growth_female_quantity(),
+                                        replacement_growthRecords.getReplacement_growth_female_weight(),
+                                        replacement_growthRecords.getReplacement_growth_total_quantity(),
+                                        replacement_growthRecords.getReplacement_growth_total_weight(),
+                                        replacement_growthRecords.getReplacement_growth_deleted_at()
+                                );
+
+                                if (isInserted)
+                                    Log.d(debugTag, "REPL GROWTH: " + replacement_growthRecords.getId());
+
+                            }
                         }
 
                     }
