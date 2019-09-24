@@ -15,11 +15,7 @@ public class Breeder_PhenoMorphoView {
     public String date;
     public String deleted_at;
 
-
-
-    Breeder_PhenoMorphoView(){
-
-
+    Breeder_PhenoMorphoView() {
     }
 
     public Breeder_PhenoMorphoView(Integer id, String gender, String tag, String pheno_record, String morpho_record, String date, String deleted_at){
@@ -31,7 +27,6 @@ public class Breeder_PhenoMorphoView {
         this.setMorpho_record(morpho_record);
         this.setDate(date);
         this.setDeleted_at(deleted_at);
-
 
     }
 

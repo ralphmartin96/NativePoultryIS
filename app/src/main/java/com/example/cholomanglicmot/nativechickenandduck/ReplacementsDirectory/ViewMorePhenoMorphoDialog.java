@@ -48,16 +48,16 @@ public class ViewMorePhenoMorphoDialog extends DialogFragment {
 
         if(cursor.getCount() != 0){
             String tag = cursor.getString(2);
-            String gender1 = cursor.getString(1);
-            String date_added1 = cursor.getString(5);
-            String pheno1 = cursor.getString(3);
-            String morpho1 = cursor.getString(4);
+            String gender_text = cursor.getString(1);
+            String date_added_text = cursor.getString(5);
+            String pheno_text = cursor.getString(3);
+            String morpho_text = cursor.getString(4);
 
             textView.setText(tag);
-            gender.setText(gender1);
-            date_added.setText(date_added1);
-            pheno.setText(pheno1);
-            morpho.setText(morpho1);
+            gender.setText(gender_text);
+            date_added.setText(date_added_text);
+            pheno.setText(pheno_text);
+            morpho.setText(morpho_text);
 
         }else{
             textView.setText("No data");

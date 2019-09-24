@@ -1373,9 +1373,6 @@ public class DashBoardActivity extends AppCompatActivity {
                                         phenoMorphoValues.getDeleted_at()
                                 );
 
-//                                if(isInserted)
-//                                    Log.d(debugTag, "Values: "+ phenoMorphoValues.getId());
-
                             }
 
                         }
