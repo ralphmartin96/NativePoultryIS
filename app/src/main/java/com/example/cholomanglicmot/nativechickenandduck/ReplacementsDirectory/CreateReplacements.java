@@ -52,7 +52,6 @@ import java.util.List;
 import cz.msebera.android.httpclient.Header;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-//import com.squareup.picasso.Picasso;
 
 public class CreateReplacements extends AppCompatActivity {
     private DrawerLayout mDrawerLayout;
@@ -67,18 +66,14 @@ public class CreateReplacements extends AppCompatActivity {
     ExpandableListView Exp_list;
     ProjectAdapter adapter;
     DatabaseHelper myDb;
-    //private String brooder_pen = getArguments().getString("brooder_pen");
 
-    //Map<String, ArrayList<String>> brooder_inventory_dictionary = new HashMap<String, ArrayList<String>>();
     ArrayList<String> list = new ArrayList<String>();
 
     RecyclerView recyclerView;
     RecyclerView.Adapter recycler_adapter;
     RecyclerView.LayoutManager layoutManager;
 
-    ArrayList<Replacement_Pen> arrayList = new ArrayList<>();
-    ArrayList<Replacement_Inventory> arrayList2 = new ArrayList<>();
-    ArrayList<Replacements> arrayList3 = new ArrayList<>();
+    ArrayList<Replacement_Pen> arrayList_replacement_pens = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,8 +110,6 @@ public class CreateReplacements extends AppCompatActivity {
         adapter = new ProjectAdapter(this, Project_category, Project_list);
         Exp_list.setAdapter(adapter);
 
-
-        //delete_pen_table = findViewById(R.id.delete_pen_table);
         myDb = new DatabaseHelper(this);
 
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView1);
@@ -185,56 +178,45 @@ public class CreateReplacements extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Create Replacements");
 
+        local_getReplacement();
 
-        boolean isNetworkAvailable = isNetworkAvailable();
-        if (isNetworkAvailable) {
-            //if internet is available, load data from web database
+        recycler_adapter = new RecyclerAdapter_Replacement_Pen(arrayList_replacement_pens);
+        recyclerView.setAdapter(recycler_adapter);
+        recycler_adapter.notifyDataSetChanged();
 
+    }
 
-            //HARDCODED KASI WALA KA PANG DATABASE NA NANDUN EMAIL MO
-            API_getReplacement();
-            API_updateReplacement();
-
-
-        }
-
+    private void local_getReplacement() {
 
         Cursor cursor_replacement_pen = myDb.getReplacementsFromPen();
-
-
+        cursor_replacement_pen.moveToFirst();
 
         if (cursor_replacement_pen.getCount() == 0) {
-            //show message
             Toast.makeText(this, "No data", Toast.LENGTH_SHORT).show();
-            return;
         } else {
 
             cursor_replacement_pen.moveToFirst();
+
             do {
-            
-                Replacement_Pen replacement_pen = new Replacement_Pen(cursor_replacement_pen.getString(2), cursor_replacement_pen.getInt(5), cursor_replacement_pen.getInt(4) - cursor_replacement_pen.getInt(5));
-                arrayList.add(replacement_pen);
+                Replacement_Pen replacement_pen = new Replacement_Pen(
+                        cursor_replacement_pen.getString(2),
+                        cursor_replacement_pen.getInt(5),
+                        cursor_replacement_pen.getInt(4) - cursor_replacement_pen.getInt(5)
+                );
+                arrayList_replacement_pens.add(replacement_pen);
+
             } while (cursor_replacement_pen.moveToNext());
 
-
-            recycler_adapter = new RecyclerAdapter_Replacement_Pen(arrayList);//arrayList = brooder_pen, arrayListInventory = replacement_inventory, arrayListReplacements = brooders
-            recyclerView.setAdapter(recycler_adapter);
-            recycler_adapter.notifyDataSetChanged();
-
         }
-
-
-
-
-
-
     }
+
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
+
     private void API_addReplacement(RequestParams requestParams){
         APIHelper.addReplacementFamily("addReplacementFamily", requestParams, new BaseJsonHttpResponseHandler<Object>() {
             @Override
@@ -254,6 +236,7 @@ public class CreateReplacements extends AppCompatActivity {
             }
         });
     }
+
     private void API_updateReplacement(){
 
         APIHelper.getReplacement("getReplacement/", new BaseJsonHttpResponseHandler<Object>() {
@@ -341,6 +324,7 @@ public class CreateReplacements extends AppCompatActivity {
             }
         });
     }
+
     private void API_getReplacement(){
         APIHelper.getReplacement("getReplacement/", new BaseJsonHttpResponseHandler<Object>() {
             @Override
@@ -379,6 +363,7 @@ public class CreateReplacements extends AppCompatActivity {
             }
         });
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -388,6 +373,7 @@ public class CreateReplacements extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
     public void showMessage(String title, String message){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setCancelable(true);
