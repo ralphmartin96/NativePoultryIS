@@ -16,6 +16,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -36,6 +37,7 @@ import com.example.cholomanglicmot.nativechickenandduck.FamilyDirectory.CreateFa
 import com.example.cholomanglicmot.nativechickenandduck.FarmSettingsDirectory.MainActivity;
 import com.example.cholomanglicmot.nativechickenandduck.GenerationsAndLinesDirectory.CreateGenerationsAndLines;
 import com.example.cholomanglicmot.nativechickenandduck.PensDirectory.CreatePen;
+import com.example.cholomanglicmot.nativechickenandduck.PensDirectory.Pen;
 import com.example.cholomanglicmot.nativechickenandduck.ProjectAdapter;
 import com.example.cholomanglicmot.nativechickenandduck.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -46,6 +48,7 @@ import com.loopj.android.http.RequestParams;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -203,9 +206,13 @@ public class CreateReplacements extends AppCompatActivity {
                         cursor_replacement_pen.getInt(5),
                         cursor_replacement_pen.getInt(4) - cursor_replacement_pen.getInt(5)
                 );
+
+                Log.d("POULTRYDEBUGGER", "PEN: " + replacement_pen.getReplacement_pen_number());
                 arrayList_replacement_pens.add(replacement_pen);
 
             } while (cursor_replacement_pen.moveToNext());
+
+            Collections.sort(arrayList_replacement_pens, Replacement_Pen.penComparator);
 
         }
     }

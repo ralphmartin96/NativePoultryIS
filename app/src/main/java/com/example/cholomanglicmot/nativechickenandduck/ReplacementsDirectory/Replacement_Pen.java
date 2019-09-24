@@ -1,6 +1,7 @@
 package com.example.cholomanglicmot.nativechickenandduck.ReplacementsDirectory;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
 public class Replacement_Pen {
     private String replacement_pen_number;
@@ -49,6 +50,17 @@ public class Replacement_Pen {
     public void setArrayList(ArrayList<Replacement_Inventory> arrayList) {
         this.arrayList = arrayList;
     }
+
+    public static Comparator<Replacement_Pen> penComparator = new Comparator<Replacement_Pen>() {
+
+        public int compare(Replacement_Pen p1, Replacement_Pen p2) {
+
+            String pen1 = p1.getReplacement_pen_number().toUpperCase();
+            String pen2 = p2.getReplacement_pen_number().toUpperCase();
+
+            return pen1.compareTo(pen2);
+        }
+    };
 
 
 
