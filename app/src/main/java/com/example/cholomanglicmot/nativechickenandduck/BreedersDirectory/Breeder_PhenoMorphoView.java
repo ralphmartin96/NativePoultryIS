@@ -7,7 +7,9 @@ public class Breeder_PhenoMorphoView {
     public Integer id;
     public String gender;
     public String tag;
+    @SerializedName("phenotypic")
     public String pheno_record;
+    @SerializedName("morphometric")
     public String morpho_record;
     @SerializedName("date_collected")
     public String date;

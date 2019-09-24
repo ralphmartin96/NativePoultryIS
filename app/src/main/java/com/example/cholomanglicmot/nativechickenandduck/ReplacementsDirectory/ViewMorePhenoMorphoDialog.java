@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +18,7 @@ import com.example.cholomanglicmot.nativechickenandduck.R;
 public class ViewMorePhenoMorphoDialog extends DialogFragment {
 
     DatabaseHelper myDb;
-    TextView textView,gender, pheno, morpho, date_added;
+    TextView textView, gender, pheno, morpho, date_added;
     Button  save;
 
 
@@ -42,10 +43,9 @@ public class ViewMorePhenoMorphoDialog extends DialogFragment {
 
         save = view.findViewById(R.id.save);
 
-
-
         Cursor cursor = myDb.getAllDataFromPhenoMorphoRecordsWhereID(pheno_morpho_id);
         cursor.moveToFirst();
+
         if(cursor.getCount() != 0){
             String tag = cursor.getString(2);
             String gender1 = cursor.getString(1);
@@ -59,11 +59,9 @@ public class ViewMorePhenoMorphoDialog extends DialogFragment {
             pheno.setText(pheno1);
             morpho.setText(morpho1);
 
-
         }else{
-            textView.setText("alaws tropa");
+            textView.setText("No data");
         }
-
 
         save.setOnClickListener(new View.OnClickListener() {
             @Override
