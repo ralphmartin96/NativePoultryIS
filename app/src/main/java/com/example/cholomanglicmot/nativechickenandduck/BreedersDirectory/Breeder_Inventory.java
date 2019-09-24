@@ -56,7 +56,7 @@ public class Breeder_Inventory {
         return breeder_code;
     }
 
-    public void setBreeder_code(String breeder_code) {
+    private void setBreeder_code(String breeder_code) {
         this.breeder_code = breeder_code;
     }
 
@@ -64,7 +64,7 @@ public class Breeder_Inventory {
         return male_wingband;
     }
 
-    public void setMale_wingband(String male_wingband) {
+    private void setMale_wingband(String male_wingband) {
         this.male_wingband = male_wingband;
     }
 
@@ -72,7 +72,7 @@ public class Breeder_Inventory {
         return female_wingband;
     }
 
-    public void setFemale_wingband(String female_wingband) {
+    private void setFemale_wingband(String female_wingband) {
         this.female_wingband = female_wingband;
     }
 
@@ -89,7 +89,7 @@ public class Breeder_Inventory {
         return breeder_inv_breeder_id;
     }
 
-    public void setbreeder_inv_breeder_id(Integer breeder_inv_breeder_id) {
+    private void setbreeder_inv_breeder_id(Integer breeder_inv_breeder_id) {
         this.breeder_inv_breeder_id = breeder_inv_breeder_id;
     }
 
@@ -97,7 +97,7 @@ public class Breeder_Inventory {
         return breeder_inv_pen;
     }
 
-    public void setbreeder_inv_pen(Integer breeder_inv_pen) {
+    private void setbreeder_inv_pen(Integer breeder_inv_pen) {
         this.breeder_inv_pen = breeder_inv_pen;
     }
 
@@ -105,7 +105,7 @@ public class Breeder_Inventory {
         return breeder_inv_breeder_tag;
     }
 
-    public void setbreeder_inv_breeder_tag(String breeder_inv_breeder_tag) {
+    private void setbreeder_inv_breeder_tag(String breeder_inv_breeder_tag) {
         this.breeder_inv_breeder_tag = breeder_inv_breeder_tag;
     }
 
@@ -113,7 +113,7 @@ public class Breeder_Inventory {
         return breeder_inv_batching_date;
     }
 
-    public void setbreeder_inv_batching_date(String breeder_inv_batching_date) {
+    private void setbreeder_inv_batching_date(String breeder_inv_batching_date) {
         this.breeder_inv_batching_date = breeder_inv_batching_date;
     }
 
@@ -121,7 +121,7 @@ public class Breeder_Inventory {
         return breeder_male_quantity;
     }
 
-    public void setbreeder_male_quantity(Integer breeder_male_quantity) {
+    private void setbreeder_male_quantity(Integer breeder_male_quantity) {
         this.breeder_male_quantity = breeder_male_quantity;
     }
 
@@ -129,7 +129,7 @@ public class Breeder_Inventory {
         return breeder_female_quantity;
     }
 
-    public void setbreeder_female_quantity(Integer breeder_female_quantity) {
+    private void setbreeder_female_quantity(Integer breeder_female_quantity) {
         this.breeder_female_quantity = breeder_female_quantity;
     }
 
@@ -137,7 +137,7 @@ public class Breeder_Inventory {
         return breeder_total_quantity;
     }
 
-    public void setbreeder_total_quantity(Integer breeder_total_quantity) {
+    private void setbreeder_total_quantity(Integer breeder_total_quantity) {
         this.breeder_total_quantity = breeder_total_quantity;
     }
 
@@ -145,7 +145,7 @@ public class Breeder_Inventory {
         return breeder_inv_last_update;
     }
 
-    public void setbreeder_inv_last_update(String breeder_inv_last_update) {
+    private void setbreeder_inv_last_update(String breeder_inv_last_update) {
         this.breeder_inv_last_update = breeder_inv_last_update;
     }
 
@@ -153,7 +153,7 @@ public class Breeder_Inventory {
         return breeder_inv_deleted_at;
     }
 
-    public void setbreeder_inv_deleted_at(String breeder_inv_deleted_at) {
+    private void setbreeder_inv_deleted_at(String breeder_inv_deleted_at) {
         this.breeder_inv_deleted_at = breeder_inv_deleted_at;
     }
 }
