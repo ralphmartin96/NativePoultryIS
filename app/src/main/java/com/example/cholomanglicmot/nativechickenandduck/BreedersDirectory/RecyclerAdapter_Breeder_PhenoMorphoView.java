@@ -24,25 +24,13 @@ import java.util.Map;
 
 public class RecyclerAdapter_Breeder_PhenoMorphoView extends RecyclerView.Adapter<RecyclerAdapter_Breeder_PhenoMorphoView.RecyclerViewHolder> {
 
-    ArrayList<Breeder_Inventory> arrayListInventory = new ArrayList<>();
-    ArrayList<Breeders> arrayListBrooder = new ArrayList<>();
     DatabaseHelper myDb;
-    Map<String, ArrayList<String>> brooder_inventory_dictionary = new HashMap<String, ArrayList<String>>();
-    ArrayList<Breeders> arrayListBrooder2 = new ArrayList<>();
-    //Integer position_pen_number;
     ArrayList<Breeder_PhenoMorphoView> arrayListReplacementInventory = new ArrayList<>();
-
-    String brooder_pen_number;
-
-
-
 
     RecyclerAdapter_Breeder_PhenoMorphoView(ArrayList<Breeder_PhenoMorphoView> arrayListReplacementInventory){
 
         this.arrayListReplacementInventory = arrayListReplacementInventory;
         this.context = context;
-       // this.brooder_inventory_dictionary = brooder_inventory_dictionary;
-
 
     }
 
@@ -55,9 +43,7 @@ public class RecyclerAdapter_Breeder_PhenoMorphoView extends RecyclerView.Adapte
 
         RecyclerViewHolder recyclerViewHolder = new RecyclerViewHolder(view);
 
-
         return recyclerViewHolder;
-
     }
 
     @Override
@@ -75,10 +61,6 @@ public class RecyclerAdapter_Breeder_PhenoMorphoView extends RecyclerView.Adapte
 
 
         holder.replacement_registry.setText(replacement_phenoMorphoView.getTag());
-       /* holder.replacement_gender.setText(replacement_phenoMorphoView.getGender());
-
-        holder.replacement_morpho.setText(replacement_phenoMorphoView.getMorpho_record());
-        holder.replacement_pheno.setText(replacement_phenoMorphoView.getPheno_record());*/
         holder.replacement_date.setText(replacement_phenoMorphoView.getDate());
 
         holder.replacement_more.setOnClickListener(new View.OnClickListener() {
@@ -92,6 +74,7 @@ public class RecyclerAdapter_Breeder_PhenoMorphoView extends RecyclerView.Adapte
                 notifyDataSetChanged();
             }
         });
+
         holder.replacement_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -111,8 +94,6 @@ public class RecyclerAdapter_Breeder_PhenoMorphoView extends RecyclerView.Adapte
     public int getItemCount() {
         return arrayListReplacementInventory.size();
     }
-
-
 
     public static class RecyclerViewHolder extends RecyclerView.ViewHolder{
 
