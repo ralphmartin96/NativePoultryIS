@@ -233,7 +233,7 @@
 
 
                 <LinearLayout
-                    android:layout_width="56dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
@@ -360,7 +360,7 @@
                 >
 
                 <LinearLayout
-                    android:layout_width="80dp"
+                    android:layout_width="70dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
@@ -434,7 +434,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:text="Mort/Sales"
+                        android:text="Mortality/Sales"
                         android:textAlignment="center"
                         android:textSize="10dp" />
                 </LinearLayout>

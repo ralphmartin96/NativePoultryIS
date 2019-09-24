@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,18 +34,18 @@ public class BreederPhenoMorphoRecordsActivity extends AppCompatActivity {
     private TextView text_pen;
     DatabaseHelper myDb;
     private Toolbar mToolbar;
-    ArrayList<Replacement_PhenoMorphoRecords> arrayListGrowth = new ArrayList<>();
-    ArrayList<Breeder_Inventory>arrayListReplacementInventory = new ArrayList<>();
-    ArrayList<Breeder_Inventory>arrayListReplacementInventory1 = new ArrayList<>();
+    ArrayList<Breeder_Inventory> arrayListBreederInventory = new ArrayList<>();
     ArrayList<Breeder_PhenoMorphoRecords>arrayList_temp = new ArrayList<>();
     Integer replacement_pen;
     String replacement_pen_number=null;
+    String breeder_tag;
+
     @Override
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_replacement_pheno_morpho_records);
         myDb = new DatabaseHelper(getApplicationContext());
-        String breeder_tag;
 
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
@@ -65,6 +66,7 @@ public class BreederPhenoMorphoRecordsActivity extends AppCompatActivity {
         if(cursor.getCount() != 0){
             replacement_pen_number = cursor.getString(2);
         }
+
         cursor.close();
         text_pen = findViewById(R.id.pheno_title);
         text_pen.setText("Phenotypic & Morphometric Data | Pen "+replacement_pen_number);
@@ -81,44 +83,55 @@ public class BreederPhenoMorphoRecordsActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Breeder Phenotypic & Morphometric Data");
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
+        local_getPhenoMorphoValues();
 
-        //////DATABASE
-        ///////////////////////////////DATABASE
-
-//        if(isNetworkAvailable()){
-//            API_updatePhenoMorphoValues();
-//        }
-
-        ////inventory
-        Cursor cursor_inventory = myDb.getDataFromBreederInvWhereTag(breeder_tag);
-        cursor_inventory.moveToFirst();
-
-        if (cursor_inventory.getCount() == 0) {
-
-        } else {
-            do {
-
-
-                                                                                  /*    private Integer id;brooder_inv_brooder_id           ;brooder_inv_pen;               brooder_inv_brooder_tag;        brooder_inv_batching_date;  brooder_male_quantity           ;brooder_female_quantity;       brooder_total_quantity;      brooder_inv_last_update;         brooder_inv_deleted_at;f            amily;line;generation;*/
-                Breeder_Inventory breeder_inventory = new Breeder_Inventory(cursor_inventory.getInt(0), cursor_inventory.getInt(1), cursor_inventory.getInt(2),cursor_inventory.getString(3),cursor_inventory.getString(4),cursor_inventory.getInt(5), cursor_inventory.getInt(6), cursor_inventory.getInt(7), cursor_inventory.getString(8), cursor_inventory.getString(9), cursor_inventory.getString(10), cursor_inventory.getString(11), cursor_inventory.getString(12));
-                arrayListReplacementInventory.add(breeder_inventory);
-            } while (cursor_inventory.moveToNext());
-        }
-
-        cursor_inventory.close();
-        recycler_adapter = new RecyclerAdapter_Breeder_PhenoMorpho(arrayListReplacementInventory);
+        recycler_adapter = new RecyclerAdapter_Breeder_PhenoMorpho(arrayListBreederInventory);
         recyclerView.setAdapter(recycler_adapter);
         recycler_adapter.notifyDataSetChanged();
 
+    }
 
+    private void local_getPhenoMorphoValues() {
+
+        Cursor cursor_inventory = myDb.getDataFromBreederInvWhereTag(breeder_tag);
+        cursor_inventory.moveToFirst();
+
+        if (cursor_inventory.getCount() != 0) {
+
+            do {
+                Breeder_Inventory breeder_inventory = new Breeder_Inventory(
+                        cursor_inventory.getInt(0),
+                        cursor_inventory.getInt(1),
+                        cursor_inventory.getInt(2),
+                        cursor_inventory.getString(3),
+                        cursor_inventory.getString(4),
+                        cursor_inventory.getInt(5),
+                        cursor_inventory.getInt(6),
+                        cursor_inventory.getInt(7),
+                        cursor_inventory.getString(8),
+                        cursor_inventory.getString(9),
+                        cursor_inventory.getString(10),
+                        cursor_inventory.getString(11),
+                        cursor_inventory.getString(12)
+                );
+
+                arrayListBreederInventory.add(breeder_inventory);
+            } while (cursor_inventory.moveToNext());
+
+        }
+
+        cursor_inventory.close();
 
     }
+
+
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) this.getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
+
     private void API_addPhenoMorphoValues(RequestParams requestParams){
         APIHelper.addPhenoMorphoValues("addPhenoMorphoValues", requestParams, new BaseJsonHttpResponseHandler<Object>() {
             @Override
@@ -139,6 +152,7 @@ public class BreederPhenoMorphoRecordsActivity extends AppCompatActivity {
             }
         });
     }
+
     private void API_updatePhenoMorphoValues(){
         APIHelper.getPhenoMorphoValues("getPhenoMorphoValues/", new BaseJsonHttpResponseHandler<Object>() {
             @Override
@@ -229,6 +243,7 @@ public class BreederPhenoMorphoRecordsActivity extends AppCompatActivity {
             }
         });
     }
+
     @Override
     public boolean onSupportNavigateUp() {
         Intent intent_brooders = new Intent(BreederPhenoMorphoRecordsActivity.this, CreateBreeders.class);

@@ -185,13 +185,7 @@ public class DashBoardActivity extends AppCompatActivity {
             //if internet is available, load data from web database
 
             API_getFarmID(email);
-//
-//            API_getPhenoMorphoValues();
-//            API_getPhenoMorphos();
 //            API_getMortalityAndSales();
-//
-//            API_getReplacementFeeding();
-//            API_getReplacementGrowth();
         }
 
         Cursor cursor = myDb.getFarmIDFromUsers(email);

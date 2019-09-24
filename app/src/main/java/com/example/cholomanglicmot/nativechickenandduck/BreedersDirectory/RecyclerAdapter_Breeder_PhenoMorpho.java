@@ -24,25 +24,13 @@ import java.util.Map;
 
 public class RecyclerAdapter_Breeder_PhenoMorpho extends RecyclerView.Adapter<RecyclerAdapter_Breeder_PhenoMorpho.RecyclerViewHolder> {
 
-    ArrayList<Breeder_Inventory> arrayListInventory = new ArrayList<>();
-    ArrayList<Breeders> arrayListBrooder = new ArrayList<>();
     DatabaseHelper myDb;
-    Map<String, ArrayList<String>> brooder_inventory_dictionary = new HashMap<String, ArrayList<String>>();
-    ArrayList<Brooders> arrayListBrooder2 = new ArrayList<>();
-    //Integer position_pen_number;
     ArrayList<Breeder_Inventory> arrayListReplacementInventory = new ArrayList<>();
-
-    String brooder_pen_number;
-
-
-
 
     RecyclerAdapter_Breeder_PhenoMorpho(ArrayList<Breeder_Inventory> arrayListReplacementInventory){
 
         this.arrayListReplacementInventory = arrayListReplacementInventory;
         this.context = context;
-       // this.brooder_inventory_dictionary = brooder_inventory_dictionary;
-
 
     }
 
@@ -63,10 +51,6 @@ public class RecyclerAdapter_Breeder_PhenoMorpho extends RecyclerView.Adapter<Re
     @Override
     public void onBindViewHolder(@NonNull RecyclerViewHolder holder, final int position) {
 
-
-
-
-
         final Breeder_Inventory replacement_inventory = arrayListReplacementInventory.get(position);
 
         ///pass replacement tag to args
@@ -75,12 +59,9 @@ public class RecyclerAdapter_Breeder_PhenoMorpho extends RecyclerView.Adapter<Re
 
         args.putString("Replacement Tag", replacement_inventory.getBreeder_inv_breeder_tag());
 
-
         holder.replacement_inventory_code.setText(replacement_inventory.getBreeder_inv_breeder_tag());
-
         holder.replacement_inventory_number_male.setText(replacement_inventory.getBreeder_male_quantity().toString());
         holder.replacement_inventory_number_female.setText(replacement_inventory.getBreeder_female_quantity().toString());
-
         holder.replacement_inventory_view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -109,8 +90,6 @@ public class RecyclerAdapter_Breeder_PhenoMorpho extends RecyclerView.Adapter<Re
             }
         });
 
-
-
     }
 
 
@@ -119,11 +98,8 @@ public class RecyclerAdapter_Breeder_PhenoMorpho extends RecyclerView.Adapter<Re
         return arrayListReplacementInventory.size();
     }
 
-
-
     public static class RecyclerViewHolder extends RecyclerView.ViewHolder{
         TextView replacement_inventory_code;
-
 
         TextView replacement_inventory_number_male;
         TextView replacement_inventory_number_female;
@@ -134,21 +110,17 @@ public class RecyclerAdapter_Breeder_PhenoMorpho extends RecyclerView.Adapter<Re
             super(view);
             replacement_inventory_code = view.findViewById(R.id.replacement_inventory_code);
 
-
             replacement_inventory_number_male = view.findViewById(R.id.replacement_inventory_number_male);;
             replacement_inventory_number_female = view.findViewById(R.id.replacement_inventory_number_female);;
             replacement_inventory_view = view.findViewById(R.id.replacement_inventory_view);
 
             replacement_inventory_add = view.findViewById(R.id.replacement_inventory_add);
 
-
-
-
-
         }
 
 
     }
+
     public void showMessage(String title, String message){
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setCancelable(true);
