@@ -37,35 +37,6 @@
                 android:textSize="12sp"
                 android:textStyle="bold" />
 
-
-          <!--  <TextView
-                android:id="@+id/replacement_gender"
-                android:layout_width="50dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:gravity="center"
-                android:textStyle="bold"
-                android:textSize="12sp"
-                android:text="Gender" />
-            <TextView
-                android:id="@+id/replacement_pheno"
-                android:layout_width="300dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:gravity="center"
-                android:textStyle="bold"
-                android:textSize="12sp"
-                android:text="Phen" />
-            <TextView
-                android:id="@+id/replacement_morpho"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:gravity="center"
-                android:textStyle="bold"
-                android:textSize="12sp"
-                android:text="Morpho" />
--->
             <ImageButton
                 android:id="@+id/replacement_more"
                 android:layout_width="50dp"

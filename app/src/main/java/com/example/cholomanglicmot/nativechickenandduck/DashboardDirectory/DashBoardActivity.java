@@ -1352,8 +1352,8 @@ public class DashBoardActivity extends AppCompatActivity {
 
                 Gson gson = new Gson();
                 try{
-                    JSONPhenoMorphoValues jsonReplacement = gson.fromJson(rawJsonResponse, JSONPhenoMorphoValues.class);
-                    ArrayList<Breeder_PhenoMorphoView> arrayList_breeder_phenoMorphoView = jsonReplacement.getData();
+                    JSONPhenoMorphoValues jsonPhenoMorpho = gson.fromJson(rawJsonResponse, JSONPhenoMorphoValues.class);
+                    ArrayList<Breeder_PhenoMorphoView> arrayList_breeder_phenoMorphoView = jsonPhenoMorpho.getData();
 
                     for (Breeder_PhenoMorphoView phenoMorphoValues : arrayList_breeder_phenoMorphoView) {
 

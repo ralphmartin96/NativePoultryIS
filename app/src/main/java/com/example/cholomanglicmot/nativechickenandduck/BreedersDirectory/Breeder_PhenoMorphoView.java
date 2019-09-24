@@ -1,11 +1,15 @@
 package com.example.cholomanglicmot.nativechickenandduck.BreedersDirectory;
-/*                              inv_id, pheno_date, pheno_sex, pheno_tag, pheno_record, morphos);*/
+
+import com.google.gson.annotations.SerializedName;
+
 public class Breeder_PhenoMorphoView {
+
     public Integer id;
     public String gender;
     public String tag;
     public String pheno_record;
     public String morpho_record;
+    @SerializedName("date_collected")
     public String date;
     public String deleted_at;
 
