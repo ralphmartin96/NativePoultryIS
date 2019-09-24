@@ -207,7 +207,6 @@ public class CreateReplacements extends AppCompatActivity {
                         cursor_replacement_pen.getInt(4) - cursor_replacement_pen.getInt(5)
                 );
 
-                Log.d("POULTRYDEBUGGER", "PEN: " + replacement_pen.getReplacement_pen_number());
                 arrayList_replacement_pens.add(replacement_pen);
 
             } while (cursor_replacement_pen.moveToNext());

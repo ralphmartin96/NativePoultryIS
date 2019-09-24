@@ -1834,6 +1834,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         return res;
     }
+
+    public Cursor getAllDataFromReplacementInventoryWherePenID(Integer id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor res = db.rawQuery("select * from " + TABLE_REPLACEMENT_INVENTORIES + " where REPLACEMENT_INV_PEN_NUMBER is ?", new String[]{id.toString()});
+
+        return res;
+    }
     public Cursor getAllDataFromReplacementGrowthRecordsWhereGrowthID(Integer id){
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor res = db.rawQuery("select * from " +TABLE_REPLACEMENT_GROWTH_RECORDS+ " where ID is ?",new String[]{id.toString()});
@@ -4537,8 +4544,8 @@ public Integer getAllMaleFromBrooders(Integer farm_id){
         Cursor res = db.rawQuery("SELECT ID FROM " +TABLE_PEN+ " WHERE PEN_NUMBER is ?", new String[]{pen_number});
         res.moveToFirst();
 
-        if(res.getCount() != 0) id = res.getInt(0);
-        else id=0;
+        if (res.getCount() > 0) id = res.getInt(0);
+        else id = -1;
 
         return id;
     }
@@ -4763,5 +4770,19 @@ public Integer getAllMaleFromBrooders(Integer farm_id){
 
         return size;
     }
+
+    public int getReplacementInventorySize() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        int size = 0;
+
+        Cursor res = db.rawQuery("SELECT COUNT(*) FROM " + TABLE_REPLACEMENT_INVENTORIES, new String[]{});
+        res.moveToFirst();
+
+        if (res.getCount() != 0) size = res.getInt(0);
+
+        return size;
+    }
+
+
 
 }

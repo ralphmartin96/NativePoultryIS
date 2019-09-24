@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -75,61 +76,40 @@ public class ReplacementInventoryActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Replacement Inventory");
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
+        replacement_pen_id = myDb.getPenIDWithNumber(replacement_pen);
 
+        if (replacement_pen_id < 0) {
+            Toast.makeText(getApplicationContext(), "No data", Toast.LENGTH_SHORT).show();
+        } else {
 
-        Cursor cursor1 = myDb.getAllDataFromPenWhere(replacement_pen);
-        cursor1.moveToFirst();
-        if(cursor1.getCount() != 0){
-            replacement_pen_id = cursor1.getInt(0);
-        }
+            Cursor cursor_replacement_inv = myDb.getAllDataFromReplacementInventoryWherePenID(replacement_pen_id);
+            cursor_replacement_inv.moveToFirst();
 
+            if (cursor_replacement_inv.getCount() == 0) {
+                Toast.makeText(this, "No data.", Toast.LENGTH_LONG).show();
+            } else {
+                do {
 
+                    Replacement_Inventory replacement_inventory = new Replacement_Inventory(
+                            cursor_replacement_inv.getInt(0),
+                            cursor_replacement_inv.getInt(1),
+                            cursor_replacement_inv.getInt(2),
+                            cursor_replacement_inv.getString(3),
+                            cursor_replacement_inv.getString(4),
+                            cursor_replacement_inv.getInt(5),
+                            cursor_replacement_inv.getInt(6),
+                            cursor_replacement_inv.getInt(7),
+                            cursor_replacement_inv.getString(8),
+                            cursor_replacement_inv.getString(9)
+                    );
 
-        boolean isNetworkAvailable = isNetworkAvailable();
-        if (isNetworkAvailable) {
-            //if internet is available, load data from web database
-
-
-
-            API_updateReplacementInventory();
-            API_getReplacementInventory();
-
-
-        }
-
-
-        Cursor cursor_replacement_inv = myDb.getAllDataFromReplacementInventory(); //para sa pagstore ng data sa arraylist
-        cursor_replacement_inv.moveToFirst();
-        if(cursor_replacement_inv.getCount() == 0){
-            //show message
-            //Toast.makeText(this,"No data.", Toast.LENGTH_LONG).show();
-
-        }else {
-            do {
-
-                Replacement_Inventory replace = new Replacement_Inventory(cursor_replacement_inv.getInt(0),cursor_replacement_inv.getInt(1), cursor_replacement_inv.getInt(2), cursor_replacement_inv.getString(3),cursor_replacement_inv.getString(4), cursor_replacement_inv.getInt(5), cursor_replacement_inv.getInt(6), cursor_replacement_inv.getInt(7), cursor_replacement_inv.getString(8),cursor_replacement_inv.getString(9));
-                arrayListReplacementInventory.add(replace);
-            } while (cursor_replacement_inv.moveToNext());
-        }
-
-
-
-
-
-
-
-
-        for (int i=0;i<arrayListReplacementInventory.size();i++){
-            if(arrayListReplacementInventory.get(i).getReplacement_inv_pen().equals(replacement_pen_id)  && arrayListReplacementInventory.get(i).getReplacement_inv_deleted_at() == null) {
-
-                arrayList_temp.add(arrayListReplacementInventory.get(i)); //arrayList_temp ay naglalaman ng lahat ng brooder_inv sa loob ng pen na napili
-
+                    arrayListReplacementInventory.add(replacement_inventory);
+                } while (cursor_replacement_inv.moveToNext());
             }
+
         }
 
-
-
-        recycler_adapter = new RecyclerAdapter_Replacement_Inventory(arrayList_temp);//arrayList = brooder_pen, arrayListInventory = brooder_inventory, arrayListBrooders = brooders
+        recycler_adapter = new RecyclerAdapter_Replacement_Inventory(arrayListReplacementInventory);
         recyclerView.setAdapter(recycler_adapter);
         recycler_adapter.notifyDataSetChanged();
     }
@@ -291,12 +271,14 @@ public class ReplacementInventoryActivity extends AppCompatActivity {
             }
         });
     }
+
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
+
     @Override
     public boolean onSupportNavigateUp() {
         Intent intent_brooders = new Intent(ReplacementInventoryActivity.this, CreateReplacements.class);
@@ -305,6 +287,7 @@ public class ReplacementInventoryActivity extends AppCompatActivity {
 
         return true;
     }
+
     public void showMessage(String title, String message){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setCancelable(true);
