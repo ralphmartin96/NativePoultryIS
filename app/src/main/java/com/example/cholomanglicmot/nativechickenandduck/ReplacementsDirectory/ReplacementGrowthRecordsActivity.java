@@ -106,151 +106,54 @@ public class ReplacementGrowthRecordsActivity extends AppCompatActivity {
 
         ///////////////////////////////DATABASE
 
-        Cursor cursor =myDb.getAllDataFromPenWhere(replacement_pen);
-        cursor.moveToFirst();
-        if(cursor.getCount() != 0){
-            replacement_pen_id = cursor.getInt(0);
-        }
+        replacement_pen_id = myDb.getPenIDWithNumber(replacement_pen);
 
-        Cursor cursor_growth = myDb.getAllDataFromReplacementGrowthRecords();
-        cursor_growth.moveToFirst();
-
-        if (cursor_growth.getCount() != 0) {
-            do {
-                Log.d("POULTRYDEBUGGER", "GROWTH ID: " + cursor_growth.getInt(0));
-                Log.d("POULTRYDEBUGGER", "INV ID: " + cursor_growth.getInt(1));
-            } while (cursor_growth.moveToNext());
-        } else {
-            Log.d("POULTRYDEBUGGER", "EMPTY");
-        }
-
-      /*  Cursor cursor_brooder_inventory = myDb.getAllDataFromReplacementInventory(); //para sa pagstore ng data sa arraylist
-        cursor_brooder_inventory.moveToFirst();
-        if(cursor_brooder_inventory.getCount() == 0){
-            //show message
-            Toast.makeText(this,"No data.", Toast.LENGTH_LONG).show();
-
-        }else {
-            do {
-
-                Replacement_Inventory replacement_inventory = new Replacement_Inventory(cursor_brooder_inventory.getInt(0),cursor_brooder_inventory.getInt(1), cursor_brooder_inventory.getInt(2), cursor_brooder_inventory.getString(3),cursor_brooder_inventory.getString(4), cursor_brooder_inventory.getInt(5), cursor_brooder_inventory.getInt(6),cursor_brooder_inventory.getInt(7), cursor_brooder_inventory.getString(8), cursor_brooder_inventory.getString(9));
-                arrayListReplacementInventory.add(replacement_inventory);
-
-
-            } while (cursor_brooder_inventory.moveToNext());
-        }
-
-
-
-        for (int i=0;i<arrayListReplacementInventory.size();i++){
-            if(arrayListReplacementInventory.get(i).getReplacement_inv_pen() == replacement_pen_id ){
-
-                arrayList_temp.add(arrayListReplacementInventory.get(i)); //ito na yung list ng inventory na nasa pen
-
-            }
-        }
-
-
-
-
-        ////growth records
-
-        Cursor cursor_brooder_growth_records = myDb.getAllDataFromReplacementGrowthRecords();
-        cursor_brooder_growth_records.moveToFirst();
-
-        if(cursor_brooder_growth_records.getCount() == 0){
-            //show message
-            // Toast.makeText(this,"No dataKHBSDF.", Toast.LENGTH_LONG).show();
-
-        }else {
-
-            do {
-                String deleted_at = cursor_brooder_growth_records.getString(10);
-                //                                                                        Integer id,                 Integer brooder_growth_inventory_id,String , Integer brooder_growth_collection_day,      String brooder_growth_date_collected,       Integer brooder_growth_male_quantity,           Float brooder_growth_male_weight,                  Integer brooder_growth_female_quantity, Float brooder_growth_female_weight,          Integer brooder_growth_total_quantity,      Float brooder_growth_total_weight,              String brooder_growth_deleted_at){
-                for(int k=0;k<arrayList_temp.size();k++){
-                    if(arrayList_temp.get(k).getReplacement_inv_replacement_id().equals(cursor_brooder_growth_records.getInt(1)) && deleted_at == null){
-                        Replacement_GrowthRecords replacement_growthRecords = new Replacement_GrowthRecords(cursor_brooder_growth_records.getInt(0),cursor_brooder_growth_records.getInt(1),arrayList_temp.get(k).getReplacement_inv_replacement_tag(),cursor_brooder_growth_records.getInt(2), cursor_brooder_growth_records.getString(3),cursor_brooder_growth_records.getInt(4), cursor_brooder_growth_records.getFloat(5), cursor_brooder_growth_records.getInt(6), cursor_brooder_growth_records.getFloat(7),cursor_brooder_growth_records.getInt(8), cursor_brooder_growth_records.getFloat(9), cursor_brooder_growth_records.getString(10));
-                        arrayListReplacementGrowthRecords.add(replacement_growthRecords);
-
-
-                    }
-                }
-
-
-            } while (cursor_brooder_growth_records.moveToNext());
-        }
+        local_getReplacementGrowth();
 
         recycler_adapter = new RecyclerAdapter_Replacement_Growth(arrayListReplacementGrowthRecords);
-        recyclerView.setAdapter(recycler_adapter);
-        recycler_adapter.notifyDataSetChanged();*/
-
-
-        Cursor cursor_inventory = myDb.getDataFromReplacementInventoryWherePen(replacement_pen_id);
-        cursor_inventory.moveToFirst();
-        if(cursor_inventory.getCount() == 0){
-            //show message
-            // Toast.makeText(this,"No data inventories.", Toast.LENGTH_LONG).show();
-
-        }else {
-            do {
-
-                Replacement_Inventory brooder_inventory = new Replacement_Inventory(cursor_inventory.getInt(0),cursor_inventory.getInt(1), cursor_inventory.getInt(2), cursor_inventory.getString(3),cursor_inventory.getString(4), cursor_inventory.getInt(5), cursor_inventory.getInt(6),cursor_inventory.getInt(7), cursor_inventory.getString(8), cursor_inventory.getString(9));
-                arrayListReplacementInventory.add(brooder_inventory);
-            } while (cursor_inventory.moveToNext());
-        }
-
-
-
-
-        Cursor cursor_feeding = myDb.getAllDataFromReplacementGrowthRecords();
-        cursor_feeding.moveToFirst();
-        if(cursor_feeding.getCount() != 0){
-            do{
-
-                Replacement_GrowthRecords brooderFeedingRecords =  new Replacement_GrowthRecords(cursor_feeding.getInt(0),cursor_feeding.getInt(1),null,cursor_feeding.getInt(2), cursor_feeding.getString(3),cursor_feeding.getInt(4), cursor_feeding.getFloat(5), cursor_feeding.getInt(6), cursor_feeding.getFloat(7),cursor_feeding.getInt(8), cursor_feeding.getFloat(9), cursor_feeding.getString(10));
-                arrayListReplacementGrowthRecords.add(brooderFeedingRecords);
-
-
-                    /*    }
-                    }*/
-            }while(cursor_feeding.moveToNext());
-        }
-
-        ArrayList<Replacement_GrowthRecords> arrayList_final = new ArrayList<Replacement_GrowthRecords>();
-
-        for(int i=0;i<arrayListReplacementInventory.size();i++){
-            for(int k=0;k<arrayListReplacementGrowthRecords.size();k++){
-                if(arrayListReplacementInventory.get(i).getId()==arrayListReplacementGrowthRecords.get(k).getReplacement_growth_inventory_id() && arrayListReplacementGrowthRecords.get(k).getReplacement_growth_deleted_at() == null){
-                    arrayList_final.add(arrayListReplacementGrowthRecords.get(k));
-                }
-            }
-        }
-
-
-
-        recycler_adapter = new RecyclerAdapter_Replacement_Growth(arrayList_final);
         recyclerView.setAdapter(recycler_adapter);
         recycler_adapter.notifyDataSetChanged();
 
     }
 
-    @Override
-    public boolean onSupportNavigateUp() {
-        onBackPressed();
-        return true;
-    }
-    public void showMessage(String title, String message){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setCancelable(true);
-        builder.setTitle(title);
-        builder.setMessage(message);
-        builder.show();
-    }
-    private boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    private void local_getReplacementGrowth() {
+        Cursor cursor_inventory = myDb.getDataFromReplacementInventoryWherePen(replacement_pen_id);
+        cursor_inventory.moveToFirst();
+
+        if (cursor_inventory.getCount() == 0) {
+            Toast.makeText(this, "No data inventories.", Toast.LENGTH_LONG).show();
+        } else {
+
+            do {
+
+                int replacement_inventory_id = cursor_inventory.getInt(0);
+
+                Cursor cursor_growth = myDb.getAllDataFromReplacementGrowthWhereInvID(replacement_inventory_id);
+                cursor_growth.moveToFirst();
+
+                if (cursor_growth.getCount() != 0) {
+                    do {
+                        Replacement_GrowthRecords replacement_growthRecords = new Replacement_GrowthRecords(
+                                cursor_growth.getInt(0),
+                                cursor_growth.getInt(1),
+                                cursor_growth.getInt(2),
+                                cursor_growth.getString(3),
+                                cursor_growth.getInt(4),
+                                cursor_growth.getFloat(5),
+                                cursor_growth.getInt(6),
+                                cursor_growth.getFloat(7),
+                                cursor_growth.getInt(8),
+                                cursor_growth.getFloat(9),
+                                cursor_growth.getString(10)
+                        );
+                        arrayListReplacementGrowthRecords.add(replacement_growthRecords);
+
+                    } while (cursor_growth.moveToNext());
+                } else
+                    Toast.makeText(this, "No growth inventories.", Toast.LENGTH_LONG).show();
+
+            } while (cursor_inventory.moveToNext());
+        }
     }
 
     private void API_addReplacementGrowth(RequestParams requestParams){
@@ -276,6 +179,7 @@ public class ReplacementGrowthRecordsActivity extends AppCompatActivity {
         });
 
     }
+
     private void API_updateReplacementGrowth(){
         APIHelper.getReplacementGrowth("getReplacementGrowth/", new BaseJsonHttpResponseHandler<Object>() {
             @Override
@@ -378,6 +282,7 @@ public class ReplacementGrowthRecordsActivity extends AppCompatActivity {
             }
         });
     }
+
     private void API_getReplacementGrowth(){
         APIHelper.getReplacementGrowth("getReplacementGrowth/", new BaseJsonHttpResponseHandler<Object>() {
             @Override
@@ -417,6 +322,27 @@ public class ReplacementGrowthRecordsActivity extends AppCompatActivity {
                 return null;
             }
         });
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+
+    public void showMessage(String title, String message) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(true);
+        builder.setTitle(title);
+        builder.setMessage(message);
+        builder.show();
     }
 
 }

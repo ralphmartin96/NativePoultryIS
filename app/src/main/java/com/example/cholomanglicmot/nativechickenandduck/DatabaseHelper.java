@@ -1887,6 +1887,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         return res;
     }
+
+    public Cursor getAllDataFromReplacementGrowthWhereInvID(Integer id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor res = db.rawQuery("select * from " + TABLE_REPLACEMENT_GROWTH_RECORDS + " where REPLACEMENT_GROWTH_INVENTORY_ID is ?", new String[]{id.toString()});
+
+        return res;
+    }
+
     public Cursor getAllDataFromPhenoMorphoRecords(){
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor res = db.rawQuery("select * from " +TABLE_PHENO_MORPHO_VALUES, null);
