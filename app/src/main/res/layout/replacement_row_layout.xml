@@ -88,153 +88,135 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_marginTop="15dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="right"
-                android:layout_marginRight="10dp"
-
-                >
-                <!--</LinearLayout>
-
-
-
-
-            <LinearLayout
                 android:layout_marginTop="15dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="right"
                 android:layout_marginRight="10dp"
+                android:gravity="center"
+
                 >
-
-
-
-
-
-
-
-
-            </LinearLayout>
-
-        </LinearLayout>-->
-
-
-
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
                     android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="3dp"
+                    android:orientation="vertical"
 
                     >
+
                     <ImageButton
-                        android:layout_gravity="center"
                         android:id="@+id/replacement_inventory"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_info_black_24dp"
+                        android:layout_gravity="center"
                         android:background="@null"
-                        />
+                        android:src="@drawable/ic_info_black_24dp" />
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:text="Inventories"
-                        android:textSize="10dp"/>
+                        android:textSize="10dp" />
 
                 </LinearLayout>
-
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
                     android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp">
+                    android:layout_marginRight="3dp"
+                    android:orientation="vertical">
+
                     <ImageButton
-                        android:layout_gravity="center"
                         android:id="@+id/replacement_add"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_add_box_black_24dp"
-                        android:background="@null"/>
+                        android:layout_gravity="center"
+                        android:background="@null"
+                        android:src="@drawable/ic_add_box_black_24dp" />
+
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:text="Add"
-                        android:textSize="10dp"/>
+                        android:textSize="10dp" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
                     android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp">
+                    android:layout_marginRight="3dp"
+                    android:orientation="vertical">
+
                     <ImageButton
-                        android:layout_gravity="center"
                         android:id="@+id/replacement_feeding_records"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_restaurant_black_24dp"
-                        android:background="@null"/>
+                        android:layout_gravity="center"
+                        android:background="@null"
+                        android:src="@drawable/ic_restaurant_black_24dp" />
+
                     <TextView
                         android:layout_width="wrap_content"
-                        android:layout_gravity="center"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center"
                         android:text="Feeding"
-                        android:textSize="10dp"/>
+                        android:textSize="10dp" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
                     android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp">
+                    android:layout_marginRight="3dp"
+                    android:orientation="vertical">
+
                     <ImageButton
                         android:id="@+id/replacement_pheno_morpho"
-                        android:layout_marginLeft="20dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_remove_red_eye_black_24dp"
-                        android:background="@null"/>
+                        android:layout_marginLeft="20dp"
+                        android:background="@null"
+                        android:src="@drawable/ic_remove_red_eye_black_24dp" />
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:text="Pheno Morpho"
-                        android:textSize="10dp"/>
+                        android:textSize="10dp" />
                 </LinearLayout>
-
 
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
                     android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp">
+                    android:layout_marginRight="15dp"
+                    android:orientation="vertical">
+
                     <ImageButton
                         android:id="@+id/replacement_growth_records"
-                        android:layout_gravity="center"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_fitness_center_black_24dp"
-                        android:background="@null"/>
+                        android:layout_gravity="center"
+                        android:background="@null"
+                        android:src="@drawable/ic_fitness_center_black_24dp" />
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:text="Growth"
-                        android:textSize="10dp"/>
+                        android:textSize="10dp" />
                 </LinearLayout>
+
             </LinearLayout>
 
 
