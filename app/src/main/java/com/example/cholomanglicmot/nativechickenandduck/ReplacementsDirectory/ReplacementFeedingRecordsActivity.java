@@ -132,19 +132,22 @@ public class ReplacementFeedingRecordsActivity extends AppCompatActivity {
                 Cursor cursor_feeding = myDb.getAllDataFromReplacementFeedingWhereInvID(replacement_inventory_id);
                 cursor_feeding.moveToFirst();
 
-                do {
-                    Replacement_FeedingRecords brooderFeedingRecords = new Replacement_FeedingRecords(
-                            cursor_feeding.getInt(0),
-                            cursor_feeding.getInt(1),
-                            cursor_feeding.getString(2),
-                            null, cursor_feeding.getFloat(3),
-                            cursor_feeding.getFloat(4),
-                            cursor_feeding.getString(5),
-                            cursor_feeding.getString(6)
-                    );
+                if (cursor_feeding.getCount() != 0) {
 
-                    arrayListReplacementFeedingRecords.add(brooderFeedingRecords);
-                } while (cursor_feeding.moveToNext());
+                    do {
+                        Replacement_FeedingRecords brooderFeedingRecords = new Replacement_FeedingRecords(
+                                cursor_feeding.getInt(0),
+                                cursor_feeding.getInt(1),
+                                cursor_feeding.getString(2),
+                                null, cursor_feeding.getFloat(3),
+                                cursor_feeding.getFloat(4),
+                                cursor_feeding.getString(5),
+                                cursor_feeding.getString(6)
+                        );
+
+                        arrayListReplacementFeedingRecords.add(brooderFeedingRecords);
+                    } while (cursor_feeding.moveToNext());
+                }
 
             } while (cursor_inventory.moveToNext());
         }
