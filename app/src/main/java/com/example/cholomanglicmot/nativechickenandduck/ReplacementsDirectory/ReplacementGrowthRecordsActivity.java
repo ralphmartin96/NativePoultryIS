@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,7 +39,6 @@ public class ReplacementGrowthRecordsActivity extends AppCompatActivity {
     RecyclerView.LayoutManager layoutManager;
     ArrayList<Replacement_GrowthRecords> arrayListReplacementGrowthRecords = new ArrayList<>();
     ArrayList<Replacement_Inventory>arrayListReplacementInventory = new ArrayList<>();
-    ArrayList<Replacement_Inventory>arrayListReplacementInventory1 = new ArrayList<>();
     ArrayList<Replacement_Inventory>arrayList_temp = new ArrayList<>();
     FloatingActionButton create_brooder_feeding_records;
     Integer replacement_pen_id;
@@ -112,18 +112,18 @@ public class ReplacementGrowthRecordsActivity extends AppCompatActivity {
             replacement_pen_id = cursor.getInt(0);
         }
 
+        Cursor cursor_growth = myDb.getAllDataFromReplacementGrowthRecords();
+        cursor_growth.moveToFirst();
 
-        boolean isNetworkAvailable = isNetworkAvailable();
-        if (isNetworkAvailable) {
-            //if internet is available, load data from web database
-
-
-            //HARDCODED KASI WALA KA PANG DATABASE NA NANDUN EMAIL MO
-            API_updateReplacementGrowth();
-            API_getReplacementGrowth();
-
-
+        if (cursor_growth.getCount() != 0) {
+            do {
+                Log.d("POULTRYDEBUGGER", "GROWTH ID: " + cursor_growth.getInt(0));
+                Log.d("POULTRYDEBUGGER", "INV ID: " + cursor_growth.getInt(1));
+            } while (cursor_growth.moveToNext());
+        } else {
+            Log.d("POULTRYDEBUGGER", "EMPTY");
         }
+
       /*  Cursor cursor_brooder_inventory = myDb.getAllDataFromReplacementInventory(); //para sa pagstore ng data sa arraylist
         cursor_brooder_inventory.moveToFirst();
         if(cursor_brooder_inventory.getCount() == 0){
