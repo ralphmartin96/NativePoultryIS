@@ -147,7 +147,8 @@ public class ReplacementFeedingRecordsActivity extends AppCompatActivity {
 
                         arrayListReplacementFeedingRecords.add(brooderFeedingRecords);
                     } while (cursor_feeding.moveToNext());
-                }
+                } else
+                    Toast.makeText(this, "No feeding inventories.", Toast.LENGTH_LONG).show();
 
             } while (cursor_inventory.moveToNext());
         }
