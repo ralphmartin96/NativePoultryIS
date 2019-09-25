@@ -45,6 +45,21 @@ public class Replacement_GrowthRecords {
         this.setReplacement_growth_total_weight(replacement_growth_total_weight);
         this.setReplacement_growth_deleted_at(replacement_growth_deleted_at);
     }
+
+    public Replacement_GrowthRecords(Integer id, Integer replacement_growth_inventory_id, Integer replacement_growth_collection_day, String replacement_growth_date_collected, Integer replacement_growth_male_quantity, Float replacement_growth_male_weight, Integer replacement_growth_female_quantity, Float replacement_growth_female_weight, Integer replacement_growth_total_quantity, Float replacement_growth_total_weight, String replacement_growth_deleted_at) {
+        this.setId(id);
+        this.setReplacement_growth_inventory_id(replacement_growth_inventory_id);
+        this.setReplacement_growth_collection_day(replacement_growth_collection_day);
+        this.setReplacement_growth_date_collected(replacement_growth_date_collected);
+        this.setReplacement_growth_male_quantity(replacement_growth_male_quantity);
+        this.setReplacement_growth_male_weight(replacement_growth_male_weight);
+        this.setReplacement_growth_female_quantity(replacement_growth_female_quantity);
+        this.setReplacement_growth_female_weight(replacement_growth_female_weight);
+        this.setReplacement_growth_total_quantity(replacement_growth_total_quantity);
+        this.setReplacement_growth_total_weight(replacement_growth_total_weight);
+        this.setReplacement_growth_deleted_at(replacement_growth_deleted_at);
+    }
+
     public Integer getId() {
         return id;
     }
