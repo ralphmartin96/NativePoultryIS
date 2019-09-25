@@ -1123,11 +1123,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-    public boolean insertDataReplacementGrowthRecords(Integer brooder_growth_brooder_id, Integer brooder_growth_collection_day, String brooder_growth_date_collected, Integer brooder_growth_male_quantity, Float brooder_growth_male_weight, Integer brooder_growth_female_quantity, Float brooder_growth_female_weight, Integer brooder_growth_total_quantity, Float brooder_growth_total_weight, String brooder_growth_deleted_at){
+    public boolean insertDataReplacementGrowthRecords(Integer brooder_growth_brooder_id, Integer brooder_growth_inventory_id, Integer brooder_growth_collection_day, String brooder_growth_date_collected, Integer brooder_growth_male_quantity, Float brooder_growth_male_weight, Integer brooder_growth_female_quantity, Float brooder_growth_female_weight, Integer brooder_growth_total_quantity, Float brooder_growth_total_weight, String brooder_growth_deleted_at) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues contentValues = new ContentValues();
-        contentValues.put(REPLACEMENT_GROWTH_COL_1, brooder_growth_brooder_id);
+        contentValues.put(REPLACEMENT_GROWTH_COL_0, brooder_growth_brooder_id);
+        contentValues.put(REPLACEMENT_GROWTH_COL_1, brooder_growth_inventory_id);
         contentValues.put(REPLACEMENT_GROWTH_COL_2, brooder_growth_collection_day);
         contentValues.put(REPLACEMENT_GROWTH_COL_3, brooder_growth_date_collected);
         contentValues.put(REPLACEMENT_GROWTH_COL_4, brooder_growth_male_quantity);
@@ -4783,6 +4784,18 @@ public Integer getAllMaleFromBrooders(Integer farm_id){
         int size = 0;
 
         Cursor res = db.rawQuery("SELECT COUNT(*) FROM " + TABLE_REPLACEMENT_INVENTORIES, new String[]{});
+        res.moveToFirst();
+
+        if (res.getCount() != 0) size = res.getInt(0);
+
+        return size;
+    }
+
+    public int getReplacementGrowthSize() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        int size = 0;
+
+        Cursor res = db.rawQuery("SELECT COUNT(*) FROM " + TABLE_REPLACEMENT_GROWTH_RECORDS, new String[]{});
         res.moveToFirst();
 
         if (res.getCount() != 0) size = res.getInt(0);

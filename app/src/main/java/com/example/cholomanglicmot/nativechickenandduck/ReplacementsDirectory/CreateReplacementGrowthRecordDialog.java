@@ -350,8 +350,9 @@ public class CreateReplacementGrowthRecordDialog extends DialogFragment {
                         for(int i=0;i<arrayList_temp.size();i++){
                             if (arrayList_temp.get(i).getId().equals(key)){
 
-                                boolean isInserted = myDb.insertDataReplacementGrowthRecords(key,brooder_growth_collection,brooder_growth_date_added.getText().toString(),arrayList_temp.get(i).getReplacement_male_quantity(),male,arrayList_temp.get(i).getReplacement_female_quantity(),female,arrayList_temp.get(i).getReplacement_total_quantity(),female+male,null);
+                                boolean isInserted = myDb.insertDataReplacementGrowthRecords(0, key, brooder_growth_collection, brooder_growth_date_added.getText().toString(), arrayList_temp.get(i).getReplacement_male_quantity(), male, arrayList_temp.get(i).getReplacement_female_quantity(), female, arrayList_temp.get(i).getReplacement_total_quantity(), female + male, null);
                                 RequestParams requestParams = new RequestParams();
+                                requestParams.add("brooder_growth_brooder_id", "0");
                                 requestParams.add("broodergrower_inventory_id", key.toString());
                                 requestParams.add("collection_day", brooder_growth_collection.toString());
                                 requestParams.add("date_collected", brooder_growth_date_added.getText().toString());

@@ -1607,7 +1607,7 @@ public class DashBoardActivity extends AppCompatActivity {
 
                             if (cursor.getCount() == 0) {
 
-                                boolean isInserted = myDb.insertDataBrooderGrowthRecordsWithID(
+                                boolean isInserted = myDb.insertDataReplacementGrowthRecords(
                                         replacement_growthRecords.getId(),
                                         replacement_growthRecords.getReplacement_growth_inventory_id(),
                                         replacement_growthRecords.getReplacement_growth_collection_day(),
@@ -1629,6 +1629,8 @@ public class DashBoardActivity extends AppCompatActivity {
                         }
 
                     }
+
+                    Log.d(debugTag, "REPL GROWTH SIZE: " + myDb.getReplacementGrowthSize());
 
                 }catch (Exception e){}
 
