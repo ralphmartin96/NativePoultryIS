@@ -1,5 +1,6 @@
 package com.example.cholomanglicmot.nativechickenandduck.DashboardDirectory;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -132,6 +133,7 @@ public class DashBoardActivity extends AppCompatActivity {
     final String debugTag = "POULTRYDEBUGGER";
 
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -180,10 +182,8 @@ public class DashBoardActivity extends AppCompatActivity {
 
         boolean isNetworkAvailable = isNetworkAvailable();
 
+        //if internet is available, load data from web database
         if(isNetworkAvailable){
-
-            //if internet is available, load data from web database
-
             API_getFarmID(email);
 //            API_getMortalityAndSales();
         }
@@ -320,8 +320,8 @@ public class DashBoardActivity extends AppCompatActivity {
 
     }
 
-    //    -----------------------------------------------
 
+    // Farm and Users
     private void API_getFarmID(String email){
         APIHelper.getFarmID("getFarmID/"+email, new BaseJsonHttpResponseHandler<Object>() {
 
@@ -404,6 +404,8 @@ public class DashBoardActivity extends AppCompatActivity {
         });
     }
 
+
+    //Pen, Generation, Line and Family
     private void API_getPen(String farm_id){
         APIHelper.getPen("getPen/"+farm_id, new BaseJsonHttpResponseHandler<Object>() {
 
@@ -689,7 +691,7 @@ public class DashBoardActivity extends AppCompatActivity {
     }
 
 
-
+    //Brooders
     private void API_getBrooder(ArrayList<Integer> arrayList_family_id){
         APIHelper.getBrooder("getBrooder/", new BaseJsonHttpResponseHandler<Object>() {
             @Override
@@ -888,6 +890,7 @@ public class DashBoardActivity extends AppCompatActivity {
                                         brooder_growthRecords.getBrooder_growth_total_weight(),
                                         brooder_growthRecords.getBrooder_growth_deleted_at()
                                 );
+
                             }
 
                         }
@@ -912,7 +915,7 @@ public class DashBoardActivity extends AppCompatActivity {
     }
 
 
-
+    //Breeders
     private void API_getBreeder(ArrayList<Integer> arrayList_family_id){
         APIHelper.getBreeder("getBreeder/", new BaseJsonHttpResponseHandler<Object>() {
 
@@ -1277,6 +1280,7 @@ public class DashBoardActivity extends AppCompatActivity {
     }
 
 
+    //Phenotypic Morphometric
     private void API_getPhenoMorphos(ArrayList<Integer> arrayList_inventory_id) {
         APIHelper.getPhenoMorphos("getPhenoMorphos/", new BaseJsonHttpResponseHandler<Object>() {
             @Override
@@ -1399,6 +1403,7 @@ public class DashBoardActivity extends AppCompatActivity {
     }
 
 
+    //Replacements
     private void API_getReplacement(ArrayList<Integer> arrayList_family_id) {
         APIHelper.getReplacement("getReplacement/", new BaseJsonHttpResponseHandler<Object>() {
             @Override
@@ -1555,8 +1560,8 @@ public class DashBoardActivity extends AppCompatActivity {
                                         replacement_feedingRecords.getReplacement_feeding_deleted_at()
                                 );
 
-                                if (isInserted)
-                                    Log.d(debugTag, "REP FEED ID: " + replacement_feedingRecords.getId());
+//                                if (isInserted)
+//                                    Log.d(debugTag, "REP FEED ID: " + replacement_feedingRecords.getId());
 
                             }
 
@@ -1593,10 +1598,9 @@ public class DashBoardActivity extends AppCompatActivity {
                     JSONReplacementGrowth jsonBrooderInventory = gson.fromJson(rawJsonResponse, JSONReplacementGrowth.class);
                     ArrayList<Replacement_GrowthRecords> arrayList_replacementGrowth = jsonBrooderInventory.getData();
 
-
                     for (Replacement_GrowthRecords replacement_growthRecords : arrayList_replacementGrowth) {
 
-                        if (arrayList_replacementInventory_id.contains(replacement_growthRecords.getId())) {
+                        if (arrayList_replacementInventory_id.contains(replacement_growthRecords.getReplacement_growth_inventory_id())) {
 
                             Cursor cursor = myDb.getAllDataFromReplacementGrowthRecordsWhereGrowthID(replacement_growthRecords.getId());
                             cursor.moveToFirst();
@@ -1621,6 +1625,7 @@ public class DashBoardActivity extends AppCompatActivity {
                                     Log.d(debugTag, "REPL GROWTH: " + replacement_growthRecords.getId());
 
                             }
+
                         }
 
                     }
@@ -1633,7 +1638,7 @@ public class DashBoardActivity extends AppCompatActivity {
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, String rawJsonResponse, Object response){
 
-                Toast.makeText(getApplicationContext(), "Failed to fetch Brooders Inventory from web database ", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Failed to fetch Replacement Growth Records from web database ", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -1644,6 +1649,7 @@ public class DashBoardActivity extends AppCompatActivity {
     }
 
 
+    //Mortality and Sales
     private void API_getMortalityAndSales() {
         APIHelper.getMortalityAndSales("getMortalityAndSales/", new BaseJsonHttpResponseHandler<Object>() {
             @Override
