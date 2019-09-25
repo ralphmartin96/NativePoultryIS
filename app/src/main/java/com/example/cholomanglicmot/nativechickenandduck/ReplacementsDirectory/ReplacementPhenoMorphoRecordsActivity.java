@@ -51,7 +51,6 @@ public class ReplacementPhenoMorphoRecordsActivity extends AppCompatActivity {
             replacement_pen= (String) savedInstanceState.getSerializable("Replacement Pen");
         }
 
-
         text_pen = findViewById(R.id.pheno_title);
         text_pen.setText("Phenotypic & Morphometric Data | Pen "+replacement_pen);
 
@@ -67,66 +66,41 @@ public class ReplacementPhenoMorphoRecordsActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Replacement Inventory");
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-
-        //////DATABASE
         ///////////////////////////////DATABASE
 
-        if(isNetworkAvailable()){
-            API_updatePhenoMorphoValues();
-            API_updatePhenoMorphos();
-        }
-        Cursor cursor1 = myDb.getAllDataFromPenWhere(replacement_pen);
-        cursor1.moveToFirst();
-        if(cursor1.getCount() != 0){
-            replacement_pen_id = cursor1.getInt(0);
-        }
+        replacement_pen_id = myDb.getPenIDWithNumber(replacement_pen);
 
-
-        Cursor cursor_replacement_inv = myDb.getAllDataFromReplacementInventory(); //para sa pagstore ng data sa arraylist
+        Cursor cursor_replacement_inv = myDb.getAllDataFromReplacementInventoryWherePenID(replacement_pen_id);
         cursor_replacement_inv.moveToFirst();
+
         if(cursor_replacement_inv.getCount() == 0){
-            //show message
-            //Toast.makeText(this,"No data.", Toast.LENGTH_LONG).show();
-
+            Toast.makeText(this, "No data inventories.", Toast.LENGTH_LONG).show();
         }else {
+
             do {
+                Replacement_Inventory replacement_inventory = new Replacement_Inventory(
+                        cursor_replacement_inv.getInt(0),
+                        cursor_replacement_inv.getInt(1),
+                        cursor_replacement_inv.getInt(2),
+                        cursor_replacement_inv.getString(3),
+                        cursor_replacement_inv.getString(4),
+                        cursor_replacement_inv.getInt(5),
+                        cursor_replacement_inv.getInt(6),
+                        cursor_replacement_inv.getInt(7),
+                        cursor_replacement_inv.getString(8),
+                        cursor_replacement_inv.getString(9)
+                );
 
-                Replacement_Inventory replace = new Replacement_Inventory(cursor_replacement_inv.getInt(0),cursor_replacement_inv.getInt(1), cursor_replacement_inv.getInt(2), cursor_replacement_inv.getString(3),cursor_replacement_inv.getString(4), cursor_replacement_inv.getInt(5), cursor_replacement_inv.getInt(6), cursor_replacement_inv.getInt(7), cursor_replacement_inv.getString(8),cursor_replacement_inv.getString(9));
-                arrayListReplacementInventory.add(replace);
+                if (replacement_inventory.getReplacement_inv_deleted_at() == null)
+                    arrayListReplacementInventory.add(replacement_inventory);
+
             } while (cursor_replacement_inv.moveToNext());
+
         }
 
-
-
-
-
-
-
-
-        for (int i=0;i<arrayListReplacementInventory.size();i++){
-            if(arrayListReplacementInventory.get(i).getReplacement_inv_pen() == replacement_pen_id && arrayListReplacementInventory.get(i).getReplacement_inv_deleted_at() == null) {
-
-                arrayList_temp.add(arrayListReplacementInventory.get(i)); //arrayList_temp ay naglalaman ng lahat ng brooder_inv sa loob ng pen na napili
-
-            }
-        }
-
-
-
-        recycler_adapter = new RecyclerAdapter_Replacement_PhenoMorpho(arrayList_temp);
+        recycler_adapter = new RecyclerAdapter_Replacement_PhenoMorpho(arrayListReplacementInventory);
         recyclerView.setAdapter(recycler_adapter);
         recycler_adapter.notifyDataSetChanged();
-    }
-    @Override
-    public boolean onSupportNavigateUp() {
-        onBackPressed();
-        return true;
-    }
-    private boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) this.getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
     private void API_addPhenoMorphos(RequestParams requestParams){
@@ -148,6 +122,7 @@ public class ReplacementPhenoMorphoRecordsActivity extends AppCompatActivity {
             }
         });
     }
+
     private void API_updatePhenoMorphos(){
         APIHelper.getPhenoMorphos("getPhenoMorphos/", new BaseJsonHttpResponseHandler<Object>() {
             @Override
@@ -234,6 +209,7 @@ public class ReplacementPhenoMorphoRecordsActivity extends AppCompatActivity {
             }
         });
     }
+
     private void API_addPhenoMorphoValues(RequestParams requestParams){
         APIHelper.addPhenoMorphoValues("addPhenoMorphoValues", requestParams, new BaseJsonHttpResponseHandler<Object>() {
             @Override
@@ -254,6 +230,7 @@ public class ReplacementPhenoMorphoRecordsActivity extends AppCompatActivity {
             }
         });
     }
+
     private void API_updatePhenoMorphoValues(){
         APIHelper.getPhenoMorphoValues("getPhenoMorphoValues/", new BaseJsonHttpResponseHandler<Object>() {
             @Override
@@ -343,5 +320,18 @@ public class ReplacementPhenoMorphoRecordsActivity extends AppCompatActivity {
                 return null;
             }
         });
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) this.getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 }
