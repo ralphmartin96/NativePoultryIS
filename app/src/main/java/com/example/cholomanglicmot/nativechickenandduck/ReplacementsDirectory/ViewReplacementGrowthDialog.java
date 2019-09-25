@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,31 +29,29 @@ public class ViewReplacementGrowthDialog extends DialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.dialog_view_brooder_growth, container, false);
-        final Integer replacement_id = getArguments().getInt("Replacement Inventory ID");
+        final Integer replacement_inventory_id = getArguments().getInt("Replacement Inventory ID");
         final String replacement_tag = getArguments().getString("Replacement Tag");
         final Integer replacement_growth_id = getArguments().getInt("Replacement Growth ID");
         String brooder_inv_string=null;
 
         myDb = new DatabaseHelper(getContext());
 
-
-
         textView = view.findViewById(R.id.textView);
-        date_collected = view.findViewById(R.id.date_collected); //galing sa brooder table
-        collection_day = view.findViewById(R.id.collection_day);//galing sa brooder table
-        male_count = view.findViewById(R.id.male_count);//galing sa brooder table
-        male_weight = view.findViewById(R.id.male_weight);//galing sa brooder table
-        female_count = view.findViewById(R.id.female_count); //galing sa brooder table
-        female_weight = view.findViewById(R.id.female_weight);//galing sa brooder table
-        total_count = view.findViewById(R.id.total_count);//galing sa brooder table
-        total_weight = view.findViewById(R.id.total_weight);//galing sa brooder tabl
+        date_collected = view.findViewById(R.id.date_collected);
+        collection_day = view.findViewById(R.id.collection_day);
+        male_count = view.findViewById(R.id.male_count);
+        male_weight = view.findViewById(R.id.male_weight);
+        female_count = view.findViewById(R.id.female_count);
+        female_weight = view.findViewById(R.id.female_weight);
+        total_count = view.findViewById(R.id.total_count);
+        total_weight = view.findViewById(R.id.total_weight);
         save = view.findViewById(R.id.save);
 
-        //textView.setText("Replacement Family "+replacement_id.toString());
+        Log.d("POULTRYDEBUGGER", "RPL ID: " + replacement_growth_id);
 
-
-        Cursor cursor = myDb.getAllDataFromReplacementGrowthRecordsWhereGrowthID(replacement_id);
+        Cursor cursor = myDb.getAllDataFromReplacementGrowthRecordsWhereGrowthID(replacement_growth_id);
         cursor.moveToFirst();
+
         if(cursor.getCount() != 0){
             Integer male_count_string = cursor.getInt(4);
             Float male_weight_string = cursor.getFloat(5);
@@ -86,7 +85,6 @@ public class ViewReplacementGrowthDialog extends DialogFragment {
 
 
         }
-
 
 
         save.setOnClickListener(new View.OnClickListener() {
