@@ -32,19 +32,19 @@ public class ReplacementFeedingRecordsActivity extends AppCompatActivity {
     private TextView replacement_pen_textView;
     Integer replacement_pen_id;
 
-
     DatabaseHelper myDb;
+
     RecyclerView recyclerView;
     RecyclerView.Adapter recycler_adapter;
     RecyclerView.LayoutManager layoutManager;
+
     ArrayList<Replacement_Inventory> arrayList_temp = new ArrayList<>();//create constructor first for brooder feeding records
     ArrayList<Replacement_FeedingRecords> arrayListReplacementFeedingRecords = new ArrayList<>();
     ArrayList<Replacement_Inventory> arrayListReplacementInventory = new ArrayList<>();
     ArrayList<Replacement_Inventory> arrayListReplacementInventory1 = new ArrayList<>();
     ArrayList<Replacements>arrayListReplacements = new ArrayList<>();
+
     FloatingActionButton create_replacement_feeding_records;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,82 +108,55 @@ public class ReplacementFeedingRecordsActivity extends AppCompatActivity {
             }
         });
 
-        ///////////////////////////////DATABASE
+        replacement_pen_id = myDb.getPenIDWithNumber(replacement_pen);
 
-        Cursor cursor =myDb.getAllDataFromPenWhere(replacement_pen);
-        cursor.moveToFirst();
-        if(cursor.getCount() != 0){
-            replacement_pen_id = cursor.getInt(0);
-        }
+        local_getReplacementFeeding();
 
-
-        boolean isNetworkAvailable = isNetworkAvailable();
-        if (isNetworkAvailable) {
-            //if internet is available, load data from web database
-
-
-
-            API_updateReplacementFeeding();
-            API_getReplacementFeeding();
-
-
-        }
-
-
-
-        Cursor cursor_inventory = myDb.getDataFromReplacementInventoryWherePen(replacement_pen_id);
-        cursor_inventory.moveToFirst();
-        if(cursor_inventory.getCount() == 0){
-            //show message
-            // Toast.makeText(this,"No data inventories.", Toast.LENGTH_LONG).show();
-
-        }else {
-            do {
-
-                Replacement_Inventory brooder_inventory = new Replacement_Inventory(cursor_inventory.getInt(0),cursor_inventory.getInt(1), cursor_inventory.getInt(2), cursor_inventory.getString(3),cursor_inventory.getString(4), cursor_inventory.getInt(5), cursor_inventory.getInt(6),cursor_inventory.getInt(7), cursor_inventory.getString(8), cursor_inventory.getString(9));
-                arrayListReplacementInventory.add(brooder_inventory);
-            } while (cursor_inventory.moveToNext());
-        }
-
-
-        Cursor cursor_feeding = myDb.getAllDataFromReplacementFeedingRecords();
-        cursor_feeding.moveToFirst();
-        if(cursor_feeding.getCount() != 0){
-            do{
-
-                Replacement_FeedingRecords brooderFeedingRecords = new Replacement_FeedingRecords(cursor_feeding.getInt(0),cursor_feeding.getInt(1), cursor_feeding.getString(2), null,cursor_feeding.getFloat(3),cursor_feeding.getFloat(4), cursor_feeding.getString(5), cursor_feeding.getString(6));
-
-                arrayListReplacementFeedingRecords.add(brooderFeedingRecords);
-
-
-                    /*    }
-                    }*/
-            }while(cursor_feeding.moveToNext());
-        }
-
-        ArrayList<Replacement_FeedingRecords> arrayList_final = new ArrayList<Replacement_FeedingRecords>();
-
-        for(int i=0;i<arrayListReplacementInventory.size();i++){
-            for(int k=0;k<arrayListReplacementFeedingRecords.size();k++){
-                if(arrayListReplacementInventory.get(i).getId()==arrayListReplacementFeedingRecords.get(k).getReplacement_feeding_inventory_id() && arrayListReplacementFeedingRecords.get(k).getReplacement_feeding_deleted_at() == null){
-                    arrayList_final.add(arrayListReplacementFeedingRecords.get(k));
-                }
-            }
-        }
-
-
-
-        recycler_adapter = new RecyclerAdapter_Replacement_Feeding(arrayList_final);
+        recycler_adapter = new RecyclerAdapter_Replacement_Feeding(arrayListReplacementFeedingRecords);
         recyclerView.setAdapter(recycler_adapter);
         recycler_adapter.notifyDataSetChanged();
 
     }
+
+    private void local_getReplacementFeeding() {
+        Cursor cursor_inventory = myDb.getDataFromReplacementInventoryWherePen(replacement_pen_id);
+        cursor_inventory.moveToFirst();
+
+        if (cursor_inventory.getCount() == 0) {
+            Toast.makeText(this, "No data inventories.", Toast.LENGTH_LONG).show();
+        } else {
+            do {
+
+                int replacement_inventory_id = cursor_inventory.getInt(0);
+
+                Cursor cursor_feeding = myDb.getAllDataFromReplacementFeedingWhereInvID(replacement_inventory_id);
+                cursor_feeding.moveToFirst();
+
+                do {
+                    Replacement_FeedingRecords brooderFeedingRecords = new Replacement_FeedingRecords(
+                            cursor_feeding.getInt(0),
+                            cursor_feeding.getInt(1),
+                            cursor_feeding.getString(2),
+                            null, cursor_feeding.getFloat(3),
+                            cursor_feeding.getFloat(4),
+                            cursor_feeding.getString(5),
+                            cursor_feeding.getString(6)
+                    );
+
+                    arrayListReplacementFeedingRecords.add(brooderFeedingRecords);
+                } while (cursor_feeding.moveToNext());
+
+            } while (cursor_inventory.moveToNext());
+        }
+    }
+
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
+
     private void API_addReplacementFeeding(RequestParams requestParams){
 
         APIHelper.addReplacementFeeding("addReplacementFeeding", requestParams, new BaseJsonHttpResponseHandler<Object>() {
@@ -207,6 +180,7 @@ public class ReplacementFeedingRecordsActivity extends AppCompatActivity {
         });
 
     }
+
     private void API_updateReplacementFeeding(){
         APIHelper.getReplacementFeeding("getReplacementFeeding/", new BaseJsonHttpResponseHandler<Object>() {
             @Override
@@ -301,6 +275,7 @@ public class ReplacementFeedingRecordsActivity extends AppCompatActivity {
             }
         });
     }
+
     private void API_getReplacementFeeding(){
         APIHelper.getReplacementFeeding("getReplacementFeeding/", new BaseJsonHttpResponseHandler<Object>() {
             @Override
@@ -341,6 +316,7 @@ public class ReplacementFeedingRecordsActivity extends AppCompatActivity {
             }
         });
     }
+
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
