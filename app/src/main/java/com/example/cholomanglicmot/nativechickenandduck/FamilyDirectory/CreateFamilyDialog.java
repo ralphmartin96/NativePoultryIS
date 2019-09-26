@@ -87,36 +87,6 @@ public class CreateFamilyDialog extends DialogFragment {
 
                         Log.d("POULTRYDEBUGGER", family + " " + line + " " +generation);
 
-//                        switch (family_number.getText().toString().length()){
-//                            case 1:
-//                                family = String.format("%04d" , Integer.parseInt(family_number.getText().toString()));
-//                                break;
-//                            case 2:
-//                                family = String.format("%04d" , Integer.parseInt(family_number.getText().toString()));
-//                                break;
-//                            case 3:
-//                                family = String.format("%04d" ,Integer.parseInt(family_number.getText().toString()));
-//                                break;
-//                            case 4:
-//                                family = String.format("%04d" , Integer.parseInt(family_number.getText().toString()));
-//                                break;
-//                            default:
-//                                break;
-//
-//                        }
-
-
-//                        if(isNetworkAvailable()){
-//                            Integer is_active = 1;
-//                            RequestParams requestParams = new RequestParams();
-//                            requestParams.add("number", family);
-//                            requestParams.add("is_active", is_active.toString());
-//                            requestParams.add("line_id", line_id.toString());
-//                            requestParams.add("deleted_at", null);
-//
-//                            API_addFamily(requestParams);
-//                        }
-                        //insert to local
                         boolean isInserted = myDb.insertDataFamily(family,1,line_id);
 
                         if(isInserted){

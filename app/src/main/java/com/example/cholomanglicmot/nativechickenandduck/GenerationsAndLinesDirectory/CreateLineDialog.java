@@ -65,23 +65,6 @@ public class CreateLineDialog extends DialogFragment {
                         Integer generation_id = cursor_generation.getInt(0);
                         String line = line = String.format("%04d", Integer.parseInt(line_number.getText().toString()));
 
-//                        switch (line_number.getText().toString().length()){
-//                            case 1:
-//                                line = String.format("%04d" , Integer.parseInt(line_number.getText().toString()));
-//                                break;
-//                            case 2:
-//                                line = String.format("%04d" , Integer.parseInt(line_number.getText().toString()));
-//                                break;
-//                            case 3:
-//                                line = String.format("%04d" ,Integer.parseInt(line_number.getText().toString()));
-//                                break;
-//                            case 4:
-//                                line = String.format("%04d" , Integer.parseInt(line_number.getText().toString()));
-//                                break;
-//                            default:
-//                                break;
-//
-//                        }
                         boolean isInserted = myDb.insertDataLine(line,1,generation_id);
 
                         if (isInserted) {
