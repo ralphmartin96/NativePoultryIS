@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -45,18 +46,18 @@ public class MortalityAndSalesRecords extends AppCompatActivity {
     RecyclerView.LayoutManager layoutManager;
     ArrayList<Egg_Production> arrayListBrooderGrowthRecords = new ArrayList<>();
     ArrayList<Breeder_Inventory>arrayListBrooderInventory = new ArrayList<>();
-    ArrayList<Mortality_Sales>arrayList_temp = new ArrayList<>();
+    ArrayList<Mortality_Sales> arrayList_MortalitySales = new ArrayList<>();
     ImageButton create_egg_prod;
     TextView replacement_pheno_inv_id;
-
-
+    Integer breeder_id;
+    Integer breeder_inventory_id;
+    String breeder_tag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mortality_and_sales);
-        final String breeder_tag;
-        final Integer breeder_id;
+
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
             if(extras == null) {
@@ -72,11 +73,12 @@ public class MortalityAndSalesRecords extends AppCompatActivity {
         }
         final Bundle args = new Bundle();
         args.putString("Breeder Tag",breeder_tag);
-//        args.putInt("Breeder ID", breeder_id);
+
         replacement_pheno_inv_id = findViewById(R.id.replacement_pheno_inv_id);
         replacement_pheno_inv_id.setText("Mortality and Sales | " + breeder_tag);
         mToolbar = findViewById(R.id.nav_action);
         create_egg_prod = findViewById(R.id.open_dialog);
+
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Mortality and Sales");
@@ -96,38 +98,52 @@ public class MortalityAndSalesRecords extends AppCompatActivity {
             }
         });
 
-
-
         myDb = new DatabaseHelper(this);
-        ///////////////////DATABASE
-        if(isNetworkAvailable()){
-            API_updateMortalityAndSales();
-        }
-        Cursor cursor = myDb.getAllDataFromMortandSalesRecords();
-        cursor.moveToFirst();
-        if(cursor.getCount() == 0){
-            Toast.makeText(this, "No data in Mortality and Sales", Toast.LENGTH_SHORT).show();
-        }else{
-            do{
-                Integer breeder_inv_id = cursor.getInt(2);
-                if(breeder_inv_id == breeder_id){
-                    Mortality_Sales mortalityAndSalesRecords = new Mortality_Sales(cursor.getInt(0), cursor.getString(1),breeder_tag, cursor.getInt(2), cursor.getInt(3), cursor.getInt(4), cursor.getString(5),cursor.getString(6), cursor.getFloat(7), cursor.getInt(8), cursor.getInt(9),cursor.getInt(10),cursor.getString(11),cursor.getString(12), cursor.getString(12));
-                    arrayList_temp.add(mortalityAndSalesRecords);
-                }
 
+        breeder_inventory_id = myDb.getAllDataFromBreederInventoryWhereBreederID(breeder_id);
 
-            }while (cursor.moveToNext());
-        }
+        local_getBreederMortalitySales();
 
-
-        //dapat may filter pa sa arraylist temp na dapat tung mortality and sales lang ng given breeder tag yung lalabas
-        recycler_adapter = new RecyclerAdapter_Mortality_and_Sales(arrayList_temp);
+        recycler_adapter = new RecyclerAdapter_Mortality_and_Sales(arrayList_MortalitySales);
         recyclerView.setAdapter(recycler_adapter);
         recycler_adapter.notifyDataSetChanged();
 
-
-
     }
+
+    private void local_getBreederMortalitySales() {
+        Cursor cursor = myDb.getAllDataForBreederMortalitySalesWhereInvId(breeder_inventory_id);
+        cursor.moveToFirst();
+
+        if (cursor.getCount() == 0) {
+            Toast.makeText(this, "No data in Mortality and Sales", Toast.LENGTH_SHORT).show();
+        } else {
+
+            do {
+
+                Mortality_Sales mortalityAndSalesRecords = new Mortality_Sales(
+                        cursor.getInt(0),
+                        cursor.getString(1),
+                        breeder_tag,
+                        cursor.getInt(2),
+                        cursor.getInt(3),
+                        cursor.getInt(4),
+                        cursor.getString(5),
+                        cursor.getString(6),
+                        cursor.getFloat(7),
+                        cursor.getInt(8),
+                        cursor.getInt(9),
+                        cursor.getInt(10),
+                        cursor.getString(11),
+                        cursor.getString(12),
+                        cursor.getString(12)
+                );
+
+                arrayList_MortalitySales.add(mortalityAndSalesRecords);
+
+            } while (cursor.moveToNext());
+        }
+    }
+
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) this.getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
