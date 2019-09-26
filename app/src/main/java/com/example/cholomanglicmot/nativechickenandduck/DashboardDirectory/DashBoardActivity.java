@@ -784,6 +784,7 @@ public class DashBoardActivity extends AppCompatActivity {
                     if (!arrayList_brooderInventory_id.isEmpty()) {
                         API_getBrooderFeeding(arrayList_brooderInventory_id);
                         API_getBrooderGrowth(arrayList_brooderInventory_id);
+                        API_getMortalityAndSales(arrayList_brooderInventory_id);
                     }
 
                 }catch (Exception e){}
@@ -1028,6 +1029,7 @@ public class DashBoardActivity extends AppCompatActivity {
                         API_getHatcheryRecords(arrayList_breederInventory_id);
                         API_getEggQuality(arrayList_breederInventory_id);
                         API_getPhenoMorphos(arrayList_breederInventory_id);
+                        API_getMortalityAndSales(arrayList_breederInventory_id);
                     }
 
                 }catch (Exception e){}
@@ -1315,10 +1317,10 @@ public class DashBoardActivity extends AppCompatActivity {
                                 );
 
                                 if (isInserted) {
-                                    if (pheno_morphos.getBreeder_inventory() != null)
-                                        Log.d(debugTag, "Breeder PM: " + pheno_morphos.getId() + " " + pheno_morphos.getBreeder_inventory());
-                                    else
-                                        Log.d(debugTag, "Replacement PM: " + pheno_morphos.getId() + " " + pheno_morphos.getReplacement_inventory());
+//                                    if (pheno_morphos.getBreeder_inventory() != null)
+//                                        Log.d(debugTag, "Breeder PM: " + pheno_morphos.getId() + " " + pheno_morphos.getBreeder_inventory());
+//                                    else
+//                                        Log.d(debugTag, "Replacement PM: " + pheno_morphos.getId() + " " + pheno_morphos.getReplacement_inventory());
 
                                     arrayList_phenoMorphos_values_id.add(pheno_morphos.getValues_id());
                                 }
@@ -1510,6 +1512,7 @@ public class DashBoardActivity extends AppCompatActivity {
                         API_getReplacementFeeding(arrayList_replacementInventory_id);
                         API_getReplacementGrowth(arrayList_replacementInventory_id);
                         API_getPhenoMorphos(arrayList_replacementInventory_id);
+                        API_getMortalityAndSales(arrayList_replacementInventory_id);
                     }
 
                 }catch (Exception e){}
@@ -1621,16 +1624,14 @@ public class DashBoardActivity extends AppCompatActivity {
                                         replacement_growthRecords.getReplacement_growth_deleted_at()
                                 );
 
-                                if (isInserted)
-                                    Log.d(debugTag, "REPL GROWTH: " + replacement_growthRecords.getId());
+//                                if (isInserted)
+//                                    Log.d(debugTag, "REPL GROWTH: " + replacement_growthRecords.getId());
 
                             }
 
                         }
 
                     }
-
-                    Log.d(debugTag, "REPL GROWTH SIZE: " + myDb.getReplacementGrowthSize());
 
                 }catch (Exception e){}
 
@@ -1652,7 +1653,8 @@ public class DashBoardActivity extends AppCompatActivity {
 
 
     //Mortality and Sales
-    private void API_getMortalityAndSales() {
+    private void API_getMortalityAndSales(ArrayList<Integer> arrayList_inventory_id) {
+
         APIHelper.getMortalityAndSales("getMortalityAndSales/", new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
@@ -1660,19 +1662,49 @@ public class DashBoardActivity extends AppCompatActivity {
                 Gson gson = new Gson();
                 try{
                     JSONMortalityAndSales jsonBrooder = gson.fromJson(rawJsonResponse, JSONMortalityAndSales.class);
-                    ArrayList<Mortality_Sales> arrayList_brooder = jsonBrooder.getData();
+                    ArrayList<Mortality_Sales> arrayList_mortalitySales = jsonBrooder.getData();
 
-                    for (int i = 0; i < arrayList_brooder.size(); i++) {
-                        //check if generation to be inserted is already in the database
-                        Cursor cursor = myDb.getAllDataFromMortandSalesRecordsWithID(arrayList_brooder.get(i).getId());
-                        cursor.moveToFirst();
+                    for (Mortality_Sales mortality_sales : arrayList_mortalitySales) {
 
-                        if (cursor.getCount() == 0) {
+                        Integer inventory_id = 0;
 
+                        if (mortality_sales.getBreeder_id() != null)
+                            inventory_id = mortality_sales.getBreeder_id();
+                        else if (mortality_sales.getReplaement_id() != null)
+                            inventory_id = mortality_sales.getReplaement_id();
+                        else
+                            inventory_id = mortality_sales.getBrooder_id();
 
-                            boolean isInserted = myDb.insertDataMortalityAndSalesWithID(arrayList_brooder.get(i).getId(), arrayList_brooder.get(i).getDate(), arrayList_brooder.get(i).getBreeder_id(), arrayList_brooder.get(i).getReplaement_id(), arrayList_brooder.get(i).getBrooder_id(), arrayList_brooder.get(i).getType(), arrayList_brooder.get(i).getCategory(), arrayList_brooder.get(i).getPrice(), arrayList_brooder.get(i).getMale_count(), arrayList_brooder.get(i).getFemale_count(), arrayList_brooder.get(i).getTotal(), arrayList_brooder.get(i).getReason(), arrayList_brooder.get(i).getRemarks(), arrayList_brooder.get(i).getDeleted_at());
+                        if (arrayList_inventory_id.contains(inventory_id)) {
 
+                            Cursor cursor = myDb.getAllDataFromMortandSalesRecordsWithID(mortality_sales.getId());
+                            cursor.moveToFirst();
+
+                            if (cursor.getCount() == 0) {
+
+                                boolean isInserted = myDb.insertDataMortalityAndSalesWithID(
+                                        mortality_sales.getId(),
+                                        mortality_sales.getDate(),
+                                        mortality_sales.getBreeder_id(),
+                                        mortality_sales.getReplaement_id(),
+                                        mortality_sales.getBrooder_id(),
+                                        mortality_sales.getType(),
+                                        mortality_sales.getCategory(),
+                                        mortality_sales.getPrice(),
+                                        mortality_sales.getMale_count(),
+                                        mortality_sales.getFemale_count(),
+                                        mortality_sales.getTotal(),
+                                        mortality_sales.getReason(),
+                                        mortality_sales.getRemarks(),
+                                        mortality_sales.getDeleted_at()
+                                );
+
+//                                if(isInserted)
+//                                    Log.d(debugTag, "INV ID: " + inventory_id + " " + mortality_sales.getId());
+
+                            }
                         }
+
 
                     }
                 }catch (Exception e){}
