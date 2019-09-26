@@ -76,29 +76,21 @@ public class CreatePenDialog extends DialogFragment {
                 int selectedId = radioGroup.getCheckedRadioButtonId();
                 String selected_pen_type = "None Selected";
                 String pen_number = null;
+
                 switch (selectedId) {
                     case radio_brooder:
-                        // the first RadioButton is checked.
                         selected_pen_type = "brooder";
-                        /*String.format("%04d" , Integer.parseInt(mInput_generation_number.getText().toString()));*/
                         pen_number = "B"+String.format("%02d" , Integer.parseInt(mInput_pen_number.getText().toString()));
                         break;
-                    //other checks for the other RadioButtons ids from the RadioGroup
                     case radio_grower:
-                        // the first RadioButton is checked.
                         selected_pen_type = "grower";
                         pen_number = "G"+String.format("%02d" , Integer.parseInt(mInput_pen_number.getText().toString()));
                         break;
-                    //other checks for the other RadioButtons ids from the RadioGroup
                     case radio_layer:
-                        // the first RadioButton is checked.
                         selected_pen_type = "layer";
                         pen_number = "L"+String.format("%02d" , Integer.parseInt(mInput_pen_number.getText().toString()));
                         break;
-                    //other checks for the other RadioButtons ids from the RadioGroup
                     case -1:
-
-                        // no RadioButton is checked in the Radio group
                         break;
                 }
 
@@ -116,7 +108,6 @@ public class CreatePenDialog extends DialogFragment {
 
                     Uri photo = user.getPhotoUrl();
 
-                    ////sample farm_id pero dapat kukunin mo to sa database
                     Integer farm_id =0;
 
                     Cursor cursor_farm_id = myDb.getFarmIDFromUsers(email);
@@ -126,27 +117,20 @@ public class CreatePenDialog extends DialogFragment {
                         farm_id = cursor_farm_id.getInt(0);
                     }
 
-
                     Integer is_active = 1;
-                    Integer zero = 0;
-                    boolean isInserted = myDb.insertDataPen(farm_id,pen_number, selected_pen_type, Integer.parseInt(mInput_pen_capacity.getText().toString()),0, is_active);
 
-//                    if(isNetworkAvailable()){
-//
-//                        RequestParams requestParams = new RequestParams();
-//                        requestParams.add("farm_id", farm_id.toString());
-//                        requestParams.add("number", pen_number);
-//                        requestParams.add("type", selected_pen_type);
-//                        requestParams.add("total_capacity", mInput_pen_capacity.getText().toString());
-//                        requestParams.add("current_capacity", zero.toString());
-//                        requestParams.add("is_active", is_active.toString());
-//
-//                        API_addPen(requestParams);
-//                    }
+                    boolean isInserted = myDb.insertDataPen(
+                            farm_id, pen_number,
+                            selected_pen_type,
+                            Integer.parseInt(mInput_pen_capacity.getText().toString()),
+                            0,
+                            is_active
+                    );
 
 
-                    if(isInserted == true){
+                    if (isInserted) {
                         Toast.makeText(getActivity(),"Pen added to database", Toast.LENGTH_SHORT).show();
+
                         Intent intent_breeder_generation = new Intent(getActivity(), CreatePen.class);
                         startActivity(intent_breeder_generation);
                         getDialog().dismiss();
@@ -162,13 +146,6 @@ public class CreatePenDialog extends DialogFragment {
         });
 
         return view;
-    }
-
-    private boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
     private void API_addPen(RequestParams requestParams){

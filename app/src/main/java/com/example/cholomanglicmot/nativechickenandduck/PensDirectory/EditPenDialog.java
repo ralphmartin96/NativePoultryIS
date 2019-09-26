@@ -81,19 +81,8 @@ public class EditPenDialog extends DialogFragment {
                     input_pen_capacity = Integer.parseInt(new_pen_capacity.getText().toString());
                 }
 
-
                 boolean isUpdated = myDb.updateDataPen(pen_id, input_pen_number,input_pen_capacity);
 
-                if(isNetworkAvailable()){
-
-                    RequestParams requestParams = new RequestParams();
-                    requestParams.add("pen_id", pen_id.toString());
-                    requestParams.add("pen_number", input_pen_number);
-                    requestParams.add("pen_capacity", input_pen_capacity.toString());
-
-
-                    API_editPen(requestParams);
-                }
                 if(isUpdated){
                     Toast.makeText(context, "Pen updated", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(context, CreatePen.class);
