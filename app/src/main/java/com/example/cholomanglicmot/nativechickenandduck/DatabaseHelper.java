@@ -3406,6 +3406,27 @@ public Integer getAllMaleFromBrooders(Integer farm_id){
 
         return res;
     }
+
+    public Integer getAllDataFromBreederInventoryWhereBreederID(Integer id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        Cursor res = db.rawQuery("select * from " + TABLE_BREEDER_INVENTORIES + " where BREEDER_INV_BREEDER_ID is ?", new String[]{id.toString()});
+        res.moveToFirst();
+
+        if (res.getCount() != 0)
+            return res.getInt(0);
+        else
+            return -1;
+    }
+
+    public Cursor getAllDataForBreederMortalitySalesWhereInvId(Integer id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        Cursor res = db.rawQuery("select * from " + TABLE_MORTALITY_AND_SALES + " where MORT_AND_SALES_BREEDER_INV_ID is ?", new String[]{id.toString()});
+
+        return res;
+    }
+
     public Cursor getAllDataFromBreederFeedingRecords(){
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor res = db.rawQuery("select * from " +TABLE_BREEDER_FEEDING_RECORDS, null);
