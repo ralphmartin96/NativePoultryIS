@@ -28,6 +28,7 @@ import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
 
+//TODO: localize db for cull
 public class CullGenerationDialog extends DialogFragment {
 
     DatabaseHelper myDb;
@@ -38,7 +39,6 @@ public class CullGenerationDialog extends DialogFragment {
     Context context;
     Integer  pen_capacity, total;
     String pen_number;
-
 
 
     @Nullable
@@ -66,23 +66,22 @@ public class CullGenerationDialog extends DialogFragment {
             @Override
             public void onClick(View view) {
 
-
                 getDialog().dismiss();
 
             }
         });
 
-
         yes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //update  is_active column of selected inventory to 0 or false
+
                 boolean isGenerationCulled = myDb.cullGeneration(generation_id);
+
                 if(isNetworkAvailable()){
 
                     API_cullGeneration(generation_id);
                 }
-                //then cull all chicken that has this generation
+
                 if(isGenerationCulled){
                     Intent intent_line = new Intent(getActivity(), CreateGenerationsAndLines.class);
                     startActivity(intent_line);
@@ -97,6 +96,7 @@ public class CullGenerationDialog extends DialogFragment {
 
         return view;
     }
+
     private String getDate() {
 
         SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -104,17 +104,18 @@ public class CullGenerationDialog extends DialogFragment {
 
         return formatter.format(date);
     }
+
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
+
     private void API_cullGeneration(Integer generation_id){
         APIHelper.getGeneration("cullGeneration/"+generation_id, new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response) {
-
 
 
             }
@@ -122,7 +123,7 @@ public class CullGenerationDialog extends DialogFragment {
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, String rawJsonResponse, Object response){
 
-               // Toast.makeText(getApplicationContext(), "Failed ", Toast.LENGTH_SHORT).show();
+                // Toast.makeText(getApplicationContext(), "Failed ", Toast.LENGTH_SHORT).show();
             }
 
             @Override

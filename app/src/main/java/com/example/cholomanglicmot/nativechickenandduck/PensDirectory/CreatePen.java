@@ -301,7 +301,6 @@ public class CreatePen extends AppCompatActivity {
         });
     }
 
-    //TODO: remove API's for web fetching
     private void API_updatePen(String farm_id){
 
         APIHelper.getPen("getPen/"+farm_id, new BaseJsonHttpResponseHandler<Object>() {

@@ -455,9 +455,6 @@ public class CreateGenerationsAndLines extends AppCompatActivity {
         });
     }
 
-
-    //TODO: remove update API's
-
     private void API_updateGeneration(String farm_id){
 
         APIHelper.getGeneration("getGeneration/"+farm_id, new BaseJsonHttpResponseHandler<Object>() {
