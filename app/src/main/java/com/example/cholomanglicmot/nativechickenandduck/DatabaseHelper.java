@@ -1871,6 +1871,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         return res;
     }
+
+    public Integer getIDFromReplacementInventoryWhereTag(String tag) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor res = db.rawQuery("select * from " + TABLE_REPLACEMENT_INVENTORIES + " where REPLACEMENT_INV_REPLACEMENT_TAG is ?", new String[]{tag});
+        res.moveToFirst();
+
+        if (res.getCount() != 0)
+            return res.getInt(0);
+        else
+            return -1;
+    }
     public Cursor getAllDataFromReplacementFeedingRecords(){
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor res = db.rawQuery("select * from " +TABLE_REPLACEMENT_FEEDING_RECORDS, null);
@@ -3512,6 +3523,7 @@ public Integer getAllMaleFromBrooders(Integer farm_id){
 
         return res;
     }
+
     public Cursor getAllDataFromMortandSalesRecordsWithID(Integer id){
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor res = db.rawQuery("select * from " +TABLE_MORTALITY_AND_SALES+ " where id is ? ", new String[]{id.toString()});

@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -42,14 +43,13 @@ public class MortalityAndSalesRecordsReplacement extends AppCompatActivity {
     RecyclerView.Adapter recycler_adapter;
     RecyclerView.LayoutManager layoutManager;
 
-    ArrayList<Mortality_Sales>arrayList_temp = new ArrayList<>();
+    ArrayList<Mortality_Sales> arrayList_MortalitySales = new ArrayList<>();
     ImageButton create_egg_prod;
     TextView replacement_pheno_inv_id;
     Integer brooder_pen;
     Integer breeder_id;
+    Integer breeder_inventory_id;
     String brooder_pen_number, breeder_tag;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,42 +103,51 @@ public class MortalityAndSalesRecordsReplacement extends AppCompatActivity {
 
 
         myDb = new DatabaseHelper(this);
-        ///////////////////DATABASE
 
-        if(isNetworkAvailable()){
-            API_updateMortalityAndSales();
-        }
-        Cursor cursor = myDb.getAllDataFromMortandSalesRecords();
-        cursor.moveToFirst();
-        if(cursor.getCount() == 0){
-            Toast.makeText(this, "No data in Mortality and Sales", Toast.LENGTH_SHORT).show();
-        }else{
-            do{
-                Integer replacement_inv_id = cursor.getInt(3);
-                if(replacement_inv_id == breeder_id){
-                    Mortality_Sales mortalityAndSalesRecords = new Mortality_Sales(cursor.getInt(0), cursor.getString(1),breeder_tag, cursor.getInt(2), cursor.getInt(3), cursor.getInt(4), cursor.getString(5),cursor.getString(6), cursor.getFloat(7), cursor.getInt(8), cursor.getInt(9),cursor.getInt(10),cursor.getString(11),cursor.getString(12), cursor.getString(12));
-                    arrayList_temp.add(mortalityAndSalesRecords);
-                }
+        Log.d("POULTRYDEBUGGER", "" + breeder_tag);
 
 
-            }while (cursor.moveToNext());
-        }
+        breeder_inventory_id = myDb.getIDFromReplacementInventoryWhereTag(breeder_tag);
 
-        Cursor cursor1 = myDb.getAllDataFromPenWhereID(brooder_pen);
-        cursor1.moveToFirst();
-        if(cursor1.getCount() != 0){
-            brooder_pen_number = cursor1.getString(2);
-        }
 
-        //dapat may filter pa sa arraylist temp na dapat tung mortality and sales lang ng given breeder tag yung lalabas
-        recycler_adapter = new RecyclerAdapter_Mortality_and_Sales(arrayList_temp);
+        local_getMortalityAndSales();
+
+        recycler_adapter = new RecyclerAdapter_Mortality_and_Sales(arrayList_MortalitySales);
         recyclerView.setAdapter(recycler_adapter);
         recycler_adapter.notifyDataSetChanged();
-        Toast.makeText(this, brooder_pen_number, Toast.LENGTH_SHORT).show();
-
-
-
     }
+
+    private void local_getMortalityAndSales() {
+        Cursor cursor = myDb.getAllDataForReplacementMortalitySalesWhereInvId(breeder_inventory_id);
+        cursor.moveToFirst();
+
+        if (cursor.getCount() == 0) {
+            Toast.makeText(this, "No data in Mortality and Sales", Toast.LENGTH_SHORT).show();
+        } else {
+            do {
+                Mortality_Sales mortalityAndSalesRecords = new Mortality_Sales(
+                        cursor.getInt(0),
+                        cursor.getString(1),
+                        breeder_tag,
+                        cursor.getInt(2),
+                        cursor.getInt(3),
+                        cursor.getInt(4),
+                        cursor.getString(5),
+                        cursor.getString(6),
+                        cursor.getFloat(7),
+                        cursor.getInt(8),
+                        cursor.getInt(9),
+                        cursor.getInt(10),
+                        cursor.getString(11),
+                        cursor.getString(12),
+                        cursor.getString(12)
+                );
+                arrayList_MortalitySales.add(mortalityAndSalesRecords);
+
+            } while (cursor.moveToNext());
+        }
+    }
+
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) this.getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -156,7 +165,6 @@ public class MortalityAndSalesRecordsReplacement extends AppCompatActivity {
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, String rawJsonResponse, Object response){
 
-                // Toast.makeText(getContext(), "Failed to add to web", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -263,7 +271,6 @@ public class MortalityAndSalesRecordsReplacement extends AppCompatActivity {
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, String rawJsonResponse, Object response){
 
-                //Toast.makeText(getApplicationContext(), "Failed to fetch Brooders Inventory from web database ", Toast.LENGTH_SHORT).show();
             }
 
             @Override
