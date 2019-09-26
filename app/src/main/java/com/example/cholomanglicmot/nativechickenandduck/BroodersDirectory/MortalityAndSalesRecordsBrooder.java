@@ -47,12 +47,12 @@ public class MortalityAndSalesRecordsBrooder extends AppCompatActivity {
     RecyclerView.LayoutManager layoutManager;
     ArrayList<Egg_Production> arrayListBrooderGrowthRecords = new ArrayList<>();
     ArrayList<Breeder_Inventory>arrayListBrooderInventory = new ArrayList<>();
-    ArrayList<Mortality_Sales>arrayList_temp = new ArrayList<>();
+    ArrayList<Mortality_Sales> arrayList_MortalitySales = new ArrayList<>();
     ImageButton create_egg_prod;
     TextView replacement_pheno_inv_id;
     Integer brooder_pen;
-    Integer breeder_id;
-    String brooder_pen_number, breeder_tag;
+    Integer brooder_id;
+    String brooder_pen_number, brooder_tag;
 
 
 
@@ -61,29 +61,29 @@ public class MortalityAndSalesRecordsBrooder extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mortality_and_sales);
 
-        final Integer breeder_id;
+        final Integer brooder_id;
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
             if(extras == null) {
-                breeder_tag= null;
-                breeder_id=null;
+                brooder_tag = null;
+                brooder_id = null;
                 brooder_pen = null;
             } else {
-                breeder_tag= extras.getString("Brooder Tag");
-                breeder_id=extras.getInt("Brooder ID");
+                brooder_tag = extras.getString("Brooder Tag");
+                brooder_id = extras.getInt("Brooder ID");
                 brooder_pen = extras.getInt("Brooder Pen ID");
             }
         } else {
-            breeder_tag= (String) savedInstanceState.getSerializable("Brooder Tag");
-            breeder_id = (Integer) savedInstanceState.getSerializable("Brooder ID");
+            brooder_tag = (String) savedInstanceState.getSerializable("Brooder Tag");
+            brooder_id = (Integer) savedInstanceState.getSerializable("Brooder ID");
             brooder_pen = (Integer) savedInstanceState.getSerializable("Brooder Pen ID");
         }
         final Bundle args = new Bundle();
-        args.putString("Brooder Tag",breeder_tag);
-        args.putInt("Brooder ID", breeder_id);
+        args.putString("Brooder Tag", brooder_tag);
+        args.putInt("Brooder ID", brooder_id);
         args.putInt("Brooder Pen ID", brooder_pen);
         replacement_pheno_inv_id = findViewById(R.id.replacement_pheno_inv_id);
-        replacement_pheno_inv_id.setText("Mortality and Sales | " + breeder_tag);
+        replacement_pheno_inv_id.setText("Mortality and Sales | " + brooder_tag);
         mToolbar = findViewById(R.id.nav_action);
         create_egg_prod = findViewById(R.id.open_dialog);
         setSupportActionBar(mToolbar);
@@ -108,64 +108,55 @@ public class MortalityAndSalesRecordsBrooder extends AppCompatActivity {
 
 
         myDb = new DatabaseHelper(this);
-        ///////////////////DATABASE
-        if(isNetworkAvailable()){
-            API_getMortalityAndSales();
-        }
 
-        Integer brooder_inv_id2=null;
-        Cursor cursor_tag = myDb.getDataFromBrooderInventoryWhereTag(breeder_tag);
-        cursor_tag.moveToFirst();
-        if(cursor_tag.getCount()!=0){
-            brooder_inv_id2 = cursor_tag.getInt(0);
+        Integer brooder_inventory_id;
 
-        }
+        brooder_inventory_id = myDb.getIDFromBrooderInventoryWhereTag(brooder_tag);
 
-
-        Cursor cursor = myDb.getAllDataFromMortandSalesRecords();
+        Cursor cursor = myDb.getAllDataForBrooderMortalitySalesWhereInvId(brooder_inventory_id);
         cursor.moveToFirst();
+
         if(cursor.getCount() == 0){
             Toast.makeText(this, "No data in Mortality and Sales", Toast.LENGTH_SHORT).show();
         }else{
 
             do{
-                Integer brooder_inv_id = cursor.getInt(4);
-                if(brooder_inv_id == brooder_inv_id2){
-                    Mortality_Sales mortalityAndSalesRecords = new Mortality_Sales(cursor.getInt(0), cursor.getString(1),breeder_tag, cursor.getInt(2), cursor.getInt(3), cursor.getInt(4), cursor.getString(5),cursor.getString(6), cursor.getFloat(7), cursor.getInt(8), cursor.getInt(9),cursor.getInt(10),cursor.getString(11),cursor.getString(12), cursor.getString(12));
-                    arrayList_temp.add(mortalityAndSalesRecords);
-                }
+                Mortality_Sales mortalityAndSalesRecords = new Mortality_Sales(
+                        cursor.getInt(0),
+                        cursor.getString(1),
+                        brooder_tag,
+                        cursor.getInt(2),
+                        cursor.getInt(3),
+                        cursor.getInt(4),
+                        cursor.getString(5),
+                        cursor.getString(6),
+                        cursor.getFloat(7),
+                        cursor.getInt(8),
+                        cursor.getInt(9),
+                        cursor.getInt(10),
+                        cursor.getString(11),
+                        cursor.getString(12),
+                        cursor.getString(12)
+                );
 
+                arrayList_MortalitySales.add(mortalityAndSalesRecords);
 
             }while (cursor.moveToNext());
         }
 
-        Cursor cursor1 = myDb.getAllDataFromPenWhereID(brooder_pen);
-        cursor1.moveToFirst();
-        if(cursor1.getCount() != 0){
-            brooder_pen_number = cursor1.getString(2);
-        }
-        Toast.makeText(this, breeder_tag, Toast.LENGTH_SHORT).show();
-        //dapat may filter pa sa arraylist temp na dapat tung mortality and sales lang ng given breeder tag yung lalabas
-
-
-
-
-
-
-        recycler_adapter = new RecyclerAdapter_Mortality_and_Sales(arrayList_temp);
+        recycler_adapter = new RecyclerAdapter_Mortality_and_Sales(arrayList_MortalitySales);
         recyclerView.setAdapter(recycler_adapter);
         recycler_adapter.notifyDataSetChanged();
-        //Toast.makeText(this, brooder_pen_number, Toast.LENGTH_SHORT).show();
-
-
 
     }
+
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
+
     private void API_getMortalityAndSales(){
         APIHelper.getMortalityAndSales("getMortalityAndSales/", new BaseJsonHttpResponseHandler<Object>() {
             @Override
@@ -183,7 +174,7 @@ public class MortalityAndSalesRecordsBrooder extends AppCompatActivity {
                     if (cursor.getCount() == 0) {
 
 
-                            boolean isInserted = myDb.insertDataMortalityAndSalesWithID(arrayList_brooder.get(i).getId(), arrayList_brooder.get(i).getDate(), arrayList_brooder.get(i).getBreeder_id(), arrayList_brooder.get(i).getReplaement_id(), arrayList_brooder.get(i).getBrooder_id(), arrayList_brooder.get(i).getType(), arrayList_brooder.get(i).getCategory(), arrayList_brooder.get(i).getPrice(), arrayList_brooder.get(i).getMale_count(), arrayList_brooder.get(i).getFemale_count(), arrayList_brooder.get(i).getTotal(), arrayList_brooder.get(i).getReason(), arrayList_brooder.get(i).getRemarks(), arrayList_brooder.get(i).getDeleted_at());
+//                        boolean isInserted = myDb.insertDataMortalityAndSalesWithID(arrayList_brooder.get(i).getId(), arrayList_brooder.get(i).getDate(), arrayList_brooder.get(i).getbrooder_id(), arrayList_brooder.get(i).getReplaement_id(), arrayList_brooder.get(i).getBrooder_id(), arrayList_brooder.get(i).getType(), arrayList_brooder.get(i).getCategory(), arrayList_brooder.get(i).getPrice(), arrayList_brooder.get(i).getMale_count(), arrayList_brooder.get(i).getFemale_count(), arrayList_brooder.get(i).getTotal(), arrayList_brooder.get(i).getReason(), arrayList_brooder.get(i).getRemarks(), arrayList_brooder.get(i).getDeleted_at());
                         Toast.makeText(MortalityAndSalesRecordsBrooder.this, "Mortality and Sales Added", Toast.LENGTH_SHORT).show();
                     }
 
@@ -205,12 +196,13 @@ public class MortalityAndSalesRecordsBrooder extends AppCompatActivity {
             }
         });
     }
+
     @Override
     public boolean onSupportNavigateUp() {
         Intent intent_brooders = new Intent(MortalityAndSalesRecordsBrooder.this, BrooderInventoryActivity.class);
         intent_brooders.putExtra("Brooder Pen",brooder_pen_number);
-        intent_brooders.putExtra("Brooder Tag",breeder_tag);
-        intent_brooders.putExtra("Brooder ID",breeder_id);
+        intent_brooders.putExtra("Brooder Tag", brooder_tag);
+        intent_brooders.putExtra("Brooder ID", brooder_id);
         startActivity(intent_brooders);
         return true;
     }
@@ -221,8 +213,8 @@ public class MortalityAndSalesRecordsBrooder extends AppCompatActivity {
 
         Intent intent_brooders = new Intent(MortalityAndSalesRecordsBrooder.this, BrooderInventoryActivity.class);
         intent_brooders.putExtra("Brooder Pen",brooder_pen_number);
-        intent_brooders.putExtra("Brooder Tag",breeder_tag);
-        intent_brooders.putExtra("Brooder ID",breeder_id);
+        intent_brooders.putExtra("Brooder Tag", brooder_tag);
+        intent_brooders.putExtra("Brooder ID", brooder_id);
         startActivity(intent_brooders);
 
     }

@@ -1680,6 +1680,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         return res;
     }
+
+    public Integer getIDFromBrooderInventoryWhereTag(String tag) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor res = db.rawQuery("select ID from " + TABLE_BROODER_INVENTORIES + " where BROODER_INV_BROODER_TAG is ?", new String[]{tag});
+        res.moveToFirst();
+
+        if (res.getCount() != 0)
+            return res.getInt(0);
+        else
+            return -1;
+    }
     public Cursor getAllDataFromBrooderFeedingRecords(){
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor res = db.rawQuery("select * from " +TABLE_BROODER_FEEDING_RECORDS, null);
@@ -3423,6 +3434,22 @@ public Integer getAllMaleFromBrooders(Integer farm_id){
         SQLiteDatabase db = this.getWritableDatabase();
 
         Cursor res = db.rawQuery("select * from " + TABLE_MORTALITY_AND_SALES + " where MORT_AND_SALES_BREEDER_INV_ID is ?", new String[]{id.toString()});
+
+        return res;
+    }
+
+    public Cursor getAllDataForBrooderMortalitySalesWhereInvId(Integer id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        Cursor res = db.rawQuery("select * from " + TABLE_MORTALITY_AND_SALES + " where MORT_AND_SALES_BROODER_INV_ID is ?", new String[]{id.toString()});
+
+        return res;
+    }
+
+    public Cursor getAllDataForReplacementMortalitySalesWhereInvId(Integer id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        Cursor res = db.rawQuery("select * from " + TABLE_MORTALITY_AND_SALES + " where MORT_AND_SALES_REPLACEMENT_INV_ID is ?", new String[]{id.toString()});
 
         return res;
     }
