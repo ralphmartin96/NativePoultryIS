@@ -51,13 +51,8 @@ public class CreateGenerationDialog extends DialogFragment {
         mActionOk = view.findViewById(R.id.action_ok);
         mInput_generation_number = view.findViewById(R.id.generation_no);
         context = getActivity().getApplicationContext();
-        // find the radiobutton by returned id
-
-
-
 
         myDb = new DatabaseHelper(getContext());
-
 
         mActionOk.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,23 +60,7 @@ public class CreateGenerationDialog extends DialogFragment {
 
 
                 if(!mInput_generation_number.getText().toString().isEmpty()){
-                    switch (mInput_generation_number.getText().toString().length()){
-                        case 1:
-                            generation_number = String.format("%04d" , Integer.parseInt(mInput_generation_number.getText().toString()));
-                            break;
-                        case 2:
-                            generation_number = String.format("%04d" , Integer.parseInt(mInput_generation_number.getText().toString()));
-                            break;
-                        case 3:
-                            generation_number = String.format("%04d" , Integer.parseInt(mInput_generation_number.getText().toString()));
-                            break;
-                        case 4:
-                            generation_number = String.format("%04d" , Integer.parseInt(mInput_generation_number.getText().toString()));
-                            break;
-                        default:
-                            break;
-
-                    }
+                    generation_number = String.format("%04d", Integer.parseInt(mInput_generation_number.getText().toString()));
 
                     FirebaseAuth mAuth;
 
@@ -94,7 +73,7 @@ public class CreateGenerationDialog extends DialogFragment {
                     String email = user.getEmail();
 
                     Uri photo = user.getPhotoUrl();
-                    ////sample farm_id pero dapat kukunin mo to sa database
+
                     Integer farm_id =0;
                     Cursor cursor_farm_id = myDb.getFarmIDFromUsers(email);
                     cursor_farm_id.moveToFirst();
@@ -103,27 +82,12 @@ public class CreateGenerationDialog extends DialogFragment {
                     }
 
                     Integer is_active = 1;
-                    //insert to local database
-                    boolean isInserted = myDb.insertDataGeneration(farm_id, generation_number, Integer.parseInt(mInput_generation_number.getText().toString()), is_active);
-
-
-                    //insert to web database
-
-                    //GET farm_id from database
-                    //check for internet connection
-                    /**/
-//                    boolean isNetworkAvailable = isNetworkAvailable();
-//                    if(isNetworkAvailable){
-//                        RequestParams requestParams = new RequestParams();
-//                        requestParams.add("farm_id", farm_id.toString());
-//                        requestParams.add("number", generation_number);
-//                        requestParams.add("numerical_generation", mInput_generation_number.getText().toString());
-//                        requestParams.add("is_active", is_active.toString());
-//                        requestParams.add("deleted_at", null);
-//
-//                        API_addGeneration(requestParams);
-//                    }
-
+                    boolean isInserted = myDb.insertDataGeneration(
+                            farm_id,
+                            generation_number,
+                            Integer.parseInt(mInput_generation_number.getText().toString()),
+                            is_active
+                    );
 
                     if(isInserted == true){
                         Toast.makeText(getActivity(),"Generation added to database", Toast.LENGTH_SHORT).show();
@@ -153,24 +117,4 @@ public class CreateGenerationDialog extends DialogFragment {
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
-    private void API_addGeneration(RequestParams requestParams){
-        APIHelper.addGeneration("addGeneration", requestParams, new BaseJsonHttpResponseHandler<Object>() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
-                Toast.makeText(context, "Successfully added Generation to web", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, String rawJsonResponse, Object response){
-
-                Toast.makeText(context, "Failed to add Generation to web", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            protected Object parseResponse(String rawJsonData, boolean isFailure) throws Throwable{
-                return null;
-            }
-        });
-    }
-
 }
