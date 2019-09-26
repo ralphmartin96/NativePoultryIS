@@ -48,9 +48,6 @@ public class CreateLineDialog extends DialogFragment {
         spinner = (Spinner) view.findViewById(R.id.line_spinner);
         context = getActivity().getApplicationContext();
 
-
-        // find the radiobutton by returned id
-       // spinner.setOnItemSelectedListener(this);
         loadSpinnerData();
 
         myDb = new DatabaseHelper(getContext());
@@ -66,54 +63,32 @@ public class CreateLineDialog extends DialogFragment {
                     cursor_generation.moveToFirst();
                     if(cursor_generation.getCount() != 0){
                         Integer generation_id = cursor_generation.getInt(0);
-                        String line = new String();
-                        switch (line_number.getText().toString().length()){
-                            case 1:
-                                line = String.format("%04d" , Integer.parseInt(line_number.getText().toString()));
-                                break;
-                            case 2:
-                                line = String.format("%04d" , Integer.parseInt(line_number.getText().toString()));
-                                break;
-                            case 3:
-                                line = String.format("%04d" ,Integer.parseInt(line_number.getText().toString()));
-                                break;
-                            case 4:
-                                line = String.format("%04d" , Integer.parseInt(line_number.getText().toString()));
-                                break;
-                            default:
-                                break;
+                        String line = line = String.format("%04d", Integer.parseInt(line_number.getText().toString()));
 
-                        }
-
-                        /*      ContentValues contentValues = new ContentValues();
-        contentValues.put(LINE_COL_1, line_number);
-        contentValues.put(LINE_COL_2, is_active);
-        contentValues.put(LINE_COL_3, line_generation_number);
-*/
+//                        switch (line_number.getText().toString().length()){
+//                            case 1:
+//                                line = String.format("%04d" , Integer.parseInt(line_number.getText().toString()));
+//                                break;
+//                            case 2:
+//                                line = String.format("%04d" , Integer.parseInt(line_number.getText().toString()));
+//                                break;
+//                            case 3:
+//                                line = String.format("%04d" ,Integer.parseInt(line_number.getText().toString()));
+//                                break;
+//                            case 4:
+//                                line = String.format("%04d" , Integer.parseInt(line_number.getText().toString()));
+//                                break;
+//                            default:
+//                                break;
+//
+//                        }
                         boolean isInserted = myDb.insertDataLine(line,1,generation_id);
 
-
-                        //add to web server
-//                        if(isNetworkAvailable()){
-//                            Integer is_active = 1;
-//                            RequestParams requestParams = new RequestParams();
-//                            requestParams.add("number", line);
-//                            requestParams.add("is_active", is_active.toString());
-//                            requestParams.add("generation_id", generation_id.toString());
-//                            requestParams.add("deleted_at", null);
-//
-//                            API_addLine(requestParams);
-//                        }
-
-
-
-                        if(isInserted == true){
+                        if (isInserted) {
                             Toast.makeText(getActivity(),"Generation added to database", Toast.LENGTH_SHORT).show();
                             Intent intent_line = new Intent(getActivity(), CreateGenerationsAndLines.class);
                             startActivity(intent_line);
-                            //adapter.notifyDataSetChanged();
                             getDialog().dismiss();
-
                         }else{
                             Toast.makeText(getActivity(),"Generation not added to database", Toast.LENGTH_SHORT).show();
                         }
@@ -123,8 +98,6 @@ public class CreateLineDialog extends DialogFragment {
                 }else{
                     Toast.makeText(getActivity(), "Please fill any empty fields", Toast.LENGTH_SHORT).show();
                 }
-
-
 
             }
 
