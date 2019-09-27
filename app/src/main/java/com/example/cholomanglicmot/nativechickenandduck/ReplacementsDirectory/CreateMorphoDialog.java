@@ -17,7 +17,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.cholomanglicmot.nativechickenandduck.APIHelper;
+import com.example.cholomanglicmot.nativechickenandduck.APIHelperAsync;
 import com.example.cholomanglicmot.nativechickenandduck.DatabaseHelper;
 import com.example.cholomanglicmot.nativechickenandduck.R;
 import com.loopj.android.http.BaseJsonHttpResponseHandler;
@@ -220,7 +220,7 @@ public class CreateMorphoDialog extends DialogFragment{
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
     private void API_addPhenoMorphos(RequestParams requestParams){
-        APIHelper.addPhenoMorphos("addPhenoMorphos", requestParams, new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.addPhenoMorphos("addPhenoMorphos", requestParams, new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
             //    Toast.makeText(getContext(), "Successfully added to web", Toast.LENGTH_SHORT).show();
@@ -239,7 +239,7 @@ public class CreateMorphoDialog extends DialogFragment{
         });
     }
     private void API_addPhenoMorphoValues(RequestParams requestParams){
-        APIHelper.addPhenoMorphoValues("addPhenoMorphoValues", requestParams, new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.addPhenoMorphoValues("addPhenoMorphoValues", requestParams, new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
 //                Toast.makeText(getContext(), "Successfully added to web", Toast.LENGTH_SHORT).show();

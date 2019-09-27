@@ -11,11 +11,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.cholomanglicmot.nativechickenandduck.APIHelper;
+import com.example.cholomanglicmot.nativechickenandduck.APIHelperAsync;
 import com.example.cholomanglicmot.nativechickenandduck.DatabaseHelper;
 import com.example.cholomanglicmot.nativechickenandduck.R;
 import com.google.gson.Gson;
@@ -142,7 +141,7 @@ public class BrooderInventoryActivity extends AppCompatActivity {
     }
 
     private void API_getBrooderInventory(){
-        APIHelper.getBrooderInventory("getBrooderInventory/", new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.getBrooderInventory("getBrooderInventory/", new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
 
@@ -191,7 +190,7 @@ public class BrooderInventoryActivity extends AppCompatActivity {
 
     private void API_updateBrooderInventory(){
 
-        APIHelper.getBrooderInventory("getBrooderInventory/", new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.getBrooderInventory("getBrooderInventory/", new BaseJsonHttpResponseHandler<Object>() {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
@@ -289,7 +288,7 @@ public class BrooderInventoryActivity extends AppCompatActivity {
     }
 
     private void API_addBrooderInventory(RequestParams requestParams){
-        APIHelper.addBrooderInventory("addBrooderInventory", requestParams, new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.addBrooderInventory("addBrooderInventory", requestParams, new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
                 Toast.makeText(getApplicationContext(), "Successfully synced brooder inventory to web", Toast.LENGTH_SHORT).show();

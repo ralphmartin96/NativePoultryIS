@@ -18,7 +18,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -26,7 +25,7 @@ import android.widget.ExpandableListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.cholomanglicmot.nativechickenandduck.APIHelper;
+import com.example.cholomanglicmot.nativechickenandduck.APIHelperAsync;
 import com.example.cholomanglicmot.nativechickenandduck.BreedersDirectory.CreateBreeders;
 import com.example.cholomanglicmot.nativechickenandduck.BroodersDirectory.CreateBrooders;
 import com.example.cholomanglicmot.nativechickenandduck.DashboardDirectory.DashBoardActivity;
@@ -282,7 +281,7 @@ public class CreatePen extends AppCompatActivity {
     }
 
     private void API_addPen(RequestParams requestParams){
-        APIHelper.addPen("addPen", requestParams, new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.addPen("addPen", requestParams, new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
                 Toast.makeText(getApplicationContext(), "Successfully synced pen to web", Toast.LENGTH_SHORT).show();
@@ -303,7 +302,7 @@ public class CreatePen extends AppCompatActivity {
 
     private void API_updatePen(String farm_id){
 
-        APIHelper.getPen("getPen/"+farm_id, new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.getPen("getPen/" + farm_id, new BaseJsonHttpResponseHandler<Object>() {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
@@ -392,7 +391,7 @@ public class CreatePen extends AppCompatActivity {
 
     private void TEST_updatePen(String farm_id){
 
-        APIHelper.getPen("getPen/"+farm_id, new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.getPen("getPen/" + farm_id, new BaseJsonHttpResponseHandler<Object>() {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
@@ -462,7 +461,7 @@ public class CreatePen extends AppCompatActivity {
 
     private void API_getPen(String farm_id){
 
-        APIHelper.getPen("getPen/"+farm_id, new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.getPen("getPen/" + farm_id, new BaseJsonHttpResponseHandler<Object>() {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){

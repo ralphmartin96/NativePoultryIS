@@ -11,11 +11,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.cholomanglicmot.nativechickenandduck.APIHelper;
+import com.example.cholomanglicmot.nativechickenandduck.APIHelperAsync;
 import com.example.cholomanglicmot.nativechickenandduck.DatabaseHelper;
 import com.example.cholomanglicmot.nativechickenandduck.R;
 import com.google.gson.Gson;
@@ -115,7 +114,7 @@ public class ReplacementInventoryActivity extends AppCompatActivity {
     }
     private void API_updateReplacementInventory(){
 
-        APIHelper.getReplacementInventory("getReplacementInventory/", new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.getReplacementInventory("getReplacementInventory/", new BaseJsonHttpResponseHandler<Object>() {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
@@ -212,7 +211,7 @@ public class ReplacementInventoryActivity extends AppCompatActivity {
         });
     }
     private void API_addReplacementInventory(RequestParams requestParams){
-        APIHelper.addReplacementInventory("addReplacementInventory", requestParams, new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.addReplacementInventory("addReplacementInventory", requestParams, new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
                 Toast.makeText(getApplicationContext(), "Successfully synced replacement inventory to web", Toast.LENGTH_SHORT).show();
@@ -232,7 +231,7 @@ public class ReplacementInventoryActivity extends AppCompatActivity {
     }
 
     private void API_getReplacementInventory(){
-        APIHelper.getReplacementInventory("getReplacementInventory/", new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.getReplacementInventory("getReplacementInventory/", new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
 

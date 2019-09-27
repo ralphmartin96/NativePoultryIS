@@ -20,7 +20,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.cholomanglicmot.nativechickenandduck.APIHelper;
+import com.example.cholomanglicmot.nativechickenandduck.APIHelperAsync;
 import com.example.cholomanglicmot.nativechickenandduck.DatabaseHelper;
 import com.example.cholomanglicmot.nativechickenandduck.R;
 import com.google.gson.Gson;
@@ -163,7 +163,7 @@ public class HatcheryRecords extends AppCompatActivity {
     }
 
     private void API_getHatcheryRecords(){
-        APIHelper.getHatcheryRecords("getHatcheryRecords/", new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.getHatcheryRecords("getHatcheryRecords/", new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
 
@@ -203,7 +203,7 @@ public class HatcheryRecords extends AppCompatActivity {
     }
 
     private void API_addHatcheryRecords(RequestParams requestParams){
-        APIHelper.addHatcheryRecords("addHatcheryRecords", requestParams, new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.addHatcheryRecords("addHatcheryRecords", requestParams, new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
                 Toast.makeText(getApplicationContext(), "Successfully synced hatchery records to web", Toast.LENGTH_SHORT).show();
@@ -223,7 +223,7 @@ public class HatcheryRecords extends AppCompatActivity {
     }
 
     private void API_updateHatchery(){
-        APIHelper.getHatcheryRecords("getHatcheryRecords/", new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.getHatcheryRecords("getHatcheryRecords/", new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
 

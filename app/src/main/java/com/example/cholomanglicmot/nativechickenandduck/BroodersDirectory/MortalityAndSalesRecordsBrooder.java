@@ -18,7 +18,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.cholomanglicmot.nativechickenandduck.APIHelper;
+import com.example.cholomanglicmot.nativechickenandduck.APIHelperAsync;
 import com.example.cholomanglicmot.nativechickenandduck.BreedersDirectory.Breeder_Inventory;
 import com.example.cholomanglicmot.nativechickenandduck.BreedersDirectory.Egg_Production;
 import com.example.cholomanglicmot.nativechickenandduck.BreedersDirectory.Mortality_Sales;
@@ -158,7 +158,7 @@ public class MortalityAndSalesRecordsBrooder extends AppCompatActivity {
     }
 
     private void API_getMortalityAndSales(){
-        APIHelper.getMortalityAndSales("getMortalityAndSales/", new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.getMortalityAndSales("getMortalityAndSales/", new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
 

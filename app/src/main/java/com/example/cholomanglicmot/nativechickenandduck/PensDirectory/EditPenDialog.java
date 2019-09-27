@@ -16,7 +16,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.cholomanglicmot.nativechickenandduck.APIHelper;
+import com.example.cholomanglicmot.nativechickenandduck.APIHelperAsync;
 import com.example.cholomanglicmot.nativechickenandduck.DatabaseHelper;
 import com.example.cholomanglicmot.nativechickenandduck.R;
 import com.loopj.android.http.BaseJsonHttpResponseHandler;
@@ -103,7 +103,7 @@ public class EditPenDialog extends DialogFragment {
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
     private void API_editPen(RequestParams requestParams){
-        APIHelper.editPen("editPen", requestParams, new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.editPen("editPen", requestParams, new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
                 Toast.makeText(context, "Successfully edited pen", Toast.LENGTH_SHORT).show();

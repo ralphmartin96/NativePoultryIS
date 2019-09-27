@@ -12,7 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.cholomanglicmot.nativechickenandduck.APIHelper;
+import com.example.cholomanglicmot.nativechickenandduck.APIHelperAsync;
 import com.example.cholomanglicmot.nativechickenandduck.BreedersDirectory.Breeder_PhenoMorphoView;
 import com.example.cholomanglicmot.nativechickenandduck.DatabaseHelper;
 import com.example.cholomanglicmot.nativechickenandduck.R;
@@ -104,7 +104,7 @@ public class ReplacementPhenoMorphoRecordsActivity extends AppCompatActivity {
     }
 
     private void API_addPhenoMorphos(RequestParams requestParams){
-        APIHelper.addPhenoMorphos("addPhenoMorphos", requestParams, new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.addPhenoMorphos("addPhenoMorphos", requestParams, new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
                 //    Toast.makeText(getContext(), "Successfully added to web", Toast.LENGTH_SHORT).show();
@@ -124,7 +124,7 @@ public class ReplacementPhenoMorphoRecordsActivity extends AppCompatActivity {
     }
 
     private void API_updatePhenoMorphos(){
-        APIHelper.getPhenoMorphos("getPhenoMorphos/", new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.getPhenoMorphos("getPhenoMorphos/", new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
 
@@ -211,7 +211,7 @@ public class ReplacementPhenoMorphoRecordsActivity extends AppCompatActivity {
     }
 
     private void API_addPhenoMorphoValues(RequestParams requestParams){
-        APIHelper.addPhenoMorphoValues("addPhenoMorphoValues", requestParams, new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.addPhenoMorphoValues("addPhenoMorphoValues", requestParams, new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
 //                Toast.makeText(getContext(), "Successfully added to web", Toast.LENGTH_SHORT).show();
@@ -232,7 +232,7 @@ public class ReplacementPhenoMorphoRecordsActivity extends AppCompatActivity {
     }
 
     private void API_updatePhenoMorphoValues(){
-        APIHelper.getPhenoMorphoValues("getPhenoMorphoValues/", new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.getPhenoMorphoValues("getPhenoMorphoValues/", new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
 

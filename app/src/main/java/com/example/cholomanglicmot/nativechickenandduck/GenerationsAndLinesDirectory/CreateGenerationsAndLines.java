@@ -24,7 +24,7 @@ import android.widget.ExpandableListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.cholomanglicmot.nativechickenandduck.APIHelper;
+import com.example.cholomanglicmot.nativechickenandduck.APIHelperAsync;
 import com.example.cholomanglicmot.nativechickenandduck.BreedersDirectory.CreateBreeders;
 import com.example.cholomanglicmot.nativechickenandduck.BroodersDirectory.CreateBrooders;
 import com.example.cholomanglicmot.nativechickenandduck.DashboardDirectory.DashBoardActivity;
@@ -316,7 +316,7 @@ public class CreateGenerationsAndLines extends AppCompatActivity {
 
 
     private void API_getFarmID(String email){
-        APIHelper.getFarmID("getFarmID/"+email, new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.getFarmID("getFarmID/" + email, new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
                 farm_id = rawJsonResponse;
@@ -339,7 +339,7 @@ public class CreateGenerationsAndLines extends AppCompatActivity {
     }
 
     private void API_getGeneration(String farm_id){
-        APIHelper.getGeneration("getGeneration/"+farm_id, new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.getGeneration("getGeneration/" + farm_id, new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response) {
 
@@ -379,7 +379,7 @@ public class CreateGenerationsAndLines extends AppCompatActivity {
 
     private void API_getLine(String generation_id){
        // for(int i = 0; i<arrayList_gen.size();i++){
-            APIHelper.getLine("getLine/"+generation_id, new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.getLine("getLine/" + generation_id, new BaseJsonHttpResponseHandler<Object>() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
 
@@ -416,7 +416,7 @@ public class CreateGenerationsAndLines extends AppCompatActivity {
 
 
     private void API_addGeneration(RequestParams requestParams){
-        APIHelper.addGeneration("addGeneration", requestParams, new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.addGeneration("addGeneration", requestParams, new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
                 Toast.makeText(getApplicationContext(), "Successfully synced generations to web", Toast.LENGTH_SHORT).show();
@@ -436,7 +436,7 @@ public class CreateGenerationsAndLines extends AppCompatActivity {
     }
 
     private void API_addLine(RequestParams requestParams){
-        APIHelper.addLine("addLine", requestParams, new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.addLine("addLine", requestParams, new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
                 Toast.makeText(getApplicationContext(), "Successfully synced lines to web", Toast.LENGTH_SHORT).show();
@@ -457,7 +457,7 @@ public class CreateGenerationsAndLines extends AppCompatActivity {
 
     private void API_updateGeneration(String farm_id){
 
-        APIHelper.getGeneration("getGeneration/"+farm_id, new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.getGeneration("getGeneration/" + farm_id, new BaseJsonHttpResponseHandler<Object>() {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
@@ -544,7 +544,7 @@ public class CreateGenerationsAndLines extends AppCompatActivity {
 
     private void API_updateLine(){
 
-        APIHelper.getLine("getLine/", new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.getLine("getLine/", new BaseJsonHttpResponseHandler<Object>() {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){

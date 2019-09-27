@@ -19,7 +19,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.example.cholomanglicmot.nativechickenandduck.APIHelper;
+import com.example.cholomanglicmot.nativechickenandduck.APIHelperAsync;
 import com.example.cholomanglicmot.nativechickenandduck.DatabaseHelper;
 import com.example.cholomanglicmot.nativechickenandduck.R;
 import com.loopj.android.http.BaseJsonHttpResponseHandler;
@@ -89,7 +89,7 @@ public class CreateLineDialog extends DialogFragment {
         return view;
     }
     private void API_addLine(RequestParams requestParams){
-        APIHelper.addLine("addLine", requestParams, new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.addLine("addLine", requestParams, new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
                 Toast.makeText(context, "Successfully added Line to web", Toast.LENGTH_SHORT).show();

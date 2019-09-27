@@ -29,7 +29,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.cholomanglicmot.nativechickenandduck.APIHelper;
+import com.example.cholomanglicmot.nativechickenandduck.APIHelperAsync;
 import com.example.cholomanglicmot.nativechickenandduck.DatabaseHelper;
 import com.example.cholomanglicmot.nativechickenandduck.PensDirectory.Pen;
 import com.example.cholomanglicmot.nativechickenandduck.R;
@@ -747,7 +747,7 @@ public class CreateReplacementDialog extends DialogFragment {
         return view;
     }
     private void API_editBrooderInventoryMaleFemale(RequestParams requestParams){
-        APIHelper.editBrooderInventoryMaleFemale("editBrooderInventoryMaleFemale", requestParams, new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.editBrooderInventoryMaleFemale("editBrooderInventoryMaleFemale", requestParams, new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
       //          Toast.makeText(context, "Successfully edited brooder male and female", Toast.LENGTH_SHORT).show();
@@ -766,7 +766,7 @@ public class CreateReplacementDialog extends DialogFragment {
         });
     }
     private void API_editPenCount(RequestParams requestParams){
-        APIHelper.editPenCount("editPenCount", requestParams, new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.editPenCount("editPenCount", requestParams, new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
 //                Toast.makeText(getContext(), "Successfully edited pen count", Toast.LENGTH_SHORT).show();
@@ -814,7 +814,7 @@ public class CreateReplacementDialog extends DialogFragment {
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
     private void API_addReplacement(RequestParams requestParams){
-        APIHelper.addReplacementFamily("addReplacementFamily", requestParams, new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.addReplacementFamily("addReplacementFamily", requestParams, new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
                 Toast.makeText(getContext(), "Successfully added to web", Toast.LENGTH_SHORT).show();
@@ -833,7 +833,7 @@ public class CreateReplacementDialog extends DialogFragment {
         });
     }
     private void API_getFarmID(String email){
-        APIHelper.getFarmID("getFarmID/"+email, new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.getFarmID("getFarmID/" + email, new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
 
@@ -870,7 +870,7 @@ public class CreateReplacementDialog extends DialogFragment {
         });
     }
     private void API_addReplacementInventory(RequestParams requestParams){
-        APIHelper.addReplacementInventory("addReplacementInventory", requestParams, new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.addReplacementInventory("addReplacementInventory", requestParams, new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
                 Toast.makeText(getActivity(), "Successfully added replacement inventory to web", Toast.LENGTH_SHORT).show();

@@ -23,7 +23,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.example.cholomanglicmot.nativechickenandduck.APIHelper;
+import com.example.cholomanglicmot.nativechickenandduck.APIHelperAsync;
 import com.example.cholomanglicmot.nativechickenandduck.DatabaseHelper;
 import com.example.cholomanglicmot.nativechickenandduck.PensDirectory.Pen;
 import com.example.cholomanglicmot.nativechickenandduck.R;
@@ -59,7 +59,7 @@ public class CreateBrooderDialog extends DialogFragment {
     Integer brooder_pen_id;
     Brooders_Pen brooders_pen;
     DatabaseHelper myDb;
-    APIHelper APIHelper;
+    APIHelperAsync APIHelperAsync;
     Random random = new Random();
     ArrayList<Pen> arrayListPen = new ArrayList<>();
     ArrayList<Pen> arrayListPen2 = new ArrayList<>();
@@ -135,7 +135,7 @@ public class CreateBrooderDialog extends DialogFragment {
 
             }
         });
-        APIHelper = new APIHelper();
+        APIHelperAsync = new APIHelperAsync();
         myDb = new DatabaseHelper(getContext());
 
         brooder_estimated_date_of_hatch.setOnClickListener(new View.OnClickListener() {
@@ -430,7 +430,7 @@ public class CreateBrooderDialog extends DialogFragment {
 
     }
     private void API_editPenCount(RequestParams requestParams){
-        APIHelper.editPenCount("editPenCount", requestParams, new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.editPenCount("editPenCount", requestParams, new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
 //                Toast.makeText(getContext(), "Successfully edited pen count", Toast.LENGTH_SHORT).show();
@@ -449,7 +449,7 @@ public class CreateBrooderDialog extends DialogFragment {
         });
     }
     private void API_addBrooder(RequestParams requestParams){
-        APIHelper.addBrooderFamily("addBrooderFamily", requestParams, new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.addBrooderFamily("addBrooderFamily", requestParams, new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
           //      Toast.makeText(getContext(), "Successfully added to web", Toast.LENGTH_SHORT).show();
@@ -468,7 +468,7 @@ public class CreateBrooderDialog extends DialogFragment {
         });
     }
     private void API_getFarmID(String email){
-        APIHelper.getFarmID("getFarmID/"+email, new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.getFarmID("getFarmID/" + email, new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
 
@@ -512,7 +512,7 @@ public class CreateBrooderDialog extends DialogFragment {
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
     private void API_addBrooderInventory(RequestParams requestParams){
-        APIHelper.addBrooderInventory("addBrooderInventory", requestParams, new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.addBrooderInventory("addBrooderInventory", requestParams, new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
 //                Toast.makeText(getActivity(), "Successfully added brooder inventory to web", Toast.LENGTH_SHORT).show();
@@ -533,7 +533,7 @@ public class CreateBrooderDialog extends DialogFragment {
 
 
     private void API_getFarmBatchingWeek(String farm_id){
-        APIHelper.getFarmBatchingWeek("getFarmBatchingWeek/"+farm_id, new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.getFarmBatchingWeek("getFarmBatchingWeek/" + farm_id, new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
 

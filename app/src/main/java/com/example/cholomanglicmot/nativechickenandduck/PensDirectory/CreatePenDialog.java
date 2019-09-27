@@ -3,8 +3,6 @@ package com.example.cholomanglicmot.nativechickenandduck.PensDirectory;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -19,7 +17,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
-import com.example.cholomanglicmot.nativechickenandduck.APIHelper;
+import com.example.cholomanglicmot.nativechickenandduck.APIHelperAsync;
 import com.example.cholomanglicmot.nativechickenandduck.DatabaseHelper;
 import com.example.cholomanglicmot.nativechickenandduck.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -149,7 +147,7 @@ public class CreatePenDialog extends DialogFragment {
     }
 
     private void API_addPen(RequestParams requestParams){
-        APIHelper.addPen("addPen", requestParams, new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.addPen("addPen", requestParams, new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
                 Toast.makeText(context, "Successfully added Pen to web", Toast.LENGTH_SHORT).show();

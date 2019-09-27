@@ -14,11 +14,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.cholomanglicmot.nativechickenandduck.APIHelper;
+import com.example.cholomanglicmot.nativechickenandduck.APIHelperAsync;
 import com.example.cholomanglicmot.nativechickenandduck.DatabaseHelper;
 import com.example.cholomanglicmot.nativechickenandduck.R;
 import com.loopj.android.http.BaseJsonHttpResponseHandler;
@@ -115,7 +114,7 @@ public class AddBreederDialog extends DialogFragment {
     }
 
     private void API_editBreederInventoryMaleFemale(RequestParams requestParams){
-        APIHelper.editBreederInventoryMaleFemale("editBreederInventoryMaleFemale", requestParams, new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.editBreederInventoryMaleFemale("editBreederInventoryMaleFemale", requestParams, new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
                 Toast.makeText(context, "Successfully edited breeder male and female", Toast.LENGTH_SHORT).show();

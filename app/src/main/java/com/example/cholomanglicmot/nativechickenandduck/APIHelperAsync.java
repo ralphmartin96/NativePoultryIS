@@ -4,16 +4,17 @@ package com.example.cholomanglicmot.nativechickenandduck;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+import com.loopj.android.http.SyncHttpClient;
 
 
-public class APIHelper {
+public class APIHelperAsync {
 
     //private final static String BASE_URL = "http://192.168.254.102:8080/api/";
     private final static String BASE_URL = "http://nativepoultry.pab-is.cf/api/";
 
     private static AsyncHttpClient client = new AsyncHttpClient();
 
-    public APIHelper(){
+    public APIHelperAsync() {
 
     }
 

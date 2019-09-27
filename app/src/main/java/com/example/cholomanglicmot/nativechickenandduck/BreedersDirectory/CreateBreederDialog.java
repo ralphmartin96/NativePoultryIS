@@ -26,7 +26,7 @@ import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.Toast;
 
-import com.example.cholomanglicmot.nativechickenandduck.APIHelper;
+import com.example.cholomanglicmot.nativechickenandduck.APIHelperAsync;
 import com.example.cholomanglicmot.nativechickenandduck.DatabaseHelper;
 import com.example.cholomanglicmot.nativechickenandduck.PensDirectory.Pen;
 import com.example.cholomanglicmot.nativechickenandduck.R;
@@ -80,7 +80,6 @@ public class CreateBreederDialog extends DialogFragment {
         View view = inflater.inflate(R.layout.dialog_create_breeder, container, false);
         mActionOk = view.findViewById(R.id.action_ok);
         context = getActivity();
-        //breeder_pen = getArguments().getString("breeder_pen");
         myDb = new DatabaseHelper(getContext());
 
         in_or_out = view.findViewById(R.id.in_or_out);
@@ -110,7 +109,6 @@ public class CreateBreederDialog extends DialogFragment {
         female_quantity = view.findViewById(R.id.female_quantity);
         date_transferred = view.findViewById(R.id.date_transferred);
 
-        //breeder_code = view.findViewById(R.id.breeder_code);
         male_wingband = view.findViewById(R.id.male_wingband);
         female_wingband = view.findViewById(R.id.female_wingband);
         male_wingband2 = view.findViewById(R.id.male_wingband2);
@@ -239,7 +237,6 @@ public class CreateBreederDialog extends DialogFragment {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String selected_generation = outside_place_to_pen.getSelectedItem().toString();
-                //loadSpinnerDataForLine(selected_generation);
             }
 
             @Override
@@ -404,17 +401,17 @@ public class CreateBreederDialog extends DialogFragment {
                         }
                         boolean isInserted = myDb.insertDataBreeder(familyID, null,outside_date_transferred.getText().toString(),null);
                         //kunin yung selected pen tapos kung 0 yung content niya, ay
-                        if(isNetworkAvailable) {
-
-
-                            RequestParams requestParams = new RequestParams();
-                            requestParams.add("family_id", familyID.toString());
-                            requestParams.add("date_added", outside_date_transferred.getText().toString());
-                            requestParams.add("deleted_at", null);
-
-                            API_addBreeder(requestParams);
-
-                        }
+//                        if(isNetworkAvailable) {
+//
+//
+//                            RequestParams requestParams = new RequestParams();
+//                            requestParams.add("family_id", familyID.toString());
+//                            requestParams.add("date_added", outside_date_transferred.getText().toString());
+//                            requestParams.add("deleted_at", null);
+//
+//                            API_addBreeder(requestParams);
+//
+//                        }
 
 
                         Cursor cursor_pen = myDb.getAllDataFromPenWhere(outside_place_to_pen.getSelectedItem().toString());
@@ -426,16 +423,16 @@ public class CreateBreederDialog extends DialogFragment {
 
                         //updatePen
                         Integer current_pen9 = Integer.parseInt(outside_male_quantity.getText().toString())+Integer.parseInt(outside_female_quantity.getText().toString())+current;
-                        if(isNetworkAvailable()){
-
-                            RequestParams requestParams = new RequestParams();
-                            requestParams.add("pen_number", outside_place_to_pen.getSelectedItem().toString());
-                            requestParams.add("pen_current", current_pen9.toString());
-
-
-
-                            API_editPenCount(requestParams);
-                        }
+//                        if(isNetworkAvailable()){
+//
+//                            RequestParams requestParams = new RequestParams();
+//                            requestParams.add("pen_number", outside_place_to_pen.getSelectedItem().toString());
+//                            requestParams.add("pen_current", current_pen9.toString());
+//
+//
+//
+//                            API_editPenCount(requestParams);
+//                        }
 
                         Cursor cursor = myDb.getIDFromBreedersWhere(familyID);
                         cursor.moveToFirst();
@@ -453,31 +450,29 @@ public class CreateBreederDialog extends DialogFragment {
                         if(cursor2.getCount() != 0){
                             id_0 = cursor2.getInt(0);
                         }
-                        if(isNetworkAvailable){
-                            Integer breeder_total = Integer.parseInt(outside_female_quantity.getText().toString())+Integer.parseInt(outside_male_quantity.getText().toString());
-                            RequestParams requestParams = new RequestParams();
-                           // requestParams.add("id", id_0.toString());
-                            requestParams.add("breeder_id", id.toString());
-                            requestParams.add("pen_id", pen_id.toString());
-                            requestParams.add("breeder_tag", brooder_tag2);
-                            requestParams.add("batching_date", formatted);
-                            requestParams.add("number_male", outside_male_quantity.getText().toString());
-                            requestParams.add("number_female", outside_female_quantity.getText().toString());
-                            requestParams.add("total", breeder_total.toString());
-                            requestParams.add("last_update", outside_date_transferred.getText().toString());
-                            requestParams.add("deleted_at", null);
-                            requestParams.add("breeder_code", farmid.toString()+outside_generation_spinner.getSelectedItem().toString()+outside_line_spinner.getSelectedItem().toString()+outside_family_spinner.getSelectedItem().toString()+outside_date_transferred.getText().toString());
-                            requestParams.add("male_wingband", "["+male_wingband2.getText().toString() + "]");
-                            requestParams.add("female_wingband", "["+female_wingband2.getText().toString()+ "]");
+//                        if(isNetworkAvailable){
+//                            Integer breeder_total = Integer.parseInt(outside_female_quantity.getText().toString())+Integer.parseInt(outside_male_quantity.getText().toString());
+//                            RequestParams requestParams = new RequestParams();
+//                           // requestParams.add("id", id_0.toString());
+//                            requestParams.add("breeder_id", id.toString());
+//                            requestParams.add("pen_id", pen_id.toString());
+//                            requestParams.add("breeder_tag", brooder_tag2);
+//                            requestParams.add("batching_date", formatted);
+//                            requestParams.add("number_male", outside_male_quantity.getText().toString());
+//                            requestParams.add("number_female", outside_female_quantity.getText().toString());
+//                            requestParams.add("total", breeder_total.toString());
+//                            requestParams.add("last_update", outside_date_transferred.getText().toString());
+//                            requestParams.add("deleted_at", null);
+//                            requestParams.add("breeder_code", farmid.toString()+outside_generation_spinner.getSelectedItem().toString()+outside_line_spinner.getSelectedItem().toString()+outside_family_spinner.getSelectedItem().toString()+outside_date_transferred.getText().toString());
+//                            requestParams.add("male_wingband", "["+male_wingband2.getText().toString() + "]");
+//                            requestParams.add("female_wingband", "["+female_wingband2.getText().toString()+ "]");
+//
+//
+//                            API_addBreederInventory(requestParams);
+//                        }
 
 
-                            API_addBreederInventory(requestParams);
-                        }
-
-
-
-
-                        if(isInserted == true && isInventoryInserted == true){
+                        if (isInserted && isInventoryInserted) {
                             Toast.makeText(getActivity(),"Breeder added to database", Toast.LENGTH_SHORT).show();
                             Intent intent_line = new Intent(getActivity(), CreateBreeders.class);
                             startActivity(intent_line);
@@ -505,18 +500,18 @@ public class CreateBreederDialog extends DialogFragment {
                             female_familyID = cursor_female_familyID.getInt(0);
                         }
                         boolean isInserted = myDb.insertDataBreeder(familyID, female_familyID,date_transferred.getText().toString(),null);
-                        if(isNetworkAvailable) {
-
-
-                            RequestParams requestParams = new RequestParams();
-                            requestParams.add("family_id", familyID.toString());
-                            requestParams.add("female_family_id", female_familyID.toString());
-                            requestParams.add("date_added", date_transferred.getText().toString());
-                            requestParams.add("deleted_at", null);
-
-                            API_addBreeder(requestParams);
-
-                        }
+//                        if(isNetworkAvailable) {
+//
+//
+//                            RequestParams requestParams = new RequestParams();
+//                            requestParams.add("family_id", familyID.toString());
+//                            requestParams.add("female_family_id", female_familyID.toString());
+//                            requestParams.add("date_added", date_transferred.getText().toString());
+//                            requestParams.add("deleted_at", null);
+//
+//                            API_addBreeder(requestParams);
+//
+//                        }
 
 
                         //put string operations here
@@ -553,16 +548,16 @@ public class CreateBreederDialog extends DialogFragment {
 
                         //update the current male and female count of the replacement inventory
                         boolean isUpdated = myDb.updateReplacementInventoryMaleCountAndTotal(replacement_tag_2, new_male_count, new_male_total);
-                        if(isNetworkAvailable()){
-
-                            RequestParams requestParams = new RequestParams();
-                            requestParams.add("replacement_inv_id", id1.toString());
-                            requestParams.add("male", new_male_count.toString());
-                            requestParams.add("total_", new_male_total.toString());
-
-
-                            API_editReplacementInventoryMaleFemale(requestParams);
-                        }
+//                        if(isNetworkAvailable()){
+//
+//                            RequestParams requestParams = new RequestParams();
+//                            requestParams.add("replacement_inv_id", id1.toString());
+//                            requestParams.add("male", new_male_count.toString());
+//                            requestParams.add("total_", new_male_total.toString());
+//
+//
+//                            API_editReplacementInventoryMaleFemale(requestParams);
+//                        }
 
                         //updatePen
 
@@ -596,16 +591,16 @@ public class CreateBreederDialog extends DialogFragment {
 
                         //updatePen
                         Integer current_pen0 = current_2-maleCount;
-                        if(isNetworkAvailable()){
-
-                            RequestParams requestParams = new RequestParams();
-                            requestParams.add("pen_number", replacement_pen_number);
-                            requestParams.add("pen_current", current_pen0.toString());
-
-
-
-                            API_editPenCount(requestParams);
-                        }
+//                        if(isNetworkAvailable()){
+//
+//                            RequestParams requestParams = new RequestParams();
+//                            requestParams.add("pen_number", replacement_pen_number);
+//                            requestParams.add("pen_current", current_pen0.toString());
+//
+//
+//
+//                            API_editPenCount(requestParams);
+//                        }
 
 
 
@@ -638,16 +633,16 @@ public class CreateBreederDialog extends DialogFragment {
 
 
                         boolean isUpdatedFemale = myDb.updateReplacementInventoryFemaleCountAndTotal(female_replacement_tag_2,new_female_count, new_female_total);
-                        if(isNetworkAvailable()){
-
-                            RequestParams requestParams = new RequestParams();
-                            requestParams.add("replacement_inv_id", id3.toString());
-                            requestParams.add("female", new_female_count.toString());
-                            requestParams.add("total_", new_female_total.toString());
-
-
-                            API_editReplacementInventoryMaleFemale(requestParams);
-                        }
+//                        if(isNetworkAvailable()){
+//
+//                            RequestParams requestParams = new RequestParams();
+//                            requestParams.add("replacement_inv_id", id3.toString());
+//                            requestParams.add("female", new_female_count.toString());
+//                            requestParams.add("total_", new_female_total.toString());
+//
+//
+//                            API_editReplacementInventoryMaleFemale(requestParams);
+//                        }
 
                         //updateFemale
                         Cursor cursor4 = myDb.getAllDataFromPen();
@@ -680,16 +675,16 @@ public class CreateBreederDialog extends DialogFragment {
                         boolean isBrooderPenUpdated_2 = myDb.updatePen(female_replacement_pen_number, "Grower", total_3,  current_3-femaleCount);
                         //updateReplacementPen
                         Integer current_pen2 = current_3-femaleCount;
-                        if(isNetworkAvailable()){
-
-                            RequestParams requestParams = new RequestParams();
-                            requestParams.add("pen_number", female_replacement_pen_number);
-                            requestParams.add("pen_current", current_pen2.toString());
-
-
-
-                            API_editPenCount(requestParams);
-                        }
+//                        if(isNetworkAvailable()){
+//
+//                            RequestParams requestParams = new RequestParams();
+//                            requestParams.add("pen_number", female_replacement_pen_number);
+//                            requestParams.add("pen_current", current_pen2.toString());
+//
+//
+//
+//                            API_editPenCount(requestParams);
+//                        }
 
 
 
@@ -701,16 +696,16 @@ public class CreateBreederDialog extends DialogFragment {
                         boolean isPenUpdated = myDb.updatePen(place_to_pen.getSelectedItem().toString(), "Layer", total,(Integer.parseInt(quantity.getText().toString())+Integer.parseInt(female_quantity.getText().toString())+current));
                        // updatePenBreeder
                         Integer current_pen = (Integer.parseInt(quantity.getText().toString())+Integer.parseInt(female_quantity.getText().toString())+current);
-                        if(isNetworkAvailable()){
-
-                            RequestParams requestParams = new RequestParams();
-                            requestParams.add("pen_number", place_to_pen.getSelectedItem().toString());
-                            requestParams.add("pen_current", current_pen.toString());
-
-
-
-                            API_editPenCount(requestParams);
-                        }
+//                        if(isNetworkAvailable()){
+//
+//                            RequestParams requestParams = new RequestParams();
+//                            requestParams.add("pen_number", place_to_pen.getSelectedItem().toString());
+//                            requestParams.add("pen_current", current_pen.toString());
+//
+//
+//
+//                            API_editPenCount(requestParams);
+//                        }
 
 
                         Cursor cursor = myDb.getIDFromBreedersWhere(familyID);
@@ -733,29 +728,29 @@ public class CreateBreederDialog extends DialogFragment {
                         if(cursor2_breeder.getCount() != 0){
                             id_0 = cursor2_breeder.getInt(0);
                         }
-                        if(isNetworkAvailable){
-                            Integer breeder_total = Integer.parseInt(female_quantity.getText().toString())+Integer.parseInt(quantity.getText().toString());
-                            RequestParams requestParams = new RequestParams();
-                            //requestParams.add("id", id_0.toString());
-                            requestParams.add("breeder_id", id.toString());
-                            requestParams.add("pen_id", pen_id.toString());
-                            requestParams.add("breeder_tag", brooder_tag2);
-                            requestParams.add("batching_date", formatted);
-                            requestParams.add("number_male", quantity.getText().toString());
-                            requestParams.add("number_female", female_quantity.getText().toString());
-                            requestParams.add("total", breeder_total.toString());
-                            requestParams.add("last_update", date_transferred.getText().toString());
-                            requestParams.add("deleted_at", null);
-                            requestParams.add("breeder_code", farmid.toString()+generation_spinner.getSelectedItem().toString()+line_spinner.getSelectedItem().toString()+family_spinner.getSelectedItem().toString()+date_transferred.getText().toString());
-                            requestParams.add("male_wingband", "["+male_wingband.getText().toString()+ "]");
-                            requestParams.add("female_wingband", "["+female_wingband.getText().toString()+ "]");
-
-
-
-
-                            API_addBreederInventory(requestParams);
-                        }
-                        if(isInserted == true && isInventoryInserted == true){
+//                        if(isNetworkAvailable){
+//                            Integer breeder_total = Integer.parseInt(female_quantity.getText().toString())+Integer.parseInt(quantity.getText().toString());
+//                            RequestParams requestParams = new RequestParams();
+//                            //requestParams.add("id", id_0.toString());
+//                            requestParams.add("breeder_id", id.toString());
+//                            requestParams.add("pen_id", pen_id.toString());
+//                            requestParams.add("breeder_tag", brooder_tag2);
+//                            requestParams.add("batching_date", formatted);
+//                            requestParams.add("number_male", quantity.getText().toString());
+//                            requestParams.add("number_female", female_quantity.getText().toString());
+//                            requestParams.add("total", breeder_total.toString());
+//                            requestParams.add("last_update", date_transferred.getText().toString());
+//                            requestParams.add("deleted_at", null);
+//                            requestParams.add("breeder_code", farmid.toString()+generation_spinner.getSelectedItem().toString()+line_spinner.getSelectedItem().toString()+family_spinner.getSelectedItem().toString()+date_transferred.getText().toString());
+//                            requestParams.add("male_wingband", "["+male_wingband.getText().toString()+ "]");
+//                            requestParams.add("female_wingband", "["+female_wingband.getText().toString()+ "]");
+//
+//
+//
+//
+//                            API_addBreederInventory(requestParams);
+//                        }
+                        if (isInserted && isInventoryInserted) {
                             Toast.makeText(getActivity(),"Breeder added to database", Toast.LENGTH_SHORT).show();
                             Intent intent_line = new Intent(getActivity(), CreateBreeders.class);
                             startActivity(intent_line);
@@ -779,7 +774,7 @@ public class CreateBreederDialog extends DialogFragment {
         return view;
     }
     private void API_editReplacementInventoryMaleFemale(RequestParams requestParams){
-        APIHelper.editReplacementInventoryMaleFemale("editReplacementInventoryMaleFemale", requestParams, new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.editReplacementInventoryMaleFemale("editReplacementInventoryMaleFemale", requestParams, new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
        //         Toast.makeText(context, "Successfully edited replacement male and female", Toast.LENGTH_SHORT).show();
@@ -798,7 +793,7 @@ public class CreateBreederDialog extends DialogFragment {
         });
     }
     private void API_editPenCount(RequestParams requestParams){
-        APIHelper.editPenCount("editPenCount", requestParams, new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.editPenCount("editPenCount", requestParams, new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
 //                Toast.makeText(getContext(), "Successfully edited pen count", Toast.LENGTH_SHORT).show();
@@ -965,7 +960,7 @@ public class CreateBreederDialog extends DialogFragment {
         builder.show();
     }
     private void API_addBreeder(RequestParams requestParams){
-        APIHelper.addBreederFamily("addBreederFamily", requestParams, new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.addBreederFamily("addBreederFamily", requestParams, new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
 //                Toast.makeText(getContext(), "Successfully added to web", Toast.LENGTH_SHORT).show();
@@ -984,7 +979,7 @@ public class CreateBreederDialog extends DialogFragment {
         });
     }
     private void API_addBreederInventory(RequestParams requestParams){
-        APIHelper.addBreederInventory("addBreederInventory", requestParams, new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.addBreederInventory("addBreederInventory", requestParams, new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
 //                Toast.makeText(getActivity(), "Successfully added brooder inventory to web", Toast.LENGTH_SHORT).show();

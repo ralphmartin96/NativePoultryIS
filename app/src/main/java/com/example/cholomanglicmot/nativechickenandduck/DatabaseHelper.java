@@ -4661,11 +4661,11 @@ public Integer getAllMaleFromBrooders(Integer farm_id){
         return feeding;
     }
 
-    public int getPensSizeWithID(Integer id){
+    public int getPensSize() {
         SQLiteDatabase db = this.getWritableDatabase();
         int size=100;
 
-        Cursor res = db.rawQuery("SELECT COUNT(*) FROM " +TABLE_PEN+ " WHERE farm_id is ?", new String[]{id.toString()});
+        Cursor res = db.rawQuery("SELECT COUNT(*) FROM " + TABLE_PEN, new String[]{});
         res.moveToFirst();
 
         if(res.getCount() != 0) size = res.getInt(0);
@@ -4679,7 +4679,7 @@ public Integer getAllMaleFromBrooders(Integer farm_id){
         int size=100;
 
 
-        Cursor res = db.rawQuery("SELECT COUNT(*) FROM " +TABLE_GENERATION+ " WHERE farm_id is ?", new String[]{});
+        Cursor res = db.rawQuery("SELECT COUNT(*) FROM " + TABLE_GENERATION, new String[]{});
         res.moveToFirst();
 
         if(res.getCount() != 0) size = res.getInt(0);
@@ -4847,6 +4847,18 @@ public Integer getAllMaleFromBrooders(Integer farm_id){
         return size;
     }
 
+    public int getReplacementSize() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        int size = 0;
+
+        Cursor res = db.rawQuery("SELECT COUNT(*) FROM " + TABLE_REPLACEMENT, new String[]{});
+        res.moveToFirst();
+
+        if (res.getCount() != 0) size = res.getInt(0);
+
+        return size;
+    }
+
     public int getReplacementInventorySize() {
         SQLiteDatabase db = this.getWritableDatabase();
         int size = 0;
@@ -4859,11 +4871,47 @@ public Integer getAllMaleFromBrooders(Integer farm_id){
         return size;
     }
 
+    public int getReplacementFeedingSize() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        int size = 0;
+
+        Cursor res = db.rawQuery("SELECT COUNT(*) FROM " + TABLE_REPLACEMENT_FEEDING_RECORDS, new String[]{});
+        res.moveToFirst();
+
+        if (res.getCount() != 0) size = res.getInt(0);
+
+        return size;
+    }
+
     public int getReplacementGrowthSize() {
         SQLiteDatabase db = this.getWritableDatabase();
         int size = 0;
 
         Cursor res = db.rawQuery("SELECT COUNT(*) FROM " + TABLE_REPLACEMENT_GROWTH_RECORDS, new String[]{});
+        res.moveToFirst();
+
+        if (res.getCount() != 0) size = res.getInt(0);
+
+        return size;
+    }
+
+    public int getPhenoMorphosSize() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        int size = 0;
+
+        Cursor res = db.rawQuery("SELECT COUNT(*) FROM " + TABLE_PHENO_MORPHOS, new String[]{});
+        res.moveToFirst();
+
+        if (res.getCount() != 0) size = res.getInt(0);
+
+        return size;
+    }
+
+    public int getPhenoMorphoValuesSize() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        int size = 0;
+
+        Cursor res = db.rawQuery("SELECT COUNT(*) FROM " + TABLE_PHENO_MORPHO_VALUES, new String[]{});
         res.moveToFirst();
 
         if (res.getCount() != 0) size = res.getInt(0);

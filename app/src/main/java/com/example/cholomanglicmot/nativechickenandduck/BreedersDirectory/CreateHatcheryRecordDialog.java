@@ -26,7 +26,7 @@ import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.Toast;
 
-import com.example.cholomanglicmot.nativechickenandduck.APIHelper;
+import com.example.cholomanglicmot.nativechickenandduck.APIHelperAsync;
 import com.example.cholomanglicmot.nativechickenandduck.DatabaseHelper;
 import com.example.cholomanglicmot.nativechickenandduck.PensDirectory.Pen;
 import com.example.cholomanglicmot.nativechickenandduck.R;
@@ -652,7 +652,7 @@ public class CreateHatcheryRecordDialog extends DialogFragment{
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
     private void API_addBrooderInventory(RequestParams requestParams){
-        APIHelper.addBrooderInventory("addBrooderInventory", requestParams, new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.addBrooderInventory("addBrooderInventory", requestParams, new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
 //                Toast.makeText(getActivity(), "Successfully added brooder inventory to web", Toast.LENGTH_SHORT).show();
@@ -672,7 +672,7 @@ public class CreateHatcheryRecordDialog extends DialogFragment{
     }
 
     private void API_addHatcheryRecords(RequestParams requestParams){
-        APIHelper.addHatcheryRecords("addHatcheryRecords", requestParams, new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.addHatcheryRecords("addHatcheryRecords", requestParams, new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
 //                Toast.makeText(getActivity(), "Successfully added brooder inventory to web", Toast.LENGTH_SHORT).show();
@@ -715,7 +715,7 @@ public class CreateHatcheryRecordDialog extends DialogFragment{
     }
 
     private void API_addBrooder(RequestParams requestParams){
-        APIHelper.addBrooderFamily("addBrooderFamily", requestParams, new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.addBrooderFamily("addBrooderFamily", requestParams, new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
                 Toast.makeText(getContext(), "Successfully added to web", Toast.LENGTH_SHORT).show();

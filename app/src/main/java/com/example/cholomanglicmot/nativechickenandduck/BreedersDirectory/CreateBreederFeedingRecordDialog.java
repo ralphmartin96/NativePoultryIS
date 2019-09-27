@@ -20,7 +20,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.cholomanglicmot.nativechickenandduck.APIHelper;
+import com.example.cholomanglicmot.nativechickenandduck.APIHelperAsync;
 import com.example.cholomanglicmot.nativechickenandduck.DatabaseHelper;
 import com.example.cholomanglicmot.nativechickenandduck.R;
 import com.loopj.android.http.BaseJsonHttpResponseHandler;
@@ -85,24 +85,15 @@ public class CreateBreederFeedingRecordDialog extends DialogFragment {
         });
 
 
-
         mActionOk = view.findViewById(R.id.action_ok);
         mActionOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(!brooder_feeding_date_collected.getText().toString().isEmpty() && !brooder_feeding_record_offered.getText().toString().isEmpty() && !brooder_feeding_record_refused.getText().toString().isEmpty()){
-                    //kunin mo yung
-
-
-////////////////////////
 
                     Cursor cursor_breeder_inventory = myDb.getAllDataFromBreederInventory(); //para sa pagstore ng data sa arraylist
                     cursor_breeder_inventory.moveToFirst();
                     if(cursor_breeder_inventory.getCount() == 0){
-                        //show message
-
-                      //  Toast.makeText(getActivity(),"Add Brooders first", Toast.LENGTH_LONG).show();
-
                     }else {
                         do {
 
@@ -217,24 +208,24 @@ public class CreateBreederFeedingRecordDialog extends DialogFragment {
                         boolean isInserted = myDb.insertDataBreederFeedingRecords( key ,brooder_feeding_date_collected.getText().toString(), Float.parseFloat(brooder_feeding_record_offered.getText().toString()), Float.parseFloat(brooder_feeding_record_refused.getText().toString()),brooder_feeding_record_remarks.getText().toString(),null);
 
 
-                        if(isNetworkAvailable){
-
-                            RequestParams requestParams = new RequestParams();
-
-                            requestParams.add("breeder_inventory_id", key.toString());
-                            requestParams.add("date_collected", brooder_feeding_date_collected.getText().toString());
-                            requestParams.add("amount_offered", valueOffered.toString());
-                            requestParams.add("amount_refused", valueRefused.toString());
-                            requestParams.add("remarks", brooder_feeding_record_remarks.getText().toString());
-                            requestParams.add("deleted_at", null);
-
-
-
-                            API_addBreederFeeding(requestParams);
-
-
-
-                        }
+//                        if(isNetworkAvailable){
+//
+//                            RequestParams requestParams = new RequestParams();
+//
+//                            requestParams.add("breeder_inventory_id", key.toString());
+//                            requestParams.add("date_collected", brooder_feeding_date_collected.getText().toString());
+//                            requestParams.add("amount_offered", valueOffered.toString());
+//                            requestParams.add("amount_refused", valueRefused.toString());
+//                            requestParams.add("remarks", brooder_feeding_record_remarks.getText().toString());
+//                            requestParams.add("deleted_at", null);
+//
+//
+//
+//                            API_addBreederFeeding(requestParams);
+//
+//
+//
+//                        }
                         if(isInserted){
                             //continue
                         }else{
@@ -284,7 +275,7 @@ public class CreateBreederFeedingRecordDialog extends DialogFragment {
     }
 
     private boolean API_addBreederFeeding(RequestParams requestParams){
-        APIHelper.addBreederFeeding("addBreederFeeding", requestParams, new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.addBreederFeeding("addBreederFeeding", requestParams, new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
                 Toast.makeText(getActivity(), "Successfully added brooder feeding record to web", Toast.LENGTH_SHORT).show();

@@ -24,7 +24,7 @@ import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.Toast;
 
-import com.example.cholomanglicmot.nativechickenandduck.APIHelper;
+import com.example.cholomanglicmot.nativechickenandduck.APIHelperAsync;
 import com.example.cholomanglicmot.nativechickenandduck.DatabaseHelper;
 import com.example.cholomanglicmot.nativechickenandduck.R;
 import com.loopj.android.http.BaseJsonHttpResponseHandler;
@@ -445,7 +445,7 @@ public class CreateBrooderGrowthRecordDialog extends DialogFragment {
     }
 
     private boolean API_addBrooderGrowth(RequestParams requestParams){
-        APIHelper.addBrooderGrowth("addBrooderGrowth", requestParams, new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.addBrooderGrowth("addBrooderGrowth", requestParams, new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
                // Toast.makeText(getActivity(), "Successfully added brooder growth record to web", Toast.LENGTH_SHORT).show();

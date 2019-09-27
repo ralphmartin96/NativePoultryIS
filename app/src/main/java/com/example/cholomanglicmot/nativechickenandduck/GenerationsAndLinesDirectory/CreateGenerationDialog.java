@@ -20,15 +20,10 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
-import com.example.cholomanglicmot.nativechickenandduck.APIHelper;
 import com.example.cholomanglicmot.nativechickenandduck.DatabaseHelper;
 import com.example.cholomanglicmot.nativechickenandduck.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.loopj.android.http.BaseJsonHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
-
-import cz.msebera.android.httpclient.Header;
 
 public class CreateGenerationDialog extends DialogFragment {
 

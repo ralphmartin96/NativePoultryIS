@@ -20,7 +20,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.cholomanglicmot.nativechickenandduck.APIHelper;
+import com.example.cholomanglicmot.nativechickenandduck.APIHelperAsync;
 import com.example.cholomanglicmot.nativechickenandduck.DatabaseHelper;
 import com.example.cholomanglicmot.nativechickenandduck.R;
 import com.loopj.android.http.BaseJsonHttpResponseHandler;
@@ -294,7 +294,7 @@ public class CreateReplacementFeedingRecordDialog extends DialogFragment {
         builder.show();
     }
     private boolean API_addReplacementFeeding(RequestParams requestParams){
-        APIHelper.addReplacementFeeding("addReplacementFeeding", requestParams, new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.addReplacementFeeding("addReplacementFeeding", requestParams, new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
 //                Toast.makeText(getActivity(), "Successfully added brooder feeding record to web", Toast.LENGTH_SHORT).show();

@@ -17,14 +17,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.cholomanglicmot.nativechickenandduck.APIHelper;
+import com.example.cholomanglicmot.nativechickenandduck.APIHelperAsync;
 import com.example.cholomanglicmot.nativechickenandduck.BreedersDirectory.CreateBreeders;
 import com.example.cholomanglicmot.nativechickenandduck.BroodersDirectory.CreateBrooders;
 import com.example.cholomanglicmot.nativechickenandduck.DashboardDirectory.DashBoardActivity;
@@ -34,7 +33,6 @@ import com.example.cholomanglicmot.nativechickenandduck.DatabaseHelper;
 import com.example.cholomanglicmot.nativechickenandduck.FarmSettingsDirectory.MainActivity;
 import com.example.cholomanglicmot.nativechickenandduck.GenerationsAndLinesDirectory.CreateGenerationsAndLines;
 import com.example.cholomanglicmot.nativechickenandduck.PensDirectory.CreatePen;
-import com.example.cholomanglicmot.nativechickenandduck.PensDirectory.Pen;
 import com.example.cholomanglicmot.nativechickenandduck.ProjectAdapter;
 import com.example.cholomanglicmot.nativechickenandduck.R;
 import com.example.cholomanglicmot.nativechickenandduck.ReplacementsDirectory.CreateReplacements;
@@ -339,7 +337,7 @@ public class CreateFamilies extends AppCompatActivity {
     }
 
     private void API_getFarmID(String email){
-        APIHelper.getFarmID("getFarmID/"+email, new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.getFarmID("getFarmID/" + email, new BaseJsonHttpResponseHandler<Object>() {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
@@ -364,7 +362,7 @@ public class CreateFamilies extends AppCompatActivity {
     }
 
     private void API_getFamilyForDisplay(String farm_id){
-        APIHelper.getFamilyForDisplay("getFamilyForDisplay/"+farm_id, new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.getFamilyForDisplay("getFamilyForDisplay/" + farm_id, new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
 
@@ -392,7 +390,7 @@ public class CreateFamilies extends AppCompatActivity {
     }
 
     private void API_getFamily(){
-        APIHelper.getFamily("getFamily/", new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.getFamily("getFamily/", new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
                 Gson gson = new Gson();
@@ -433,7 +431,7 @@ public class CreateFamilies extends AppCompatActivity {
     }
 
     private void API_addFamily(RequestParams requestParams){
-        APIHelper.addFamily("addFamily", requestParams, new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.addFamily("addFamily", requestParams, new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
                 Toast.makeText(getApplicationContext(), "Successfully synced families to web", Toast.LENGTH_SHORT).show();
@@ -454,7 +452,7 @@ public class CreateFamilies extends AppCompatActivity {
 
     private void API_updateFamily(){
 
-        APIHelper.getFamily("getFamily/", new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.getFamily("getFamily/", new BaseJsonHttpResponseHandler<Object>() {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){

@@ -16,7 +16,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -26,7 +25,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.cholomanglicmot.nativechickenandduck.APIHelper;
+import com.example.cholomanglicmot.nativechickenandduck.APIHelperAsync;
 import com.example.cholomanglicmot.nativechickenandduck.BreedersDirectory.CreateBreeders;
 import com.example.cholomanglicmot.nativechickenandduck.BroodersDirectory.CreateBrooders;
 import com.example.cholomanglicmot.nativechickenandduck.DashboardDirectory.DashBoardActivity;
@@ -37,7 +36,6 @@ import com.example.cholomanglicmot.nativechickenandduck.FamilyDirectory.CreateFa
 import com.example.cholomanglicmot.nativechickenandduck.FarmSettingsDirectory.MainActivity;
 import com.example.cholomanglicmot.nativechickenandduck.GenerationsAndLinesDirectory.CreateGenerationsAndLines;
 import com.example.cholomanglicmot.nativechickenandduck.PensDirectory.CreatePen;
-import com.example.cholomanglicmot.nativechickenandduck.PensDirectory.Pen;
 import com.example.cholomanglicmot.nativechickenandduck.ProjectAdapter;
 import com.example.cholomanglicmot.nativechickenandduck.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -224,7 +222,7 @@ public class CreateReplacements extends AppCompatActivity {
     }
 
     private void API_addReplacement(RequestParams requestParams){
-        APIHelper.addReplacementFamily("addReplacementFamily", requestParams, new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.addReplacementFamily("addReplacementFamily", requestParams, new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
                 Toast.makeText(getApplicationContext(), "Successfully synced replacements to web", Toast.LENGTH_SHORT).show();
@@ -245,7 +243,7 @@ public class CreateReplacements extends AppCompatActivity {
 
     private void API_updateReplacement(){
 
-        APIHelper.getReplacement("getReplacement/", new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.getReplacement("getReplacement/", new BaseJsonHttpResponseHandler<Object>() {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
@@ -332,7 +330,7 @@ public class CreateReplacements extends AppCompatActivity {
     }
 
     private void API_getReplacement(){
-        APIHelper.getReplacement("getReplacement/", new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.getReplacement("getReplacement/", new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
 

@@ -15,7 +15,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.cholomanglicmot.nativechickenandduck.APIHelper;
+import com.example.cholomanglicmot.nativechickenandduck.APIHelperAsync;
 import com.example.cholomanglicmot.nativechickenandduck.DatabaseHelper;
 import com.example.cholomanglicmot.nativechickenandduck.R;
 import com.google.gson.Gson;
@@ -163,7 +163,7 @@ public class ReplacementFeedingRecordsActivity extends AppCompatActivity {
 
     private void API_addReplacementFeeding(RequestParams requestParams){
 
-        APIHelper.addReplacementFeeding("addReplacementFeeding", requestParams, new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.addReplacementFeeding("addReplacementFeeding", requestParams, new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
                 Toast.makeText(getApplicationContext(), "Successfully synced replacement feeding record to web", Toast.LENGTH_SHORT).show();
@@ -186,7 +186,7 @@ public class ReplacementFeedingRecordsActivity extends AppCompatActivity {
     }
 
     private void API_updateReplacementFeeding(){
-        APIHelper.getReplacementFeeding("getReplacementFeeding/", new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.getReplacementFeeding("getReplacementFeeding/", new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
 
@@ -281,7 +281,7 @@ public class ReplacementFeedingRecordsActivity extends AppCompatActivity {
     }
 
     private void API_getReplacementFeeding(){
-        APIHelper.getReplacementFeeding("getReplacementFeeding/", new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.getReplacementFeeding("getReplacementFeeding/", new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
 

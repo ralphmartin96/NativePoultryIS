@@ -17,7 +17,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -27,7 +26,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.cholomanglicmot.nativechickenandduck.APIHelper;
+import com.example.cholomanglicmot.nativechickenandduck.APIHelperAsync;
 import com.example.cholomanglicmot.nativechickenandduck.BreedersDirectory.CreateBreeders;
 import com.example.cholomanglicmot.nativechickenandduck.DashboardDirectory.DashBoardActivity;
 import com.example.cholomanglicmot.nativechickenandduck.DashboardDirectory.LogOutDialog;
@@ -232,7 +231,7 @@ public class CreateBrooders extends AppCompatActivity {
     }
 
     private void API_getBrooder(){
-        APIHelper.getBrooder("getBrooder/", new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.getBrooder("getBrooder/", new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
 
@@ -269,7 +268,7 @@ public class CreateBrooders extends AppCompatActivity {
     }
 
     private void API_getBrooderInventory(){
-        APIHelper.getBrooderInventory("getBrooderInventory/", new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.getBrooderInventory("getBrooderInventory/", new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
 
@@ -308,7 +307,7 @@ public class CreateBrooders extends AppCompatActivity {
 
     private void API_updateBrooderInventory(){
 
-        APIHelper.getBrooderInventory("getBrooderInventory/", new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.getBrooderInventory("getBrooderInventory/", new BaseJsonHttpResponseHandler<Object>() {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
@@ -406,7 +405,7 @@ public class CreateBrooders extends AppCompatActivity {
     }
 
     private void API_addBrooderInventory(RequestParams requestParams){
-        APIHelper.addBrooderInventory("addBrooderInventory", requestParams, new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.addBrooderInventory("addBrooderInventory", requestParams, new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
                 Toast.makeText(getApplicationContext(), "Successfully synced brooder inventory to web", Toast.LENGTH_SHORT).show();
@@ -426,7 +425,7 @@ public class CreateBrooders extends AppCompatActivity {
     }
 
     private void API_addBrooder(RequestParams requestParams){
-        APIHelper.addBrooderFamily("addBrooderFamily", requestParams, new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.addBrooderFamily("addBrooderFamily", requestParams, new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
                       Toast.makeText(getApplicationContext(), "Successfully synced brooders to web", Toast.LENGTH_SHORT).show();
@@ -447,7 +446,7 @@ public class CreateBrooders extends AppCompatActivity {
 
     private void API_updateBrooder(){
 
-        APIHelper.getBrooder("getBrooder/", new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.getBrooder("getBrooder/", new BaseJsonHttpResponseHandler<Object>() {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){

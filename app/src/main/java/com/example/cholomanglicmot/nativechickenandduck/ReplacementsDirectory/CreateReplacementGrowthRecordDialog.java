@@ -22,7 +22,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.cholomanglicmot.nativechickenandduck.APIHelper;
+import com.example.cholomanglicmot.nativechickenandduck.APIHelperAsync;
 import com.example.cholomanglicmot.nativechickenandduck.DatabaseHelper;
 import com.example.cholomanglicmot.nativechickenandduck.R;
 import com.loopj.android.http.BaseJsonHttpResponseHandler;
@@ -411,7 +411,7 @@ public class CreateReplacementGrowthRecordDialog extends DialogFragment {
         builder.show();
     }
     private boolean API_addReplacementGrowth(RequestParams requestParams){
-        APIHelper.addReplacementGrowth("addReplacementGrowth", requestParams, new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.addReplacementGrowth("addReplacementGrowth", requestParams, new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
              //   Toast.makeText(getContext(), "Successfully added replacement feeding record to web", Toast.LENGTH_SHORT).show();

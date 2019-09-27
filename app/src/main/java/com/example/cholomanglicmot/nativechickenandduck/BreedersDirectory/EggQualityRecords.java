@@ -18,7 +18,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.cholomanglicmot.nativechickenandduck.APIHelper;
+import com.example.cholomanglicmot.nativechickenandduck.APIHelperAsync;
 import com.example.cholomanglicmot.nativechickenandduck.DatabaseHelper;
 import com.example.cholomanglicmot.nativechickenandduck.R;
 import com.google.gson.Gson;
@@ -145,7 +145,7 @@ public class EggQualityRecords extends AppCompatActivity {
     }
 
     private void API_addEggQuality(RequestParams requestParams){
-        APIHelper.addEggQuality("addEggQuality", requestParams, new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.addEggQuality("addEggQuality", requestParams, new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
                 Toast.makeText(getApplicationContext(), "Successfully synced egg quality to web", Toast.LENGTH_SHORT).show();
@@ -165,7 +165,7 @@ public class EggQualityRecords extends AppCompatActivity {
     }
 
     private void API_updateEggQuality(){
-        APIHelper.getEggQuality("getEggQuality/", new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.getEggQuality("getEggQuality/", new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
 
@@ -277,7 +277,7 @@ public class EggQualityRecords extends AppCompatActivity {
     }
 
     private void API_getEggQuality(){
-        APIHelper.getEggQuality("getEggQuality/", new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.getEggQuality("getEggQuality/", new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
 

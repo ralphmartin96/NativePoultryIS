@@ -18,7 +18,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.cholomanglicmot.nativechickenandduck.APIHelper;
+import com.example.cholomanglicmot.nativechickenandduck.APIHelperAsync;
 import com.example.cholomanglicmot.nativechickenandduck.DatabaseHelper;
 import com.example.cholomanglicmot.nativechickenandduck.R;
 import com.loopj.android.http.BaseJsonHttpResponseHandler;
@@ -149,7 +149,7 @@ public class CullBrooderInventoryDialog extends DialogFragment {
         return formatter.format(date);
     }
     private void API_editPenCount(RequestParams requestParams){
-        APIHelper.editPenCount("editPenCount", requestParams, new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.editPenCount("editPenCount", requestParams, new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
 //                Toast.makeText(getContext(), "Successfully edited pen count", Toast.LENGTH_SHORT).show();
@@ -168,7 +168,7 @@ public class CullBrooderInventoryDialog extends DialogFragment {
         });
     }
     private void API_cullBrooderInventory(RequestParams requestParams){
-        APIHelper.cullBrooderInventory("cullBrooderInventory", requestParams, new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.cullBrooderInventory("cullBrooderInventory", requestParams, new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
            //     Toast.makeText(context, "Successfully culled brooder inventory", Toast.LENGTH_SHORT).show();

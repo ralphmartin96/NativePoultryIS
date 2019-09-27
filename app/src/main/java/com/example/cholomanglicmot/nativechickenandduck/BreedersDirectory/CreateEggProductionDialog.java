@@ -19,7 +19,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.cholomanglicmot.nativechickenandduck.APIHelper;
+import com.example.cholomanglicmot.nativechickenandduck.APIHelperAsync;
 import com.example.cholomanglicmot.nativechickenandduck.DatabaseHelper;
 import com.example.cholomanglicmot.nativechickenandduck.R;
 import com.loopj.android.http.BaseJsonHttpResponseHandler;
@@ -175,7 +175,7 @@ public class CreateEggProductionDialog extends DialogFragment{
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
     private void API_addEggProduction(RequestParams requestParams){
-        APIHelper.addEggProduction("addEggProduction", requestParams, new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.addEggProduction("addEggProduction", requestParams, new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
 //                Toast.makeText(getContext(), "Successfully added to web", Toast.LENGTH_SHORT).show();

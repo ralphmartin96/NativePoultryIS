@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +16,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.cholomanglicmot.nativechickenandduck.APIHelper;
+import com.example.cholomanglicmot.nativechickenandduck.APIHelperAsync;
 import com.example.cholomanglicmot.nativechickenandduck.DatabaseHelper;
 import com.example.cholomanglicmot.nativechickenandduck.R;
 import com.loopj.android.http.BaseJsonHttpResponseHandler;
@@ -25,7 +24,6 @@ import com.loopj.android.http.RequestParams;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -179,7 +177,7 @@ public class ViewBrooderInventoryDialog extends DialogFragment {
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
     private void API_editBrooderInventoryMaleFemale(RequestParams requestParams){
-        APIHelper.editBrooderInventoryMaleFemale("editBrooderInventoryMaleFemale", requestParams, new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.editBrooderInventoryMaleFemale("editBrooderInventoryMaleFemale", requestParams, new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
                 Toast.makeText(context, "Successfully edited brooder male and female", Toast.LENGTH_SHORT).show();

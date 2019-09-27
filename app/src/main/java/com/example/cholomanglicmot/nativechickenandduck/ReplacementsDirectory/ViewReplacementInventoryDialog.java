@@ -16,7 +16,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.cholomanglicmot.nativechickenandduck.APIHelper;
+import com.example.cholomanglicmot.nativechickenandduck.APIHelperAsync;
 import com.example.cholomanglicmot.nativechickenandduck.DatabaseHelper;
 import com.example.cholomanglicmot.nativechickenandduck.R;
 import com.loopj.android.http.BaseJsonHttpResponseHandler;
@@ -168,7 +168,7 @@ public class ViewReplacementInventoryDialog extends DialogFragment {
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
     private void API_editReplacementInventoryMaleFemale(RequestParams requestParams){
-        APIHelper.editReplacementInventoryMaleFemale("editReplacementInventoryMaleFemale", requestParams, new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.editReplacementInventoryMaleFemale("editReplacementInventoryMaleFemale", requestParams, new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
                 Toast.makeText(context, "Successfully edited replacement male and female", Toast.LENGTH_SHORT).show();

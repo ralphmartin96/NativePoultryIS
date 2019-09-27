@@ -67,7 +67,7 @@ public class LoginActivity extends AppCompatActivity{
         ///////////////////////////////////
 
         if(isSignedIn()){
-            Intent intent_main = new Intent(LoginActivity.this, DashBoardActivity.class);
+            Intent intent_main = new Intent(LoginActivity.this, SplashActivity.class);
             startActivity(intent_main);
         }
 
@@ -75,7 +75,6 @@ public class LoginActivity extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 SignInGoogle();
-
             }
         });
 
@@ -129,7 +128,7 @@ public class LoginActivity extends AppCompatActivity{
 //                        Toast.makeText(this, "Signed-in Success", Toast.LENGTH_SHORT).show();
 
                         FirebaseUser user = mAuth.getCurrentUser();
-                        Intent intent_main = new Intent(LoginActivity.this, DashBoardActivity.class);
+                        Intent intent_main = new Intent(LoginActivity.this, SplashActivity.class);
                         startActivity(intent_main);
                         updateUI(user);
 

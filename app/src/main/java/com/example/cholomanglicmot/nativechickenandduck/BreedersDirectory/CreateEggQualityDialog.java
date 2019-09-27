@@ -22,7 +22,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
-import com.example.cholomanglicmot.nativechickenandduck.APIHelper;
+import com.example.cholomanglicmot.nativechickenandduck.APIHelperAsync;
 import com.example.cholomanglicmot.nativechickenandduck.DatabaseHelper;
 import com.example.cholomanglicmot.nativechickenandduck.R;
 import com.loopj.android.http.BaseJsonHttpResponseHandler;
@@ -258,7 +258,7 @@ public class CreateEggQualityDialog extends DialogFragment{
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
     private void API_addEggQuality(RequestParams requestParams){
-        APIHelper.addEggQuality("addEggQuality", requestParams, new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.addEggQuality("addEggQuality", requestParams, new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
 //                Toast.makeText(getActivity(), "Successfully added brooder inventory to web", Toast.LENGTH_SHORT).show();

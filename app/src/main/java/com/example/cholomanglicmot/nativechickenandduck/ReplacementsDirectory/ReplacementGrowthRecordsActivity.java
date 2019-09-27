@@ -11,12 +11,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.cholomanglicmot.nativechickenandduck.APIHelper;
+import com.example.cholomanglicmot.nativechickenandduck.APIHelperAsync;
 import com.example.cholomanglicmot.nativechickenandduck.DatabaseHelper;
 import com.example.cholomanglicmot.nativechickenandduck.R;
 import com.google.gson.Gson;
@@ -158,7 +157,7 @@ public class ReplacementGrowthRecordsActivity extends AppCompatActivity {
 
     private void API_addReplacementGrowth(RequestParams requestParams){
 
-        APIHelper.addReplacementGrowth("addReplacementGrowth", requestParams, new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.addReplacementGrowth("addReplacementGrowth", requestParams, new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
                 Toast.makeText(getApplicationContext(), "Successfully synced replacement growth record to web", Toast.LENGTH_SHORT).show();
@@ -181,7 +180,7 @@ public class ReplacementGrowthRecordsActivity extends AppCompatActivity {
     }
 
     private void API_updateReplacementGrowth(){
-        APIHelper.getReplacementGrowth("getReplacementGrowth/", new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.getReplacementGrowth("getReplacementGrowth/", new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
 
@@ -284,7 +283,7 @@ public class ReplacementGrowthRecordsActivity extends AppCompatActivity {
     }
 
     private void API_getReplacementGrowth(){
-        APIHelper.getReplacementGrowth("getReplacementGrowth/", new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.getReplacementGrowth("getReplacementGrowth/", new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
 

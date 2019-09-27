@@ -17,7 +17,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.cholomanglicmot.nativechickenandduck.APIHelper;
+import com.example.cholomanglicmot.nativechickenandduck.APIHelperAsync;
 import com.example.cholomanglicmot.nativechickenandduck.DatabaseHelper;
 import com.example.cholomanglicmot.nativechickenandduck.R;
 import com.google.gson.Gson;
@@ -25,8 +25,6 @@ import com.loopj.android.http.BaseJsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -171,7 +169,7 @@ public class BreederFeedingRecordsActivity extends AppCompatActivity {
 
     private void API_addBreederFeeding(RequestParams requestParams){
 
-        APIHelper.addBreederFeeding("addBreederFeeding", requestParams, new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.addBreederFeeding("addBreederFeeding", requestParams, new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
                 Toast.makeText(getApplicationContext(), "Successfully synced breeder feeding record to web", Toast.LENGTH_SHORT).show();
@@ -194,7 +192,7 @@ public class BreederFeedingRecordsActivity extends AppCompatActivity {
     }
 
     private void API_updateBreederFeeding(){
-        APIHelper.getBreederFeeding("getBreederFeeding/", new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.getBreederFeeding("getBreederFeeding/", new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
 
@@ -289,7 +287,7 @@ public class BreederFeedingRecordsActivity extends AppCompatActivity {
     }
 
     private void API_getBreederFeeding(){
-        APIHelper.getBreederFeeding("getBreederFeeding/", new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.getBreederFeeding("getBreederFeeding/", new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
 

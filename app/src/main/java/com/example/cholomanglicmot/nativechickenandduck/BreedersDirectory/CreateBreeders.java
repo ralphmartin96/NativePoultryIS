@@ -19,12 +19,11 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.cholomanglicmot.nativechickenandduck.APIHelper;
+import com.example.cholomanglicmot.nativechickenandduck.APIHelperAsync;
 import com.example.cholomanglicmot.nativechickenandduck.BroodersDirectory.CreateBrooders;
 import com.example.cholomanglicmot.nativechickenandduck.DashboardDirectory.DashBoardActivity;
 import com.example.cholomanglicmot.nativechickenandduck.DashboardDirectory.LogOutDialog;
@@ -253,7 +252,7 @@ public class CreateBreeders extends AppCompatActivity {
     }
 
     private void API_addBreederInventory(RequestParams requestParams){
-        APIHelper.addBreederInventory("addBreederInventory", requestParams, new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.addBreederInventory("addBreederInventory", requestParams, new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
                 Toast.makeText(getApplicationContext(), "Successfully synced breeder inventory to web", Toast.LENGTH_SHORT).show();
@@ -274,7 +273,7 @@ public class CreateBreeders extends AppCompatActivity {
 
     private void API_updateBreederInventory(){
 
-        APIHelper.getBreederInventory("getBreederInventory/", new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.getBreederInventory("getBreederInventory/", new BaseJsonHttpResponseHandler<Object>() {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
@@ -375,7 +374,7 @@ public class CreateBreeders extends AppCompatActivity {
     }
 
     private void API_addBreeder(RequestParams requestParams){
-        APIHelper.addBreederFamily("addBreederFamily", requestParams, new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.addBreederFamily("addBreederFamily", requestParams, new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
                 Toast.makeText(getApplicationContext(), "Successfully synced breeder to web", Toast.LENGTH_SHORT).show();
@@ -396,7 +395,7 @@ public class CreateBreeders extends AppCompatActivity {
 
     private void API_updateBreeder(){
 
-        APIHelper.getBreeder("getBreeder/", new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.getBreeder("getBreeder/", new BaseJsonHttpResponseHandler<Object>() {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){

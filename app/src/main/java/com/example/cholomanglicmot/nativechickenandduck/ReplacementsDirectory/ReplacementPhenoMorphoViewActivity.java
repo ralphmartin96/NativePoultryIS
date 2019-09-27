@@ -13,16 +13,10 @@ import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.cholomanglicmot.nativechickenandduck.APIHelper;
-import com.example.cholomanglicmot.nativechickenandduck.BreedersDirectory.Breeder_PhenoMorphoView;
 import com.example.cholomanglicmot.nativechickenandduck.DatabaseHelper;
 import com.example.cholomanglicmot.nativechickenandduck.R;
-import com.google.gson.Gson;
-import com.loopj.android.http.BaseJsonHttpResponseHandler;
 
 import java.util.ArrayList;
-
-import cz.msebera.android.httpclient.Header;
 
 public class ReplacementPhenoMorphoViewActivity extends AppCompatActivity {
     private Toolbar mToolbar;

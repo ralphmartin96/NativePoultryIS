@@ -21,7 +21,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.example.cholomanglicmot.nativechickenandduck.APIHelper;
+import com.example.cholomanglicmot.nativechickenandduck.APIHelperAsync;
 import com.example.cholomanglicmot.nativechickenandduck.DatabaseHelper;
 import com.example.cholomanglicmot.nativechickenandduck.R;
 import com.loopj.android.http.BaseJsonHttpResponseHandler;
@@ -116,7 +116,7 @@ public class CreateFamilyDialog extends DialogFragment {
         return view;
     }
     private void API_addFamily(RequestParams requestParams){
-        APIHelper.addFamily("addFamily", requestParams, new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.addFamily("addFamily", requestParams, new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
                 Toast.makeText(context, "Successfully added Family to web", Toast.LENGTH_SHORT).show();

@@ -17,7 +17,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.cholomanglicmot.nativechickenandduck.APIHelper;
+import com.example.cholomanglicmot.nativechickenandduck.APIHelperAsync;
 import com.example.cholomanglicmot.nativechickenandduck.DatabaseHelper;
 import com.example.cholomanglicmot.nativechickenandduck.R;
 import com.loopj.android.http.BaseJsonHttpResponseHandler;
@@ -113,7 +113,7 @@ public class CullGenerationDialog extends DialogFragment {
     }
 
     private void API_cullGeneration(Integer generation_id){
-        APIHelper.getGeneration("cullGeneration/"+generation_id, new BaseJsonHttpResponseHandler<Object>() {
+        APIHelperAsync.getGeneration("cullGeneration/" + generation_id, new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response) {
 
