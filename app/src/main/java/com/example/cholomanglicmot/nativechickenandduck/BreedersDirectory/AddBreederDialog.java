@@ -31,11 +31,8 @@ public class AddBreederDialog extends DialogFragment {
     private static final String TAG = "CreateGenerationDialog";
     private EditText male_quantity,female_quantity;
 
-    private EditText mInput_pen_capacity;
     private Button mActionOk;
     DatabaseHelper myDb;
-    Switch in_or_out;
-    String option;
     TextView textView;
     Context context;
     Integer breeder_id;
@@ -47,40 +44,17 @@ public class AddBreederDialog extends DialogFragment {
         mActionOk = view.findViewById(R.id.action_ok);
         male_quantity = view.findViewById(R.id.male_quantity);
         female_quantity = view.findViewById(R.id.female_quantity);
-        //in_or_out = view.findViewById(R.id.in_or_out);
         textView = view.findViewById(R.id.textView);
         context = getActivity();
         textView.setText("Add Breeders to "+ breeder_tag);
 
-        // find the radiobutton by returned id
-
-
-
         myDb = new DatabaseHelper(getContext());
-    /*    in_or_out.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView,
-                                         boolean isChecked) {
-
-                if (isChecked) {
-                    option = "Within System";
-
-                } else {
-
-                    option = "Outside System";
-
-                }
-
-            }
-        });
-*/
 
         mActionOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Integer current_male_count = 0;
-                Integer current_female_count = 0;
+                int current_male_count = 0;
+                int current_female_count = 0;
 
 
                 if(!female_quantity.getText().toString().isEmpty() || !male_quantity.getText().toString().isEmpty()){
@@ -95,25 +69,30 @@ public class AddBreederDialog extends DialogFragment {
                     Integer new_male_count = Integer.parseInt(male_quantity.getText().toString())+ current_male_count;
                     Integer new_female_count = Integer.parseInt(female_quantity.getText().toString())+ current_female_count;
                     Integer new_total_count = new_female_count+new_male_count;
-                    boolean isUpdated = myDb.updateMaleFemaleBreederCount(breeder_tag, new_male_count, new_female_count,new_total_count);
 
-                    if(isNetworkAvailable()){
+                    boolean isUpdated = myDb.updateMaleFemaleBreederCount(
+                            breeder_tag,
+                            new_male_count,
+                            new_female_count,
+                            new_total_count
+                    );
 
-                        RequestParams requestParams = new RequestParams();
-                        requestParams.add("breeder_inv_id", breeder_id.toString());
-                        requestParams.add("male", new_male_count.toString());
-                        requestParams.add("female", new_female_count.toString());
-                        requestParams.add("total_", new_total_count.toString());
+//                    if(isNetworkAvailable()){
+//
+//                        RequestParams requestParams = new RequestParams();
+//                        requestParams.add("breeder_inv_id", breeder_id.toString());
+//                        requestParams.add("male", new_male_count.toString());
+//                        requestParams.add("female", new_female_count.toString());
+//                        requestParams.add("total_", new_total_count.toString());
+//
+//
+//                        API_editBreederInventoryMaleFemale(requestParams);
+//                    }
 
-
-                        API_editBreederInventoryMaleFemale(requestParams);
-                    }
-
-                    if(isUpdated == true){
-                        Toast.makeText(getActivity(), "Succesfully added to "+breeder_tag, Toast.LENGTH_SHORT).show();
+                    if (isUpdated) {
+                        Toast.makeText(getActivity(), "Succesfully added to " + breeder_tag, Toast.LENGTH_SHORT).show();
                         Intent intent_line = new Intent(getContext(), CreateBreeders.class);
                         startActivity(intent_line);
-
                     }
 
                 }else{
@@ -134,6 +113,7 @@ public class AddBreederDialog extends DialogFragment {
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
+
     private void API_editBreederInventoryMaleFemale(RequestParams requestParams){
         APIHelper.editBreederInventoryMaleFemale("editBreederInventoryMaleFemale", requestParams, new BaseJsonHttpResponseHandler<Object>() {
             @Override
