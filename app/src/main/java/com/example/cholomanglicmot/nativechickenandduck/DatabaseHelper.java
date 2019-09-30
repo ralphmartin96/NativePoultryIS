@@ -22,9 +22,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public static final String DATABASE_NAME = "Project.db";
 
-
-
-
     public static final String TABLE_PROFILE = "profile_table";
     public static final String COL_1 = "ID";
     public static final String COL_2 = "BREED";
@@ -80,7 +77,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String GENERATION_COL_3 = "numerical_generation";
     public static final String GENERATION_COL_4 = "is_active";
     public static final String GENERATION_COL_5 = "deleted_at";
-
 
 
     public static final String TABLE_LINE = "line_table";
@@ -388,6 +384,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     }
+
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS "+TABLE_PROFILE);
@@ -476,6 +473,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DELETE FROM "+TABLE_USERS);
 
     }
+
     public boolean insertDataUser(String name, String email, String picture, String last_active, Integer farm_id, Integer role_id, String remember_token, String deleted_at){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -3587,6 +3585,18 @@ public Integer getAllMaleFromBrooders(Integer farm_id){
         Cursor res = db.rawQuery("select FARM_ID from " +TABLE_USERS+ " where EMAIL is ?",new String[]{email});
 
         return res;
+    }
+
+    public Integer getFarmIDFromLocalDb() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor res = db.rawQuery("select FARM_ID from " + TABLE_USERS, new String[]{});
+        res.moveToFirst();
+
+        if (res.getCount() != 0) {
+            return res.getInt(0);
+        } else {
+            return -1;
+        }
     }
 
     public Cursor familyChecker(String family, String selected_line, String selected_generation){
