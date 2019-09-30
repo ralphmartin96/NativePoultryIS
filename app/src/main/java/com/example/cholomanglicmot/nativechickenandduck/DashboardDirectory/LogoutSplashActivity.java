@@ -81,6 +81,7 @@ import cz.msebera.android.httpclient.Header;
 
 public class LogoutSplashActivity extends AppCompatActivity {
 
+    public static final String DATABASE_NAME = "Project.db";
 
     DatabaseHelper myDb;
     String debugTag = "POULTRYDEBUGGER";
@@ -122,14 +123,15 @@ public class LogoutSplashActivity extends AppCompatActivity {
 
         farm_id = myDb.getFarmIDFromLocalDb().toString();
 
-        Log.d(debugTag, "FARM ID:" + farm_id);
-
         try {
             API_updatePen(farm_id);
+            API_updateGeneration(farm_id);
+            API_updateLine();
         } catch (Exception e) {
-            Log.d(debugTag, "err");
+            Log.d(debugTag, "Sync Error");
         }
-//        myDb.deleteAll();
+
+        getApplicationContext().deleteDatabase(DATABASE_NAME);
 
     }
 
@@ -145,13 +147,11 @@ public class LogoutSplashActivity extends AppCompatActivity {
                 Gson gson = new Gson();
                 JSONPen jsonBrooderInventory = gson.fromJson(rawJsonResponse, JSONPen.class);
                 ArrayList<Pen> arrayLisPenWeb = jsonBrooderInventory.getData();
-
                 ArrayList<Pen> arrayLisPenLocal = new ArrayList<>();
 
                 ArrayList<Integer> id_local = new ArrayList<>();
                 ArrayList<Integer> id_web = new ArrayList<>();
                 ArrayList<Integer> id_to_sync = new ArrayList<>();
-
 
                 Cursor cursor_pen = myDb.getAllDataFromPen();
                 cursor_pen.moveToFirst();
@@ -226,7 +226,6 @@ public class LogoutSplashActivity extends AppCompatActivity {
             }
         });
     }
-
     private void API_addPen(RequestParams requestParams) {
         APIHelperSync.addPen("addPen", requestParams, new BaseJsonHttpResponseHandler<Object>() {
             @Override
@@ -237,6 +236,209 @@ public class LogoutSplashActivity extends AppCompatActivity {
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, String rawJsonResponse, Object response) {
                 Log.d(debugTag, "Failed to sync Pen to web");
+            }
+
+            @Override
+            protected Object parseResponse(String rawJsonData, boolean isFailure) throws Throwable {
+                return null;
+            }
+        });
+    }
+
+    private void API_updateGeneration(String farm_id) {
+
+        APIHelperSync.getGeneration("getGeneration/" + farm_id, new BaseJsonHttpResponseHandler<Object>() {
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response) {
+
+                Gson gson = new Gson();
+                JSONGeneration jsonGeneration = gson.fromJson(rawJsonResponse, JSONGeneration.class);
+
+                ArrayList<Generation> arrayListGenerationWeb = jsonGeneration.getData();
+                ArrayList<Generation> arrayListGenerationLocal = new ArrayList<>();
+
+                ArrayList<Integer> id_local = new ArrayList<>();
+                ArrayList<Integer> id_web = new ArrayList<>();
+                ArrayList<Integer> id_to_sync = new ArrayList<>();
+
+                Cursor cursor_generations = myDb.getAllDataFromGeneration();
+                cursor_generations.moveToFirst();
+
+                if (cursor_generations.getCount() != 0) {
+                    do {
+                        Generation generation = new Generation(
+                                cursor_generations.getString(2),
+                                cursor_generations.getInt(4),
+                                cursor_generations.getInt(0),
+                                cursor_generations.getInt(1),
+                                cursor_generations.getInt(3),
+                                cursor_generations.getString(5)
+                        );
+                        arrayListGenerationLocal.add(generation);
+                        id_local.add(generation.getId());
+
+                    } while (cursor_generations.moveToNext());
+                }
+
+                for (Generation g : arrayListGenerationWeb) id_web.add(g.getId());
+
+                for (int i : id_local)
+                    if (!id_web.contains(i))
+                        id_to_sync.add(i);
+
+
+                for (int i : id_to_sync) {
+
+                    Log.d(debugTag, i + "");
+
+                    Cursor cursor = myDb.getAllDataFromGenerationWhereID(i);
+                    cursor.moveToFirst();
+
+                    Integer id = cursor.getInt(0);
+                    Integer farm_id = cursor.getInt(1);
+                    String number = cursor.getString(2);
+                    Integer numerical_generation = cursor.getInt(3);
+                    Integer is_active = cursor.getInt(4);
+                    String deleted_at = cursor.getString(5);
+
+
+                    RequestParams requestParams = new RequestParams();
+                    requestParams.add("id", id.toString());
+                    requestParams.add("farm_id", farm_id.toString());
+                    requestParams.add("number", number);
+                    requestParams.add("numerical_generation", numerical_generation.toString());
+                    requestParams.add("is_active", is_active.toString());
+                    requestParams.add("deleted_at", deleted_at);
+
+                    API_addGeneration(requestParams);
+
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, String rawJsonResponse, Object response) {
+
+                Log.d(debugTag, "Failed to get Generations from web database ");
+            }
+
+            @Override
+            protected Object parseResponse(String rawJsonData, boolean isFailure) throws Throwable {
+                return null;
+            }
+        });
+    }
+
+    private void API_addGeneration(RequestParams requestParams) {
+        APIHelperSync.addGeneration("addGeneration", requestParams, new BaseJsonHttpResponseHandler<Object>() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response) {
+                Toast.makeText(getApplicationContext(), "Successfully synced generations to web", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, String rawJsonResponse, Object response) {
+                Toast.makeText(getApplicationContext(), "Failed to sync generations to web", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            protected Object parseResponse(String rawJsonData, boolean isFailure) throws Throwable {
+                return null;
+            }
+        });
+    }
+
+    private void API_updateLine() {
+
+        APIHelperSync.getLine("getLine/", new BaseJsonHttpResponseHandler<Object>() {
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response) {
+
+                Gson gson = new Gson();
+                JSONLine jsonLine = gson.fromJson(rawJsonResponse, JSONLine.class);
+
+                ArrayList<Line> arrayListLineWeb = jsonLine.getData();
+                ArrayList<Line> arrayListLineLocal = new ArrayList<>();
+
+                ArrayList<Integer> id_local = new ArrayList<>();
+                ArrayList<Integer> id_web = new ArrayList<>();
+                ArrayList<Integer> id_to_sync = new ArrayList<>();
+
+                Cursor cursor_lines = myDb.getAllDataFromLine();
+                cursor_lines.moveToFirst();
+
+                if (cursor_lines.getCount() != 0) {
+                    do {
+                        Line line = new Line(
+                                cursor_lines.getInt(0),
+                                cursor_lines.getString(1),
+                                cursor_lines.getInt(3)
+                        );
+                        arrayListLineLocal.add(line);
+                        id_local.add(line.getId());
+                    } while (cursor_lines.moveToNext());
+                }
+
+                for (Line line : arrayListLineWeb)
+                    id_web.add(line.getId());
+
+                for (int i : id_local) {
+                    if (!id_web.contains(i)) {
+                        id_to_sync.add(i);
+                    }
+                }
+
+                for (int i : id_to_sync) {
+
+                    Cursor cursor = myDb.getAllDataFromLineWhereID(id_to_sync.get(i));
+                    cursor.moveToFirst();
+
+                    Integer id = cursor.getInt(0);
+                    String number = cursor.getString(1);
+                    Integer is_active = cursor.getInt(2);
+                    Integer generation_id = cursor.getInt(3);
+                    String deleted_at = cursor.getString(4);
+
+                    Log.d(debugTag, i + " " + generation_id + " " + number);
+
+                    RequestParams requestParams = new RequestParams();
+                    requestParams.add("id", id.toString());
+                    requestParams.add("number", number.toString());
+                    requestParams.add("is_active", is_active.toString());
+                    requestParams.add("generation_id", generation_id.toString());
+                    requestParams.add("deleted_at", deleted_at);
+
+
+                    API_addLine(requestParams);
+                }
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, String rawJsonResponse, Object response) {
+
+                Log.d(debugTag, "Failed to fetch Lines from web database");
+            }
+
+            @Override
+            protected Object parseResponse(String rawJsonData, boolean isFailure) throws Throwable {
+                return null;
+            }
+        });
+    }
+
+    private void API_addLine(RequestParams requestParams) {
+        APIHelperSync.addLine("addLine", requestParams, new BaseJsonHttpResponseHandler<Object>() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response) {
+                Toast.makeText(getApplicationContext(), "Successfully synced lines to web", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, String rawJsonResponse, Object response) {
+
+                Toast.makeText(getApplicationContext(), "Failed to add Line to web", Toast.LENGTH_SHORT).show();
             }
 
             @Override
