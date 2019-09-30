@@ -204,11 +204,16 @@ public class CreateFamilies extends AppCompatActivity {
                         startActivity(intent_settings);
                         break;
                     case "Log Out":
-                        LogOutDialog dialogFragment = new LogOutDialog();
 
-                        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                        if (isNetworkAvailable()) {
+                            LogOutDialog dialogFragment = new LogOutDialog();
 
-                        dialogFragment.show(ft, "dialog");
+                            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+
+                            dialogFragment.show(ft, "dialog");
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Logout failed. Check your internet", Toast.LENGTH_SHORT).show();
+                        }
 
                 }
                 return false;

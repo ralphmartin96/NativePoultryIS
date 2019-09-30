@@ -30,6 +30,7 @@ import com.example.cholomanglicmot.nativechickenandduck.BreedersDirectory.Create
 import com.example.cholomanglicmot.nativechickenandduck.BroodersDirectory.CreateBrooders;
 import com.example.cholomanglicmot.nativechickenandduck.DashboardDirectory.DashBoardActivity;
 import com.example.cholomanglicmot.nativechickenandduck.DashboardDirectory.LogOutDialog;
+import com.example.cholomanglicmot.nativechickenandduck.DashboardDirectory.LogoutSplashActivity;
 import com.example.cholomanglicmot.nativechickenandduck.DataProvider;
 import com.example.cholomanglicmot.nativechickenandduck.DatabaseHelper;
 import com.example.cholomanglicmot.nativechickenandduck.FamilyDirectory.CreateFamilies;
@@ -189,19 +190,23 @@ public class CreatePen extends AppCompatActivity {
                         Intent intent_replacements = new Intent(CreatePen.this, CreateReplacements.class);
                         startActivity(intent_replacements);
                         break;
-                      case "Reports":
+                    case "Reports":
                         break;
-
                     case "Farm Settings":
                         Intent intent = new Intent(CreatePen.this, MainActivity.class);
                         startActivity(intent);
                         break;
                     case "Log Out":
-                        LogOutDialog dialogFragment = new LogOutDialog();
 
-                        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                        if (isNetworkAvailable()) {
+                            LogOutDialog dialogFragment = new LogOutDialog();
 
-                        dialogFragment.show(ft, "dialog");
+                            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+
+                            dialogFragment.show(ft, "dialog");
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Logout failed. Check your internet", Toast.LENGTH_SHORT).show();
+                        }
 
                 }
                 return false;
@@ -280,230 +285,75 @@ public class CreatePen extends AppCompatActivity {
 //        recycler_adapter.notifyDataSetChanged();
     }
 
-    private void API_addPen(RequestParams requestParams){
-        APIHelperAsync.addPen("addPen", requestParams, new BaseJsonHttpResponseHandler<Object>() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
-                Toast.makeText(getApplicationContext(), "Successfully synced pen to web", Toast.LENGTH_SHORT).show();
-            }
 
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, String rawJsonResponse, Object response){
-
-                Toast.makeText(getApplicationContext(), "Failed to sync Pen to web", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            protected Object parseResponse(String rawJsonData, boolean isFailure) throws Throwable{
-                return null;
-            }
-        });
-    }
-
-    private void API_updatePen(String farm_id){
-
-        APIHelperAsync.getPen("getPen/" + farm_id, new BaseJsonHttpResponseHandler<Object>() {
-
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
-
-                Gson gson = new Gson();
-                JSONPen jsonBrooderInventory = gson.fromJson(rawJsonResponse, JSONPen.class);
-                ArrayList<Pen> arrayListBrooderInventoryWeb = jsonBrooderInventory.getData();
-
-                ArrayList<Pen> arrayListBrooderInventoryLocal = new ArrayList<>();
-
-                Cursor cursor_brooder_inventory = myDb.getAllDataFromPen();
-                cursor_brooder_inventory.moveToFirst();
-
-                if(cursor_brooder_inventory.getCount() != 0){
-                    do {
-                        Pen pen = new Pen(
-                                cursor_brooder_inventory.getInt(0), //id
-                                cursor_brooder_inventory.getString(2), //pen number
-                                cursor_brooder_inventory.getString(3), //pen type
-                                cursor_brooder_inventory.getInt(4), //pen inventory
-                                cursor_brooder_inventory.getInt(5), // pen capacity
-                                cursor_brooder_inventory.getInt(1), //farm id
-                                cursor_brooder_inventory.getInt(6) //is active
-                        );
-                        arrayListBrooderInventoryLocal.add(pen);
-                    } while (cursor_brooder_inventory.moveToNext());
-                }
-
-                ArrayList<Integer> id_local = new ArrayList<>();
-                ArrayList<Integer> id_web = new ArrayList<>();
-                ArrayList<Integer> id_to_sync = new ArrayList<>();
-
-                for(int i=0;i<arrayListBrooderInventoryLocal.size();i++){
-                    id_local.add(arrayListBrooderInventoryLocal.get(i).getId());
-                }
-
-                for(int i=0;i<arrayListBrooderInventoryWeb.size();i++){
-                    id_web.add(arrayListBrooderInventoryWeb.get(i).getId());
-                }
-
-                for (int i=0;i<id_local.size();i++){
-                    if(!id_web.contains(id_local.get(i))){ //if id_web does not contain the current value of i, add it the an arraylist
-                        id_to_sync.add(id_local.get(i));
-                    }
-                }
-
-                for(int i=0;i<id_to_sync.size();i++){
-
-                    Cursor cursor = myDb.getAllDataFromPenWhereID(id_to_sync.get(i));
-                    cursor.moveToFirst();
-
-                    Integer id = cursor.getInt(0);
-                    Integer farm_id = cursor.getInt(1);
-                    String number = cursor.getString(2);
-                    String type = cursor.getString(3);
-                    Integer total_capacity = cursor.getInt(4);
-                    Integer current_capacity = cursor.getInt(5);
-                    Integer is_active = cursor.getInt(6);
-
-                    RequestParams requestParams = new RequestParams();
-                    requestParams.add("id", id.toString());
-                    requestParams.add("farm_id", farm_id.toString());
-                    requestParams.add("number", number);
-                    requestParams.add("type", type);
-                    requestParams.add("total_capacity", total_capacity.toString());
-                    requestParams.add("current_capacity", current_capacity.toString());
-                    requestParams.add("is_active", is_active.toString());
-
-                    API_addPen(requestParams);
-                }
-
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, String rawJsonResponse, Object response){
-
-                //Toast.makeText(getApplicationContext(), "Failed to sync pens from web database ", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            protected Object parseResponse(String rawJsonData, boolean isFailure) throws Throwable{
-                return null;
-            }
-        });
-    }
-
-    private void TEST_updatePen(String farm_id){
-
-        APIHelperAsync.getPen("getPen/" + farm_id, new BaseJsonHttpResponseHandler<Object>() {
-
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
-
-                Gson gson = new Gson();
-                JSONPen jsonBrooderInventory = gson.fromJson(rawJsonResponse, JSONPen.class);
-                ArrayList<Pen> arrayListBrooderInventoryLocal = arrayList_pen;
-                ArrayList<Pen> arrayListBrooderInventoryWeb = jsonBrooderInventory.getData();
-
-                ArrayList<Integer> id_local = new ArrayList<>();
-                ArrayList<Integer> id_web = new ArrayList<>();
-                ArrayList<Integer> id_to_sync = new ArrayList<>();
-
-                for(int i=0;i<arrayList_pen.size();i++){
-                    id_local.add(arrayList_pen.get(i).getId());
-                }
-
-                for(int i=0;i<arrayListBrooderInventoryWeb.size();i++){
-                    id_web.add(arrayListBrooderInventoryWeb.get(i).getId());
-                }
-
-                for (int i=0;i<id_local.size();i++){
-                    if(!id_web.contains(id_local.get(i))){ //if id_web does not contain the current value of i, add it the an arraylist
-                        id_to_sync.add(id_local.get(i));
-                    }
-                }
-
-                for(int i=0;i<id_to_sync.size();i++){
-
-                    Cursor cursor = myDb.getAllDataFromPenWhereID(id_to_sync.get(i));
-                    cursor.moveToFirst();
-
-                    Integer id = cursor.getInt(0);
-                    Integer farm_id = cursor.getInt(1);
-                    String number = cursor.getString(2);
-                    String type = cursor.getString(3);
-                    Integer total_capacity = cursor.getInt(4);
-                    Integer current_capacity = cursor.getInt(5);
-                    Integer is_active = cursor.getInt(6);
-
-                    RequestParams requestParams = new RequestParams();
-                    requestParams.add("id", id.toString());
-                    requestParams.add("farm_id", farm_id.toString());
-                    requestParams.add("number", number);
-                    requestParams.add("type", type);
-                    requestParams.add("total_capacity", total_capacity.toString());
-                    requestParams.add("current_capacity", current_capacity.toString());
-                    requestParams.add("is_active", is_active.toString());
-
-                    API_addPen(requestParams);
-                }
-
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, String rawJsonResponse, Object response){
-
-                Toast.makeText(getApplicationContext(), "Failed to connect to web database", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            protected Object parseResponse(String rawJsonData, boolean isFailure) throws Throwable{
-                return null;
-            }
-        });
-    }
-
-    private void API_getPen(String farm_id){
-
-        APIHelperAsync.getPen("getPen/" + farm_id, new BaseJsonHttpResponseHandler<Object>() {
-
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
-
-                Gson gson = new Gson();
-                JSONPen jsonPen = gson.fromJson(rawJsonResponse, JSONPen.class);
-                arrayList_pen = jsonPen.getData();
-
-                for (int i = 0; i < arrayList_pen.size(); i++) {
-                    //check if generation to be inserted is already in the database
-                    Cursor cursor1 = myDb.getAllDataFromPenWhereID(arrayList_pen.get(i).getId());
-                    cursor1.moveToFirst();
-
-                    Pen pen = new Pen(
-                            arrayList_pen.get(i).getId(),
-                            arrayList_pen.get(i).getPen_number(),
-                            arrayList_pen.get(i).getPen_type(),
-                            arrayList_pen.get(i).getPen_inventory(),
-                            arrayList_pen.get(i).getPen_capacity(),
-                            arrayList_pen.get(i).getFarm_id(),
-                            arrayList_pen.get(i).getIs_active()
-                    );
-                    arrayList.add(pen);
-                }
-
-//                recycler_adapter = new RecyclerAdapter_Pen(arrayList);
-//                recyclerView.setAdapter(recycler_adapter);
-//                recycler_adapter.notifyDataSetChanged();
-
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, String rawJsonResponse, Object response){
-                Toast.makeText(getApplicationContext(), "Failed to fetch Pens from web database ", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            protected Object parseResponse(String rawJsonData, boolean isFailure) throws Throwable{
-                return null;
-            }
-        });
-    }
+//    private void TEST_updatePen(String farm_id){
+//
+//        APIHelperAsync.getPen("getPen/" + farm_id, new BaseJsonHttpResponseHandler<Object>() {
+//
+//            @Override
+//            public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
+//
+//                Gson gson = new Gson();
+//                JSONPen jsonBrooderInventory = gson.fromJson(rawJsonResponse, JSONPen.class);
+//                ArrayList<Pen> arrayListBrooderInventoryLocal = arrayList_pen;
+//                ArrayList<Pen> arrayListBrooderInventoryWeb = jsonBrooderInventory.getData();
+//
+//                ArrayList<Integer> id_local = new ArrayList<>();
+//                ArrayList<Integer> id_web = new ArrayList<>();
+//                ArrayList<Integer> id_to_sync = new ArrayList<>();
+//
+//                for(int i=0;i<arrayList_pen.size();i++){
+//                    id_local.add(arrayList_pen.get(i).getId());
+//                }
+//
+//                for(int i=0;i<arrayListBrooderInventoryWeb.size();i++){
+//                    id_web.add(arrayListBrooderInventoryWeb.get(i).getId());
+//                }
+//
+//                for (int i=0;i<id_local.size();i++){
+//                    if(!id_web.contains(id_local.get(i))){ //if id_web does not contain the current value of i, add it the an arraylist
+//                        id_to_sync.add(id_local.get(i));
+//                    }
+//                }
+//
+//                for(int i=0;i<id_to_sync.size();i++){
+//
+//                    Cursor cursor = myDb.getAllDataFromPenWhereID(id_to_sync.get(i));
+//                    cursor.moveToFirst();
+//
+//                    Integer id = cursor.getInt(0);
+//                    Integer farm_id = cursor.getInt(1);
+//                    String number = cursor.getString(2);
+//                    String type = cursor.getString(3);
+//                    Integer total_capacity = cursor.getInt(4);
+//                    Integer current_capacity = cursor.getInt(5);
+//                    Integer is_active = cursor.getInt(6);
+//
+//                    RequestParams requestParams = new RequestParams();
+//                    requestParams.add("id", id.toString());
+//                    requestParams.add("farm_id", farm_id.toString());
+//                    requestParams.add("number", number);
+//                    requestParams.add("type", type);
+//                    requestParams.add("total_capacity", total_capacity.toString());
+//                    requestParams.add("current_capacity", current_capacity.toString());
+//                    requestParams.add("is_active", is_active.toString());
+//
+//                    API_addPen(requestParams);
+//                }
+//
+//            }
+//
+//            @Override
+//            public void onFailure(int statusCode, Header[] headers, Throwable throwable, String rawJsonResponse, Object response){
+//                Toast.makeText(getApplicationContext(), "Failed to connect to web database", Toast.LENGTH_SHORT).show();
+//            }
+//
+//            @Override
+//            protected Object parseResponse(String rawJsonData, boolean isFailure) throws Throwable{
+//                return null;
+//            }
+//        });
+//    }
 
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager

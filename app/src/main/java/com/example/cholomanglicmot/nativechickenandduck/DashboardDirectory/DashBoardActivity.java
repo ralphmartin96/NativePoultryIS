@@ -300,11 +300,17 @@ public class DashBoardActivity extends AppCompatActivity {
                         break;
 
                     case "Log Out":
-                        LogOutDialog dialogFragment = new LogOutDialog();
 
-                        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                        if (isNetworkAvailable()) {
+                            LogOutDialog dialogFragment = new LogOutDialog();
 
-                        dialogFragment.show(ft, "dialog");
+                            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+
+                            dialogFragment.show(ft, "dialog");
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Logout failed. Check your internet", Toast.LENGTH_SHORT).show();
+                        }
+
                 }
                 return false;
             }
@@ -1754,13 +1760,13 @@ public class DashBoardActivity extends AppCompatActivity {
 //            }
 //        });
 //    }
-//
-//    private boolean isNetworkAvailable() {
-//        ConnectivityManager connectivityManager
-//                = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
-//        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-//        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-//    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
