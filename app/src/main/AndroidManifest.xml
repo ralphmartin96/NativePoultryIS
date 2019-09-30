@@ -50,7 +50,7 @@
         <activity android:name=".BreedersDirectory.MortalityAndSalesRecords" />
         <activity android:name=".BreedersDirectory.BreederPhenoMorphoRecordsActivity" />
         <activity android:name=".BreedersDirectory.BreederPhenoMorphoViewActivity" />
-        <activity android:name=".DashboardDirectory.SplashActivity" />
+        <activity android:name=".DashboardDirectory.LoginSplashActivity" />
         <activity android:name=".DashboardDirectory.LogoutSplashActivity" />
 
 

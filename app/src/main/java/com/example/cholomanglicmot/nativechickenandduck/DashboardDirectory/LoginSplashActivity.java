@@ -13,8 +13,6 @@ import android.widget.ExpandableListView;
 import android.widget.Toast;
 
 import com.example.cholomanglicmot.nativechickenandduck.APIHelperSync;
-import com.example.cholomanglicmot.nativechickenandduck.APIHelperSync;
-import com.example.cholomanglicmot.nativechickenandduck.APIHelperSync;
 import com.example.cholomanglicmot.nativechickenandduck.BreedersDirectory.Breeder_FeedingRecords;
 import com.example.cholomanglicmot.nativechickenandduck.BreedersDirectory.Breeder_Inventory;
 import com.example.cholomanglicmot.nativechickenandduck.BreedersDirectory.Breeder_PhenoMorphoView;
@@ -78,7 +76,7 @@ import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
 
-public class SplashActivity extends AppCompatActivity {
+public class LoginSplashActivity extends AppCompatActivity {
 
     GoogleSignInClient mGoogleSignInClient;
 
@@ -147,7 +145,7 @@ public class SplashActivity extends AppCompatActivity {
             runOnUiThread(new Runnable() {
                 public void run() {
 
-                    Intent i = new Intent(SplashActivity.this, DashBoardActivity.class);
+                    Intent i = new Intent(LoginSplashActivity.this, DashBoardActivity.class);
                     startActivity(i);
 
                     finish();
@@ -215,12 +213,12 @@ public class SplashActivity extends AppCompatActivity {
                         if (cursor.getInt(0) != farmInfo.getId()) {
                             boolean isInserted = myDb.insertDataFarm(farmInfo.getId(), farmInfo.getName(), farmInfo.getCode(), farmInfo.getAddress(), farmInfo.getBatching_week(), farmInfo.getBreedable_id());
                         } else {
-                            Toast.makeText(SplashActivity.this, "Farm Info already exists in your account", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginSplashActivity.this, "Farm Info already exists in your account", Toast.LENGTH_SHORT).show();
                         }
                     } else {
                         boolean isInserted = myDb.insertDataFarm(farmInfo.getId(), farmInfo.getName(), farmInfo.getCode(), farmInfo.getAddress(), farmInfo.getBatching_week(), farmInfo.getBreedable_id());
                         if (!isInserted) {
-                            Toast.makeText(SplashActivity.this, "Farm Info already exists in your account", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginSplashActivity.this, "Farm Info already exists in your account", Toast.LENGTH_SHORT).show();
                         }
                     }
 
