@@ -2,6 +2,7 @@ package com.example.cholomanglicmot.nativechickenandduck.DashboardDirectory;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.icu.text.SimpleDateFormat;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -9,6 +10,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,11 +21,14 @@ import android.widget.Toast;
 
 import com.example.cholomanglicmot.nativechickenandduck.APIHelperAsync;
 import com.example.cholomanglicmot.nativechickenandduck.DatabaseHelper;
+import com.example.cholomanglicmot.nativechickenandduck.PensDirectory.JSONPen;
+import com.example.cholomanglicmot.nativechickenandduck.PensDirectory.Pen;
 import com.example.cholomanglicmot.nativechickenandduck.R;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.gson.Gson;
 import com.loopj.android.http.BaseJsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
@@ -65,31 +70,25 @@ public class LogOutDialog extends DialogFragment {
         myDb = new DatabaseHelper(getContext());
         context = getActivity();
 
-
-
         no = view.findViewById(R.id.no);
         yes = view.findViewById(R.id.yes);
-
-
-
 
         no.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 getDialog().dismiss();
 
             }
         });
 
-
         yes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //myDb.deleteTables();
+
                 Logout();
-                Intent intent_settings = new Intent(getActivity(), LoginActivity.class);
-                startActivity(intent_settings);
+
+                Intent intent = new Intent(getActivity(), LogoutSplashActivity.class);
+                startActivity(intent);
 
             }
         });
@@ -103,9 +102,9 @@ public class LogOutDialog extends DialogFragment {
         mGoogleSignInClient.signOut()
                 .addOnCompleteListener(getActivity(),
                         task -> {
-                            //updateUI(null);
                         });
     }
+
     private String getDate() {
 
         SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -113,17 +112,18 @@ public class LogOutDialog extends DialogFragment {
 
         return formatter.format(date);
     }
+
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) this.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
+
     private void API_editPenCount(RequestParams requestParams){
         APIHelperAsync.editPenCount("editPenCount", requestParams, new BaseJsonHttpResponseHandler<Object>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
-//                Toast.makeText(getContext(), "Successfully edited pen count", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -138,23 +138,6 @@ public class LogOutDialog extends DialogFragment {
             }
         });
     }
-    private void API_cullReplacementInventory(RequestParams requestParams){
-        APIHelperAsync.cullReplacementInventory("cullReplacementInventory", requestParams, new BaseJsonHttpResponseHandler<Object>() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response){
-                //     Toast.makeText(context, "Successfully culled brooder inventory", Toast.LENGTH_SHORT).show();
-            }
 
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, String rawJsonResponse, Object response){
 
-                Toast.makeText(context, "Failed to add Pen to web", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            protected Object parseResponse(String rawJsonData, boolean isFailure) throws Throwable{
-                return null;
-            }
-        });
-    }
 }
